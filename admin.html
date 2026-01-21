@@ -2416,197 +2416,209 @@
 
         function handleSubmit(e) {
             e.preventDefault();
-            const form = e.target;
-            const container = form.closest('.form-container');
-            const typeId = container.id;
+            try {
+                const form = e.target;
+                const container = form.closest('.form-container');
+                const typeId = container.id;
 
-            // Collect all input/select/textarea values into an object
-            const formData = {};
-            const inputs = form.querySelectorAll('input, select, textarea');
-            inputs.forEach(input => {
-                const label = input.closest('.form-group')?.querySelector('label')?.innerText || 'field';
-                const key = input.name || label.toLowerCase().replace(/[^a-z0-9]/g, '_');
+                // Collect all input/select/textarea values into an object
+                const formData = {};
+                const inputs = form.querySelectorAll('input, select, textarea');
+                inputs.forEach(input => {
+                    const label = input.closest('.form-group')?.querySelector('label')?.innerText || 'field';
+                    const key = input.name || label.toLowerCase().replace(/[^a-z0-9]/g, '_');
 
-                if (input.type === 'checkbox') {
-                    if (!formData[key]) formData[key] = [];
-                    if (input.checked) formData[key].push(input.value);
-                } else if (input.tagName === 'SELECT' && input.multiple) {
-                    formData[key] = Array.from(input.selectedOptions).map(opt => opt.value);
-                } else {
-                    formData[key] = input.value;
-                }
-            });
-
-            // Collect Extra Fields from Sections
-            const extraFields = {};
-            container.querySelectorAll('.section-title').forEach(titleEl => {
-                if (titleEl.closest('.dynamic-section')) return;
-
-                // Extract text avoiding the button text
-                const sectionName = Array.from(titleEl.childNodes)
-                    .filter(node => node.nodeType === Node.TEXT_NODE || (node.nodeType === Node.ELEMENT_NODE && node.tagName !== 'BUTTON'))
-                    .map(node => node.textContent)
-                    .join(' ')
-                    .trim();
-
-                let next = titleEl.nextElementSibling;
-                let rowsContainer = null;
-                while (next && !next.classList.contains('section-title')) {
-                    if (next.classList.contains('extra-fields-container')) {
-                        rowsContainer = next;
-                        break;
-                    }
-                    next = next.nextElementSibling;
-                }
-
-                if (rowsContainer) {
-                    const rows = rowsContainer.querySelectorAll('.extra-field-row');
-                    if (rows.length > 0) {
-                        extraFields[sectionName] = [];
-                        rows.forEach(row => {
-                            const label = row.querySelector('.ext-label').value;
-                            const value = row.querySelector('.ext-value').value;
-                            if (label.trim()) {
-                                extraFields[sectionName].push({ label, value });
-                            }
-                        });
-                    }
-                }
-            });
-            formData.extra_fields = extraFields;
-
-            // Collect Dynamic Sections
-            const dynamicSections = [];
-            const dynDivs = container.querySelectorAll('.dynamic-section');
-            dynDivs.forEach(div => {
-                const title = div.querySelector('.dyn-title').value;
-                const content = div.querySelector('.dyn-content').value;
-                if (title.trim()) {
-                    dynamicSections.push({ title, content });
-                }
-            });
-
-            // Collect Physical Standards Table Data (Only for Jobs)
-            const physicalStandards = [];
-            const physTable = container.querySelector('#physical-standards-table');
-            if (physTable) {
-                const physRows = physTable.querySelectorAll('tbody tr');
-                physRows.forEach(row => {
-                    const criteria = row.querySelector('.phys-criteria').value.trim();
-                    const category = row.querySelector('.phys-category').value.trim();
-                    const male = row.querySelector('.phys-male').value.trim();
-                    const female = row.querySelector('.phys-female').value.trim();
-                    if (criteria || male || female) {
-                        physicalStandards.push({ criteria, category, male, female });
+                    if (input.type === 'checkbox') {
+                        if (!formData[key]) formData[key] = [];
+                        if (input.checked) formData[key].push(input.value);
+                    } else if (input.tagName === 'SELECT' && input.multiple) {
+                        formData[key] = Array.from(input.selectedOptions).map(opt => opt.value);
+                    } else {
+                        formData[key] = input.value;
                     }
                 });
-            }
 
-            // Collect Vacancy Table Data
-            const vacancyDetails = [];
-            const vacTable = container.querySelector('#vacancy-details-table');
-            if (vacTable) {
-                const vacRows = vacTable.querySelectorAll('tbody tr');
-                vacRows.forEach(row => {
-                    const postName = row.querySelector('.vac-post-name').value.trim();
-                    const ur = row.querySelector('.vac-ur').value;
-                    const obc = row.querySelector('.vac-obc').value;
-                    const ews = row.querySelector('.vac-ews').value;
-                    const sc = row.querySelector('.vac-sc').value;
-                    const st = row.querySelector('.vac-st').value;
-                    const total = row.querySelector('.vac-total').value;
-                    if (postName || total) {
-                        vacancyDetails.push({ postName, ur, obc, ews, sc, st, total });
+                // Collect Extra Fields from Sections
+                const extraFields = {};
+                container.querySelectorAll('.section-title').forEach(titleEl => {
+                    if (titleEl.closest('.dynamic-section')) return;
+
+                    // Extract text avoiding the button text
+                    const sectionName = Array.from(titleEl.childNodes)
+                        .filter(node => node.nodeType === Node.TEXT_NODE || (node.nodeType === Node.ELEMENT_NODE && node.tagName !== 'BUTTON'))
+                        .map(node => node.textContent)
+                        .join(' ')
+                        .trim();
+
+                    let next = titleEl.nextElementSibling;
+                    let rowsContainer = null;
+                    while (next && !next.classList.contains('section-title')) {
+                        if (next.classList.contains('extra-fields-container')) {
+                            rowsContainer = next;
+                            break;
+                        }
+                        next = next.nextElementSibling;
+                    }
+
+                    if (rowsContainer) {
+                        const rows = rowsContainer.querySelectorAll('.extra-field-row');
+                        if (rows.length > 0) {
+                            extraFields[sectionName] = [];
+                            rows.forEach(row => {
+                                const label = row.querySelector('.ext-label')?.value;
+                                const value = row.querySelector('.ext-value')?.value;
+                                if (label && label.trim()) {
+                                    extraFields[sectionName].push({ label, value });
+                                }
+                            });
+                        }
                     }
                 });
-            }
+                formData.extra_fields = extraFields;
 
-            // Collect Age Relaxation Data
-            const ageRelaxation = [];
-            const relaxTable = container.querySelector('#age-relaxation-table');
-            if (relaxTable) {
-                const relaxRows = relaxTable.querySelectorAll('tbody tr');
-                relaxRows.forEach(row => {
-                    const category = row.querySelector('.relax-category').value.trim();
-                    const value = row.querySelector('.relax-value').value.trim();
-                    if (category || value) {
-                        ageRelaxation.push({ category, value });
+                // Collect Dynamic Sections
+                const dynamicSections = [];
+                const dynDivs = container.querySelectorAll('.dynamic-section');
+                dynDivs.forEach(div => {
+                    const title = div.querySelector('.dyn-title')?.value;
+                    const content = div.querySelector('.dyn-content')?.value;
+                    if (title && title.trim()) {
+                        dynamicSections.push({ title, content });
                     }
                 });
-            }
 
-            // Collect Fee Data
-            const applicationFees = [];
-            let feeTable = container.querySelector('#application-fee-table');
-            if (!feeTable) feeTable = container.querySelector('#admission-fee-table');
-
-            if (feeTable) {
-                const feeRows = feeTable.querySelectorAll('tbody tr');
-                feeRows.forEach(row => {
-                    const category = row.querySelector('.fee-category').value.trim();
-                    const amount = row.querySelector('.fee-amount').value.trim();
-                    if (category || amount) {
-                        applicationFees.push({ category, amount });
-                    }
-                });
-            }
-
-            // Collect Payment Mode Data
-            const paymentModes = [];
-            let payTable = container.querySelector('#payment-mode-table');
-            if (!payTable) payTable = container.querySelector('#admission-payment-table');
-            if (payTable) {
-                const payRows = payTable.querySelectorAll('tbody tr');
-                payRows.forEach(row => {
-                    const method = row.querySelector('.pay-method').value.trim();
-                    const description = row.querySelector('.pay-description').value.trim();
-                    if (method || description) {
-                        paymentModes.push({ method, description });
-                    }
-                });
-            }
-
-            const newItem = {
-                id: editingId || Date.now(),
-                type: typeId.replace('-form', ''),
-                title: formData.full_notification_title || formData.admit_card_page_title || formData.result_post_title || formData.syllabus_title || formData.admission_title || formData.scheme_name,
-                org: formData.recruiting_body__org_name_ || formData.conducting_body || formData.exam_name || formData.university___school_name_ || formData.ministry___department_ || 'N/A',
-                date: formData.notification_date || formData.release_date || formData.declaration_date || formData.apply_last_date || new Date().toISOString().split('T')[0],
-                badge: formData.important_tag__badge_ || formData.badge_status || 'New',
-                ...formData,
-                physical_standards: physicalStandards,
-                vacancy_details: vacancyDetails,
-                age_relaxation: ageRelaxation,
-                application_fees: applicationFees,
-                payment_modes: paymentModes,
-                custom_sections: dynamicSections,
-                physicalStandardsRequired: (typeId === 'job-form' && document.getElementById('toggle-physical-job')) ? document.getElementById('toggle-physical-job').checked :
-                    (typeId === 'admit-form' && document.getElementById('toggle-physical-admit')) ? document.getElementById('toggle-physical-admit').checked : true
-            };
-
-            const keyMap = {
-                'job-form': 'jobs',
-                'admit-form': 'admits',
-                'result-form': 'results',
-                'syllabus-form': 'syllabus',
-                'admission-form': 'admissions',
-                'scheme-form': 'schemes'
-            };
-
-            const storeKey = keyMap[typeId];
-            if (storeKey) {
-                if (editingId) {
-                    const idx = appData[storeKey].findIndex(i => i.id === editingId);
-                    if (idx !== -1) appData[storeKey][idx] = newItem;
-                } else {
-                    appData[storeKey].unshift(newItem);
+                // Collect Physical Standards Table Data (Only for Jobs)
+                const physicalStandards = [];
+                const physTable = container.querySelector('#physical-standards-table');
+                if (physTable) {
+                    const physRows = physTable.querySelectorAll('tbody tr');
+                    physRows.forEach(row => {
+                        const criteria = row.querySelector('.phys-criteria')?.value.trim();
+                        const category = row.querySelector('.phys-category')?.value.trim();
+                        const male = row.querySelector('.phys-male')?.value.trim();
+                        const female = row.querySelector('.phys-female')?.value.trim();
+                        if (criteria || male || female) {
+                            physicalStandards.push({ criteria, category, male, female });
+                        }
+                    });
                 }
 
-                saveData();
-                showSuccessDialog(editingId ? 'Changes Saved' : 'Post Published');
-                form.reset();
-                resetEditState();
-                showForm('dashboard-view');
+                // Collect Vacancy Table Data
+                const vacancyDetails = [];
+                const vacTable = container.querySelector('#vacancy-details-table');
+                if (vacTable) {
+                    const vacRows = vacTable.querySelectorAll('tbody tr');
+                    vacRows.forEach(row => {
+                        const postName = row.querySelector('.vac-post-name')?.value.trim();
+                        const ur = row.querySelector('.vac-ur')?.value;
+                        const obc = row.querySelector('.vac-obc')?.value;
+                        const ews = row.querySelector('.vac-ews')?.value;
+                        const sc = row.querySelector('.vac-sc')?.value;
+                        const st = row.querySelector('.vac-st')?.value;
+                        const total = row.querySelector('.vac-total')?.value;
+
+                        if (postName || total) {
+                            const detail = { postName, total };
+                            if (ur !== undefined) detail.ur = ur;
+                            if (obc !== undefined) detail.obc = obc;
+                            if (ews !== undefined) detail.ews = ews;
+                            if (sc !== undefined) detail.sc = sc;
+                            if (st !== undefined) detail.st = st;
+                            vacancyDetails.push(detail);
+                        }
+                    });
+                }
+
+                // Collect Age Relaxation Data
+                const ageRelaxation = [];
+                const relaxTable = container.querySelector('#age-relaxation-table');
+                if (relaxTable) {
+                    const relaxRows = relaxTable.querySelectorAll('tbody tr');
+                    relaxRows.forEach(row => {
+                        const category = row.querySelector('.relax-category')?.value.trim();
+                        const value = row.querySelector('.relax-value')?.value.trim();
+                        if (category || value) {
+                            ageRelaxation.push({ category, value });
+                        }
+                    });
+                }
+
+                // Collect Fee Data
+                const applicationFees = [];
+                let feeTable = container.querySelector('#application-fee-table');
+                if (!feeTable) feeTable = container.querySelector('#admission-fee-table');
+
+                if (feeTable) {
+                    const feeRows = feeTable.querySelectorAll('tbody tr');
+                    feeRows.forEach(row => {
+                        const category = row.querySelector('.fee-category')?.value.trim();
+                        const amount = row.querySelector('.fee-amount')?.value.trim();
+                        if (category || amount) {
+                            applicationFees.push({ category, amount });
+                        }
+                    });
+                }
+
+                // Collect Payment Mode Data
+                const paymentModes = [];
+                let payTable = container.querySelector('#payment-mode-table');
+                if (!payTable) payTable = container.querySelector('#admission-payment-table');
+                if (payTable) {
+                    const payRows = payTable.querySelectorAll('tbody tr');
+                    payRows.forEach(row => {
+                        const method = row.querySelector('.pay-method')?.value.trim();
+                        const description = row.querySelector('.pay-description')?.value.trim();
+                        if (method || description) {
+                            paymentModes.push({ method, description });
+                        }
+                    });
+                }
+
+                const newItem = {
+                    id: editingId || Date.now(),
+                    type: typeId.replace('-form', ''),
+                    title: formData.full_notification_title || formData.admit_card_page_title || formData.result_post_title || formData.syllabus_title || formData.admission_title || formData.scheme_name,
+                    org: formData.recruiting_body__org_name_ || formData.conducting_body || formData.exam_name || formData.university___school_name_ || formData.ministry___department_ || 'N/A',
+                    date: formData.notification_date || formData.release_date || formData.declaration_date || formData.apply_last_date || new Date().toISOString().split('T')[0],
+                    badge: formData.important_tag__badge_ || formData.badge_status || 'New',
+                    ...formData,
+                    physical_standards: physicalStandards,
+                    vacancy_details: vacancyDetails,
+                    age_relaxation: ageRelaxation,
+                    application_fees: applicationFees,
+                    payment_modes: paymentModes,
+                    custom_sections: dynamicSections,
+                    physicalStandardsRequired: (typeId === 'job-form' && document.getElementById('toggle-physical-job')) ? document.getElementById('toggle-physical-job').checked :
+                        (typeId === 'admit-form' && document.getElementById('toggle-physical-admit')) ? document.getElementById('toggle-physical-admit').checked : true
+                };
+
+                const keyMap = {
+                    'job-form': 'jobs',
+                    'admit-form': 'admits',
+                    'result-form': 'results',
+                    'syllabus-form': 'syllabus',
+                    'admission-form': 'admissions',
+                    'scheme-form': 'schemes'
+                };
+
+                const storeKey = keyMap[typeId];
+                if (storeKey) {
+                    if (editingId) {
+                        const idx = appData[storeKey].findIndex(i => i.id === editingId);
+                        if (idx !== -1) appData[storeKey][idx] = newItem;
+                    } else {
+                        appData[storeKey].unshift(newItem);
+                    }
+
+                    saveData();
+                    showSuccessDialog(editingId ? 'Changes Saved' : 'Post Published');
+                    form.reset();
+                    resetEditState();
+                    showForm('dashboard-view');
+                }
+            } catch (error) {
+                console.error('Submission Error:', error);
+                alert('An error occurred while posting: ' + error.message);
             }
         }
 
