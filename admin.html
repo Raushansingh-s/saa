@@ -2423,13 +2423,43 @@
 
                 // Collect all input/select/textarea values into an object
                 const formData = {};
-                const inputs = form.querySelectorAll('input, select, textarea');
-                inputs.forEach(input => {
-                    const label = input.closest('.form-group')?.querySelector('label')?.innerText || 'field';
-                    const key = input.name || label.toLowerCase().replace(/[^a-z0-9]/g, '_');
+                // Select inputs, excluding those that are just UI controls like add buttons
+                const inputs = form.querySelectorAll('input:not(.btn-add-extra), select, textarea');
+
+                inputs.forEach((input, index) => {
+                    // CRITICAL FIX: Skip inputs inside detail tables (Vacancy, Fee, Physical, etc.)
+                    // These are handled by specific collectors below and should NOT pollute the main formData object.
+                    // This prevents key collisions where a table input (resolving to 'field') clashes with a toggle (checkbox).
+                    if (input.closest('.vacancy-table-container, .physical-table-container')) return;
+
+                    const formGroup = input.closest('.form-group');
+                    const label = formGroup?.querySelector('label')?.innerText;
+
+                    let key = input.name;
+                    if (!key && label) {
+                        key = label.toLowerCase().replace(/[^a-z0-9]/g, '_');
+                    }
+                    if (!key && input.id) {
+                        // Use ID if name and label fails (e.g. toggles)
+                        key = input.id.replace(/-/g, '_');
+                    }
+                    if (!key) {
+                        // Fallback to unique key to prevent collisions
+                        key = 'field_' + index;
+                    }
 
                     if (input.type === 'checkbox') {
-                        if (!formData[key]) formData[key] = [];
+                        // Defensive programming: Ensure target is an array
+                        if (!Array.isArray(formData[key])) {
+                            if (formData[key] !== undefined) {
+                                // If a value already exists (collision), convert to array to preserve both if possible,
+                                // or just reset to array if the previous value was likely junk.
+                                // Given the unique key logic above, collisions should be rare.
+                                formData[key] = [formData[key]];
+                            } else {
+                                formData[key] = [];
+                            }
+                        }
                         if (input.checked) formData[key].push(input.value);
                     } else if (input.tagName === 'SELECT' && input.multiple) {
                         formData[key] = Array.from(input.selectedOptions).map(opt => opt.value);
