@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latest Jobs - DeskJob.Com</title>
+    <!-- Fonts and Icons Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <!-- Main Application Styling -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Top Header and Primary Navigation -->
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo">
+                <i class="ri-briefcase-4-line"></i> DeskJob.Com
+            </div>
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">
+                <i class="ri-menu-line"></i>
+            </button>
+            <nav class="main-nav" id="mainNav">
+                <a href="index.html"><i class="ri-home-line"></i> Home</a>
+                <a href="latest-job.html" class="active"><i class="ri-briefcase-line"></i> Latest Job</a>
+                <a href="admit-item.html"><i class="ri-ticket-line"></i> Admit Card</a>
+                <a href="result-item.html"><i class="ri-file-chart-line"></i> Result</a>
+                <a href="syllabus-item.html"><i class="ri-book-2-line"></i> Syllabus</a>
+                <a href="admission-item.html"><i class="ri-school-line"></i> Admission</a>
+                <a href="scheme-item.html"><i class="ri-flag-line"></i> Govt Scheme</a>
+                <a href="about.html"><i class="ri-information-line"></i> About</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Hero Section with Advanced Search for Job Listings -->
+        <section class="search-section jobs-hero">
+            <div class="search-container">
+                <div class="hero-content">
+                    <h1 class="hero-title">Find Your Perfect Government Job</h1>
+                    <p class="hero-subtitle">Browse 10,000+ openings. Updated daily with latest notifications.</p>
+                </div>
+                <div class="search-box advanced">
+                    <i class="ri-search-line search-icon"></i>
+                    <input id="jobSearch" type="text" placeholder="Search by title, department, location...">
+                    <button id="searchBtn" class="btn-search">
+                        <i class="ri-search-line"></i> Search
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <main class="jobs-page">
+            <!-- Sidebar for Search Refinement and Filters -->
+            <aside class="jobs-filter-sidebar">
+                <div class="filter-section">
+                    <div class="filter-header">
+                        <h3><i class="ri-filter-line"></i> Refine Results</h3>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="filter-label">Department</label>
+                        <select class="filter-select">
+                            <option>All Departments</option>
+                            <option>Railways (RRB)</option>
+                            <option>Staff Selection Commission (SSC)</option>
+                            <option>Public Service Commission (UPSC)</option>
+                            <option>Banking (IBPS)</option>
+                            <option>State Govt</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="filter-label">Location</label>
+                        <select class="filter-select">
+                            <option>All India</option>
+                            <option>Delhi NCR</option>
+                            <option>Mumbai & Maharashtra</option>
+                            <option>Kolkata & West Bengal</option>
+                            <option>Bangalore & Karnataka</option>
+                            <option>Chennai & Tamil Nadu</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="filter-label">Job Type</label>
+                        <div class="chip-group">
+                            <label class="chip-label">
+                                <input type="checkbox" class="chip-input">
+                                <span class="chip-badge">Permanent</span>
+                            </label>
+                            <label class="chip-label">
+                                <input type="checkbox" class="chip-input">
+                                <span class="chip-badge">Contract</span>
+                            </label>
+                            <label class="chip-label">
+                                <input type="checkbox" class="chip-input">
+                                <span class="chip-badge">Internship</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="filter-label">Salary Range</label>
+                        <select class="filter-select">
+                            <option>All Ranges</option>
+                            <option>Below 5 LPA</option>
+                            <option>5 - 10 LPA</option>
+                            <option>10 - 20 LPA</option>
+                            <option>Above 20 LPA</option>
+                        </select>
+                    </div>
+
+                    <button class="btn-reset-filters">
+                        <i class="ri-refresh-line"></i> Clear All
+                    </button>
+                </div>
+
+                <div class="sidebar-promo">
+                    <div class="promo-content">
+                        <h4>Advance Your Career</h4>
+                        <p>Get personalized job recommendations</p>
+                        <a href="#" class="btn-secondary-small">Set Preferences</a>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Display Area for Job Result Cards -->
+            <section class="jobs-list-section">
+                <div class="list-toolbar">
+                    <div class="toolbar-left">
+                        <span class="result-count"><strong>47</strong> jobs found</span>
+                    </div>
+                    <div class="toolbar-right">
+                        <label class="sort-label">Sort by:</label>
+                        <select id="sortBy" class="sort-select">
+                            <option>Most Recent</option>
+                            <option>Closing Soon</option>
+                            <option>Highest Vacancy</option>
+                            <option>Best Match</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Grid Container for Dynamically Loaded Job Cards -->
+                <div id="jobsContainer" class="jobs-grid">
+                    <article class="job-card professional">
+                        <div class="job-card-header">
+                            <div class="job-org-info">
+                                <div class="org-icon railway">
+                                    <i class="ri-train-line"></i>
+                                </div>
+                                <div>
+                                    <div class="org-name">Railway Recruitment Board</div>
+                                    <div class="org-shortname">RRB</div>
+                                </div>
+                            </div>
+                            <span class="job-badge urgent">Urgent</span>
+                        </div>
+                        <div class="job-card-content">
+                            <h3 class="job-title">RRB Group D Recruitment 2026</h3>
+                            <div class="job-meta-grid">
+                                <span class="meta-item">
+                                    <i class="ri-map-pin-line"></i> All India
+                                </span>
+                                <span class="meta-item">
+                                    <i class="ri-briefcase-line"></i> 22,000 Posts
+                                </span>
+                                <span class="meta-item">
+                                    <i class="ri-graduation-cap-line"></i> 10th Pass
+                                </span>
+                            </div>
+                            <div class="job-dates">
+                                <div class="date-item">
+                                    <span class="date-label">Posted</span>
+                                    <span class="date-value">12 Jan 2026</span>
+                                </div>
+                                <div class="date-item">
+                                    <span class="date-label">Last Date</span>
+                                    <span class="date-value deadline">15 Feb 2026</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="job-card-footer">
+                            <a href="item.html" class="btn-card primary">View Details</a>
+                            <a href="#" class="btn-card secondary">Apply Now</a>
+                        </div>
+                    </article>
+
+                    <!-- Mockups of job cards... -->
+                    <article class="job-card professional">
+                        <div class="job-card-header">
+                            <div class="job-org-info">
+                                <div class="org-icon ssc">
+                                    <i class="ri-book-2-line"></i>
+                                </div>
+                                <div>
+                                    <div class="org-name">Staff Selection Commission</div>
+                                    <div class="org-shortname">SSC</div>
+                                </div>
+                            </div>
+                            <span class="job-badge featured">Featured</span>
+                        </div>
+                        <div class="job-card-content">
+                            <h3 class="job-title">SSC CGL 2026 Notification</h3>
+                            <div class="job-meta-grid">
+                                <span class="meta-item">
+                                    <i class="ri-map-pin-line"></i> Nationwide
+                                </span>
+                                <span class="meta-item">
+                                    <i class="ri-briefcase-line"></i> 8,000+ Posts
+                                </span>
+                                <span class="meta-item">
+                                    <i class="ri-graduation-cap-line"></i> 12th Pass
+                                </span>
+                            </div>
+                            <div class="job-dates">
+                                <div class="date-item">
+                                    <span class="date-label">Posted</span>
+                                    <span class="date-value">10 Jan 2026</span>
+                                </div>
+                                <div class="date-item">
+                                    <span class="date-label">Last Date</span>
+                                    <span class="date-value deadline">30 Jan 2026</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="job-card-footer">
+                            <a href="#" class="btn-card primary">View Details</a>
+                            <a href="#" class="btn-card secondary">Apply Now</a>
+                        </div>
+                    </article>
+
+                    <article class="job-card professional">
+                        <div class="job-card-header">
+                            <div class="job-org-info">
+                                <div class="org-icon upsc">
+                                    <i class="ri-award-line"></i>
+                                </div>
+                                <div>
+                                    <div class="org-name">Union Public Service Commission</div>
+                                    <div class="org-shortname">UPSC</div>
+                                </div>
+                            </div>
+                            <span class="job-badge premium">Premium</span>
+                        </div>
+                        <div class="job-card-content">
+                            <h3 class="job-title">UPSC Civil Services 2026</h3>
+                            <div class="job-meta-grid">
+                                <span class="meta-item">
+                                    <i class="ri-map-pin-line"></i> All India
+                                </span>
+                                <span class="meta-item">
+                                    <i class="ri-briefcase-line"></i> 1,000 Posts
+                                </span>
+                                <span class="meta-item">
+                                    <i class="ri-graduation-cap-line"></i> Graduate
+                                </span>
+                            </div>
+                            <div class="job-dates">
+                                <div class="date-item">
+                                    <span class="date-label">Posted</span>
+                                    <span class="date-value">05 Jan 2026</span>
+                                </div>
+                                <div class="date-item">
+                                    <span class="date-label">Last Date</span>
+                                    <span class="date-value deadline">28 Feb 2026</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="job-card-footer">
+                            <a href="#" class="btn-card primary">View Details</a>
+                            <a href="#" class="btn-card secondary">Apply Now</a>
+                        </div>
+                    </article>
+
+                    <article class="job-card professional">
+                        <div class="job-card-header">
+                            <div class="job-org-info">
+                                <div class="org-icon ibps">
+                                    <i class="ri-bank-card-line"></i>
+                                </div>
+                                <div>
+                                    <div class="org-name">Institute of Banking Personnel</div>
+                                    <div class="org-shortname">IBPS</div>
+                                </div>
+                            </div>
+                            <span class="job-badge trending">Trending</span>
+                        </div>
+                        <div class="job-card-content">
+                            <h3 class="job-title">IBPS PO 2026 Online Form</h3>
+                            <div class="job-meta-grid">
+                                <span class="meta-item">
+                                    <i class="ri-map-pin-line"></i> Pan India
+                                </span>
+                                <span class="meta-item">
+                                    <i class="ri-briefcase-line"></i> 4,000+ Posts
+                                </span>
+                                <span class="meta-item">
+                                    <i class="ri-graduation-cap-line"></i> Graduate
+                                </span>
+                            </div>
+                            <div class="job-dates">
+                                <div class="date-item">
+                                    <span class="date-label">Posted</span>
+                                    <span class="date-value">08 Jan 2026</span>
+                                </div>
+                                <div class="date-item">
+                                    <span class="date-label">Last Date</span>
+                                    <span class="date-value deadline">25 Jan 2026</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="job-card-footer">
+                            <a href="#" class="btn-card primary">View Details</a>
+                            <a href="#" class="btn-card secondary">Apply Now</a>
+                        </div>
+                    </article>
+                </div>
+            </section>
+        </main>
+
+        <!-- Script for Filtering Displayed Data -->
+        <script>
+            document.getElementById('searchBtn').addEventListener('click', () => {
+                const q = document.getElementById('jobSearch').value.toLowerCase();
+                const cards = document.querySelectorAll('.job-card .job-title');
+                cards.forEach(t => {
+                    const el = t.closest('.job-card');
+                    if (!q || t.textContent.toLowerCase().includes(q)) el.style.display = '';
+                    else el.style.display = 'none';
+                });
+            });
+        </script>
+    </div>
+
+    <!-- Website Standard Footer -->
+    <footer class="main-footer">
+        <div class="footer-grid">
+            <div class="footer-about">
+                <div class="footer-logo">DeskJob.Com</div>
+            </div>
+
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html"><svg class="ql-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5" aria-hidden="true">
+                                <path d="M3 11.5L12 4l9 7.5" />
+                                <path d="M5 10v8a1 1 0 001 1h3v-6h6v6h3a1 1 0 001-1v-8" />
+                            </svg>Home</a></li>
+                    <li><a href="latest-job.html"><svg class="ql-icon" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                                <rect x="3" y="7" width="18" height="13" rx="2" />
+                                <path d="M16 3h-8v4h8V3z" />
+                            </svg>Latest Jobs</a></li>
+                    <li><a href="admit-item.html"><svg class="ql-icon" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                                <path d="M21 10v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6" />
+                                <path d="M7 10V7 missions a5 5 0 0110 0v3" />
+                            </svg>Admit Card</a></li>
+                    <li><a href="result-item.html"><svg class="ql-icon" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                                <path d="M3 3v18h18" />
+                                <path d="M7 17V9l7-4v12" />
+                            </svg>Results</a></li>
+                    <li><a href="syllabus-item.html"><svg class="ql-icon" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                                <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
+                                <path d="M4 4v15L12 12l8 7V4z" />
+                            </svg>Syllabus</a></li>
+                    <li><a href="about.html"><svg class="ql-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5" aria-hidden="true">
+                                <path d="M12 2l2 4 4 .5-3 2 1 4-4-2-4 2 1-4-3-2 4-.5L12 2z" />
+                            </svg>About</a></li>
+                    <li><a href="#"><svg class="ql-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5" aria-hidden="true">
+                                <path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V7" />
+                                <path d="M8 7V5a4 4 0 018 0v2" />
+                            </svg>Terms</a></li>
+                    <li><a href="login.html"><svg class="ql-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5" aria-hidden="true">
+                                <circle cx="12" cy="7" r="4" />
+                                <path d="M12 11v5m0 0l-2-2m2 2l2-2" />
+                            </svg>Admin Login</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-contact">
+                <h4>Contact Us</h4>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5" aria-hidden="true">
+                            <path
+                                d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" />
+                        </svg>
+                        <span>+91-XXXXXX</span>
+                    </div>
+                    <div class="contact-item">
+                        <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5" aria-hidden="true">
+                            <path
+                                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                        <span>info@deskjob.com</span>
+                    </div>
+                    <a href="mailto:info@deskjob.com" class="contact-btn">Send Email</a>
+                </div>
+            </div>
+
+            <div class="footer-social">
+                <h4>Follow Us</h4>
+                <div class="social-links">
+                    <a href="#" class="social-icon" aria-label="Facebook" title="Facebook">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                            <path
+                                d="M22 12a10 10 0 10-11.5 9.9v-7H8.5v-2.9h2V9.2c0-2 1.2-3.1 3-3.1.9 0 1.8.1 1.8.1v2h-1c-1 0-1.3.6-1.3 1.2v1.5h2.2l-.4 2.9h-1.8v7A10 10 0 0022 12z" />
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon" aria-label="Twitter" title="Twitter">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                            <path
+                                d="M22 5.9c-.6.3-1.3.5-2 .6.7-.4 1.2-1 1.5-1.8-.7.4-1.4.7-2.2.9A3.5 3.5 0 0016.1 5c-2 0-3.5 1.7-3 3.5-2.6-.1-4.8-1.4-6.3-3.3-.9 1.6-.3 3.5 1.1 4.5-.6 0-1.2-.2-1.7-.4v.1c0 1.7 1.2 3.2 2.8 3.6-.5.2-1 .2-1.6.1.5 1.6 2 2.7 3.7 2.7A7 7 0 013 19.5a9.8 9.8 0 005.3 1.6c6.4 0 9.8-5.6 9.8-10.4v-.5c.7-.5 1.2-1.2 1.6-1.9-.6.3-1.3.5-2 .6z" />
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon" aria-label="Instagram" title="Instagram">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <rect x="3" y="3" width="18" height="18" rx="5" ry="5" />
+                            <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" />
+                            <line x1="17.5" y1="6.5" x2="17.5" y2="6.5" />
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon" aria-label="LinkedIn" title="LinkedIn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                            <path
+                                d="M4.98 3.5a2.5 2.5 0 11.04 0H4.98zM3 8.98h3.96V21H3zM9.74 9h3.8v1.6h.05c.53-1 1.82-2 3.75-2 4 0 4.74 2.6 4.74 6v6.4h-3.96v-5.6c0-1.34-.02-3.06-1.86-3.06-1.86 0-2.15 1.45-2.15 2.96V21h-3.97z" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2024 DeskJob.Com. All rights reserved.</p>
+            <p class="footer-disclaimer"><strong>Disclaimer:</strong> DeskJob.Com is an independent information portal
+                and is NOT affiliated with any Government entity, Commission, or Board. The recruitment notices, exam
+                results, and admit card updates provided here are aggregated from public sources and official
+                notifications for informational purposes only. While we strive to maintain accurate and up-to-date
+                content, we recommend that users verify all details on the official websites of the respective
+                recruiting authorities before making any decisions. We are not responsible for any inaccuracies, errors,
+                or losses arising from the use of the information provided on this platform.</p>
+        </div>
+    </footer>
+
+    <!-- Logic for Dynamic Loading of Job Items -->
+    <script>
+        /**
+         * Renders job cards from LocalStorage onto the grid.
+         */
+        function renderJobs() {
+            const data = JSON.parse(localStorage.getItem('deskjob_data')) || { jobs: [], admits: [] };
+            const container = document.getElementById('jobsContainer');
+            if (!container) return;
+
+
+            if (data.jobs && data.jobs.length > 0) {
+                // Formatting container content
+                container.innerHTML = '';
+
+                data.jobs.forEach(item => {
+                    const card = document.createElement('article');
+                    card.className = 'job-card professional';
+
+                    const orgIconClass = item.short_name___icon_type || 'govt';
+                    const iconMap = {
+                        'railway': 'ri-train-line',
+                        'ssc': 'ri-bank-line',
+                        'upsc': 'ri-government-line',
+                        'bank': 'ri-hand-coin-line',
+                        'govt': 'ri-briefcase-line'
+                    };
+                    const icon = iconMap[orgIconClass] || 'ri-briefcase-line';
+
+                    const title = item.title || item.full_notification_title || 'Untitled Job';
+                    const advNo = item.advertisement_number || item.adv_no;
+
+                    card.innerHTML = `
+                        <div class="job-card-header">
+                            <div class="job-org-info">
+                                <div class="org-icon ${orgIconClass}">
+                                    <i class="${icon}"></i>
+                                </div>
+                                <div>
+                                    <div class="org-name">${item.org || 'Organization'}</div>
+                                    <div class="org-shortname">${orgIconClass.toUpperCase()}</div>
+                                </div>
+                            </div>
+                            <span class="job-badge featured">${item.badge || 'New'}</span>
+                        </div>
+                        <div class="job-card-content">
+                            <h3 class="job-title">${title}</h3>
+                            ${advNo ? `<div class="adv-no" style="font-size: 0.8rem; color: var(--text-muted); margin-top: -5px; margin-bottom: 10px; font-weight: 500;">Advt No: ${advNo}</div>` : ''}
+                            <div class="job-meta-grid">
+                                <span class="meta-item"><i class="ri-briefcase-line"></i> ${item.total_vacancy_count || 'Check Notice'}</span>
+                                <span class="meta-item"><i class="ri-map-pin-line"></i> ${item.job_location || 'All India'}</span>
+                                <span class="meta-item"><i class="ri-user-follow-line"></i> ${item.qualification_required || 'Various'}</span>
+                            </div>
+                        </div>
+                        <div class="job-card-footer">
+                            <a href="item.html?id=${item.id}" class="btn-card primary">View Details</a>
+                            <a href="#" class="btn-card secondary">Notification PDF</a>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            }
+        }
+
+        // Initialization of render function
+        window.addEventListener('load', renderJobs);
+
+        // Responsive Hamburger Menu Initialization
+        const menuToggle = document.getElementById('menuToggle');
+        const mainNav = document.getElementById('mainNav');
+        menuToggle.addEventListener('click', () => {
+            mainNav.classList.toggle('active');
+            const icon = menuToggle.querySelector('i');
+            icon.classList.toggle('ri-menu-line');
+            icon.classList.toggle('ri-close-line');
+        });
+    </script>
+</body>
+
+</html>

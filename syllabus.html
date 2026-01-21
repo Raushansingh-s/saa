@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Syllabus - DeskJob.Com</title>
+    <!-- Fonts and External Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <!-- Main Application Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Site Navigation Header -->
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo">
+                <i class="ri-briefcase-4-line"></i> DeskJob.Com
+            </div>
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">
+                <i class="ri-menu-line"></i>
+            </button>
+            <nav class="main-nav" id="mainNav">
+                <a href="index.html"><i class="ri-home-line"></i> Home</a>
+                <a href="latest-job.html"><i class="ri-briefcase-line"></i> Latest Job</a>
+                <a href="admit-item.html"><i class="ri-ticket-line"></i> Admit Card</a>
+                <a href="result-item.html"><i class="ri-file-chart-line"></i> Result</a>
+                <a href="syllabus-item.html" class="active"><i class="ri-book-2-line"></i> Syllabus</a>
+                <a href="admission-item.html"><i class="ri-school-line"></i> Admission</a>
+                <a href="scheme-item.html"><i class="ri-flag-line"></i> Govt Scheme</a>
+                <a href="about.html"><i class="ri-information-line"></i> About</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Dashboard Search Section -->
+        <section class="search-section">
+            <div class="search-container">
+                <h1>Find Your Dream Government Job</h1>
+                <p>Search across thousands of active listings</p>
+                <div class="search-box">
+                    <i class="ri-search-line search-icon"></i>
+                    <input type="text" placeholder="Search for jobs, admit cards, results...">
+                    <button>Search</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Category Grid for Quick Filters -->
+        <section class="quick-links">
+            <a href="#" class="quick-link-box">
+                <i class="ri-file-list-3-line"></i>
+                <span>Answer Key</span>
+            </a>
+            <a href="#" class="quick-link-box">
+                <i class="ri-book-open-line"></i>
+                <span>Syllabus</span>
+            </a>
+            <a href="#" class="quick-link-box">
+                <i class="ri-pencil-ruler-2-line"></i>
+                <span>Admission</span>
+            </a>
+            <a href="#" class="quick-link-box">
+                <i class="ri-government-line"></i>
+                <span>Important</span>
+            </a>
+            <a href="#" class="quick-link-box">
+                <i class="ri-award-line"></i>
+                <span>Certificate</span>
+            </a>
+            <a href="#" class="quick-link-box">
+                <i class="ri-bank-card-line"></i>
+                <span>Pan Card</span>
+            </a>
+            <a href="#" class="quick-link-box">
+                <i class="ri-vote-line"></i>
+                <span>Voter ID</span>
+            </a>
+            <a href="#" class="quick-link-box">
+                <i class="ri-id-card-line"></i>
+                <span>Aadhar</span>
+            </a>
+        </section>
+
+        <div class="container">
+            <!-- Syllabus Dynamic Heading -->
+            <section class="job-header-section">
+                <div class="job-title-box">
+                    <h1 id="syllabus-title">Syllabus Details</h1>
+                </div>
+            </section>
+
+            <main class="job-layout">
+                <!-- Syllabus Documentation Area -->
+                <div class="job-details">
+                    <div class="details-card">
+                        <div class="details-header">Syllabus Overview</div>
+
+                        <!-- General Information and Metadata -->
+                        <div class="detail-section">
+                            <div class="col-header">Exam Information</div>
+                            <div class="detail-list">
+                                <div class="data-row"><span>Exam Name</span><span id="syllabus-exam-name">N/A</span>
+                                </div>
+                                <div class="data-row"><span>Conducting Body</span><span
+                                        id="syllabus-org-name">N/A</span></div>
+                                <div class="data-row"><span>Category</span><span id="syllabus-category">N/A</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Age & Vacancy Details Section -->
+                        <div class="detail-section" id="section-age-vac" style="display: none;">
+                            <div class="col-header">Age & Vacancy Details</div>
+                            <div id="vacancy-tabular"></div>
+                        </div>
+
+                        <!-- Physical Standards Section -->
+                        <div class="detail-section" id="section-physical" style="display: none;">
+                            <div class="col-header">Physical Standards</div>
+                            <div id="physical-tabular"></div>
+                        </div>
+
+                        <!-- Application Fee & Payment Section -->
+                        <div class="detail-section" id="section-fee" style="display: none;">
+                            <div class="col-header">Application Fee & Payment</div>
+                            <div id="fee-tabular"></div>
+                            <div id="payment-tabular"></div>
+                        </div>
+
+                        <!-- Admin Injected Custom Content -->
+                        <div id="dynamic-sections-container"></div>
+
+                        <!-- Categorized Syllabus Topics -->
+                        <div class="detail-section" id="section-syllabus-reasoning">
+                            <div class="col-header">Reasoning Topics</div>
+                            <div class="single-text" id="syllabus-reasoning"></div>
+                        </div>
+
+                        <div class="detail-section" id="section-syllabus-maths">
+                            <div class="col-header">Maths/Quant Topics</div>
+                            <div class="single-text" id="syllabus-maths"></div>
+                        </div>
+
+                        <div class="detail-section" id="section-syllabus-english">
+                            <div class="col-header">English/Language Topics</div>
+                            <div class="single-text" id="syllabus-english"></div>
+                        </div>
+
+                        <div class="detail-section" id="section-syllabus-gk">
+                            <div class="col-header">General Awareness Topics</div>
+                            <div class="single-text" id="syllabus-gk"></div>
+                        </div>
+
+                        <!-- Technical Examination Layout -->
+                        <div class="detail-section" id="section-syllabus-pattern">
+                            <div class="col-header">Exam Pattern</div>
+                            <div class="detail-list">
+                                <div class="data-row"><span>Total Questions</span><span
+                                        id="syllabus-questions">N/A</span></div>
+                                <div class="data-row"><span>Total Marks</span><span id="syllabus-marks">N/A</span></div>
+                                <div class="data-row"><span>Time Duration</span><span id="syllabus-duration">N/A</span>
+                                </div>
+                                <div class="data-row"><span>Negative Marking</span><span
+                                        id="syllabus-negative">N/A</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Links to Official Documents -->
+                        <div class="detail-section" id="section-useful-resources">
+                            <div class="col-header">Useful Resources</div>
+                            <div class="detail-list">
+                                <div class="data-row"><span>Syllabus PDF</span><span><a href="#" id="link-syllabus-pdf"
+                                            class="link-btn">Download</a></span></div>
+                                <div class="data-row"><span>Notification</span><span><a href="#" id="link-notification"
+                                            class="link-btn">Download</a></span></div>
+                                <div class="data-row"><span>Official Site</span><span><a href="#" id="link-official"
+                                            class="link-btn">Visit</a></span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Sidebar Sticky Download Box -->
+                <aside class="sidebar">
+                    <div class="sidebar-box">
+                        <a href="#" id="sidebar-link-syllabus" class="sidebar-btn btn-primary">Download Syllabus <i
+                                class="ri-download-line"></i></a>
+                        <a href="#" id="sidebar-link-notification" class="sidebar-btn btn-outline">Notification <i
+                                class="ri-file-list-3-line"></i></a>
+                        <a href="#" id="sidebar-link-official" class="sidebar-btn btn-outline">Official Website <i
+                                class="ri-global-line"></i></a>
+                    </div>
+                </aside>
+            </main>
+        </div>
+    </div>
+
+    <!-- Site Footer Section -->
+    <footer class="main-footer">
+        <div class="footer-bottom">
+            <p>&copy; 2024 DeskJob.Com. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Frontend Logic for Syllabus Rendering -->
+    <script>
+        /**
+         * Fetches syllabus data from LocalStorage based on 'id' parameter.
+         */
+        function renderSyllabusDetails() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const syllabusId = urlParams.get('id');
+            if (!syllabusId) return;
+
+            const data = JSON.parse(localStorage.getItem('deskjob_data')) || { syllabus: [] };
+            const syllabus = data.syllabus.find(s => s.id == syllabusId);
+            if (!syllabus) return;
+
+            if (syllabus.title) {
+                document.getElementById('syllabus-title').innerText = syllabus.title;
+                document.title = syllabus.title + ' - DeskJob.Com';
+            }
+
+            const isGroupEmpty = (vals) => Object.values(vals).every(v => !v || v === '0' || v === '' || (Array.isArray(v) && v.length === 0));
+
+            const examInfo = {
+                'syllabus-exam-name': syllabus.exam_name,
+                'syllabus-org-name': syllabus.conducting_body,
+                'syllabus-category': syllabus.category
+            };
+            for (const [id, val] of Object.entries(examInfo)) {
+                const el = document.getElementById(id);
+                if (val && el) {
+                    el.innerText = val;
+                    el.closest('.data-row').style.display = 'grid';
+                } else if (el) {
+                    el.closest('.data-row').style.display = 'none';
+                }
+            }
+
+            const patternData = {
+                'syllabus-questions': syllabus.total_questions,
+                'syllabus-marks': syllabus.total_marks,
+                'syllabus-duration': syllabus.time_duration__mins_ ? syllabus.time_duration__mins_ + ' Mins' : null,
+                'syllabus-negative': syllabus.negative_marking
+            };
+            if (isGroupEmpty(patternData)) {
+                document.getElementById('section-syllabus-pattern').style.display = 'none';
+            } else {
+                document.getElementById('section-syllabus-pattern').style.display = 'block';
+                for (const [id, val] of Object.entries(patternData)) {
+                    const el = document.getElementById(id);
+                    if (val && el) {
+                        el.innerText = val;
+                        el.closest('.data-row').style.display = 'grid';
+                    } else if (el) {
+                        el.closest('.data-row').style.display = 'none';
+                    }
+                }
+            }
+
+            /**
+             * Helper to render comma-separated strings as bullet points.
+             */
+            const setBullets = (field, divId, sectionId) => {
+                const div = document.getElementById(divId);
+                const section = document.getElementById(sectionId);
+                if (field) {
+                    const lines = field.split(',').filter(l => l.trim());
+                    if (lines.length > 0) {
+                        let html = '';
+                        lines.forEach(line => { html += `<p>• ${line.trim()}</p>`; });
+                        div.innerHTML = html;
+                        section.style.display = 'block';
+                    } else { section.style.display = 'none'; }
+                } else { section.style.display = 'none'; }
+            };
+
+            setBullets(syllabus.reasoning_topics, 'syllabus-reasoning', 'section-syllabus-reasoning');
+            setBullets(syllabus.maths_quant_topics, 'syllabus-maths', 'section-syllabus-maths');
+            setBullets(syllabus.english_language_topics, 'syllabus-english', 'section-syllabus-english');
+            setBullets(syllabus.gk_general_awareness_topics, 'syllabus-gk', 'section-syllabus-gk');
+
+            // Custom Admin Sections Rendering
+            const dynContainer = document.getElementById('dynamic-sections-container');
+            if (dynContainer) {
+                dynContainer.innerHTML = '';
+                if (syllabus.custom_sections && syllabus.custom_sections.length > 0) {
+                    syllabus.custom_sections.forEach(sec => {
+                        const secDiv = document.createElement('div');
+                        secDiv.className = 'detail-section';
+                        const lines = sec.content.split('\n');
+                        let contentHtml = '';
+                        lines.forEach(line => { if (line.trim()) contentHtml += `<p>• ${line.trim()}</p>`; });
+                        secDiv.innerHTML = `<div class="col-header">${sec.title}</div><div class="single-text">${contentHtml}</div>`;
+                        dynContainer.appendChild(secDiv);
+                    });
+                }
+            }
+
+            // Dynamically render Extra User-defined Fields
+            if (syllabus.extra_fields) {
+                document.querySelectorAll('.col-header').forEach(header => {
+                    const sectionName = header.textContent.trim();
+                    const extra = syllabus.extra_fields[sectionName];
+                    if (extra && extra.length > 0) {
+                        const section = header.closest('.detail-section');
+                        let list = section.querySelector('.detail-list');
+                        if (list) {
+                            extra.forEach(f => {
+                                const row = document.createElement('div');
+                                row.className = 'data-row';
+                                row.innerHTML = `<span>${f.label}</span><span>${f.value}</span>`;
+                                list.appendChild(row);
+                            });
+                        } else {
+                            let stext = section.querySelector('.single-text');
+                            if (stext) {
+                                extra.forEach(f => { stext.innerHTML += `<p>• <strong>${f.label}:</strong> ${f.value}</p>`; });
+                            }
+                        }
+                        section.style.display = 'block';
+                    }
+                });
+            }
+
+            // Map action buttons to their URLs
+            const linkMap = {
+                'link-syllabus-pdf': syllabus.download_syllabus_pdf,
+                'link-notification': syllabus.download_notification,
+                'link-official': syllabus.official_website
+            };
+            if (isGroupEmpty(linkMap)) {
+                document.getElementById('section-useful-resources').style.display = 'none';
+            } else {
+                document.getElementById('section-useful-resources').style.display = 'block';
+                for (const [id, url] of Object.entries(linkMap)) {
+                    const el = document.getElementById(id);
+                    if (url && el) {
+                        el.href = url;
+                        el.closest('.data-row').style.display = 'grid';
+                    } else if (el) {
+                        el.closest('.data-row').style.display = 'none';
+                    }
+                }
+            }
+
+            // Render Vacancy Table
+            const hasTabularVac = syllabus.vacancy_details && syllabus.vacancy_details.length > 0;
+            const ageVacSec = document.getElementById('section-age-vac');
+            if (hasTabularVac) {
+                if (ageVacSec) {
+                    ageVacSec.style.display = 'block';
+                    let vacHtml = `<div class="vacancy-details-container"><table class="vacancy-table-frontend"><thead><tr><th>Post</th><th>UR</th><th>OBC</th><th>EWS</th><th>SC</th><th>ST</th><th>Total</th></tr></thead><tbody>`;
+                    syllabus.vacancy_details.forEach(v => {
+                        vacHtml += `<tr><td class="post-name-cell">${v.postName}</td><td>${v.ur || 0}</td><td>${v.obc || 0}</td><td>${v.ews || 0}</td><td>${v.sc || 0}</td><td>${v.st || 0}</td><td style="font-weight:700">${v.total || 0}</td></tr>`;
+                    });
+                    vacHtml += `</tbody></table></div>`;
+                    const vacTabDiv = document.getElementById('vacancy-tabular');
+                    if (vacTabDiv) vacTabDiv.innerHTML = vacHtml;
+                }
+            } else if (ageVacSec) { ageVacSec.style.display = 'none'; }
+
+            // Render Physical Table
+            const hasPhys = syllabus.physical_standards && syllabus.physical_standards.length > 0;
+            const physSec = document.getElementById('section-physical');
+            if (hasPhys) {
+                if (physSec) {
+                    physSec.style.display = 'block';
+                    let physHtml = `<div class="vacancy-details-container"><table class="vacancy-table-frontend"><thead><tr><th>Criteria</th><th>Category</th><th>Male</th><th>Female</th></tr></thead><tbody>`;
+                    syllabus.physical_standards.forEach(p => {
+                        physHtml += `<tr><td class="post-name-cell">${p.criteria}</td><td>${p.category}</td><td>${p.male}</td><td>${p.female}</td></tr>`;
+                    });
+                    physHtml += `</tbody></table></div>`;
+                    const physTabDiv = document.getElementById('physical-tabular');
+                    if (physTabDiv) physTabDiv.innerHTML = physHtml;
+                }
+            } else if (physSec) { physSec.style.display = 'none'; }
+
+            // Render Fee & Payment
+            const hasFee = syllabus.application_fees && syllabus.application_fees.length > 0;
+            const hasPay = syllabus.payment_modes && syllabus.payment_modes.length > 0;
+            const feeSec = document.getElementById('section-fee');
+            if (hasFee || hasPay) {
+                if (feeSec) {
+                    feeSec.style.display = 'block';
+                    if (hasFee) {
+                        let feeHtml = `<div class="vacancy-details-container"><table class="vacancy-table-frontend"><thead><tr><th>Category</th><th>Fee</th></tr></thead><tbody>`;
+                        syllabus.application_fees.forEach(f => { feeHtml += `<tr><td class="post-name-cell">${f.category}</td><td style="font-weight:700">${f.amount}</td></tr>`; });
+                        feeHtml += `</tbody></table></div>`;
+                        const feeTabDiv = document.getElementById('fee-tabular');
+                        if (feeTabDiv) feeTabDiv.innerHTML = feeHtml;
+                    }
+                    if (hasPay) {
+                        let payHtml = `<div class="vacancy-details-container" style="margin-top:0.75rem;"><table class="vacancy-table-frontend"><thead><tr><th>Payment Mode</th><th>Details</th></tr></thead><tbody>`;
+                        syllabus.payment_modes.forEach(p => { payHtml += `<tr><td class="post-name-cell">${p.method}</td><td>${p.description}</td></tr>`; });
+                        payHtml += `</tbody></table></div>`;
+                        const payTabDiv = document.getElementById('payment-tabular');
+                        if (payTabDiv) payTabDiv.innerHTML = payHtml;
+                    }
+                }
+            } else if (feeSec) { feeSec.style.display = 'none'; }
+
+            // Sidebar Links
+            const sidebarSyllabus = document.getElementById('sidebar-link-syllabus');
+            if (sidebarSyllabus) {
+                if (syllabus.download_syllabus_pdf) { sidebarSyllabus.href = syllabus.download_syllabus_pdf; sidebarSyllabus.style.display = 'flex'; }
+                else sidebarSyllabus.style.display = 'none';
+            }
+            const sidebarNotice = document.getElementById('sidebar-link-notification');
+            if (sidebarNotice) {
+                if (syllabus.download_notification) { sidebarNotice.href = syllabus.download_notification; sidebarNotice.style.display = 'flex'; }
+                else sidebarNotice.style.display = 'none';
+            }
+            const sidebarOfficial = document.getElementById('sidebar-link-official');
+            if (sidebarOfficial) {
+                if (syllabus.official_website) { sidebarOfficial.href = syllabus.official_website; sidebarOfficial.style.display = 'flex'; }
+                else sidebarOfficial.style.display = 'none';
+            }
+
+            // Hide sidebar if empty
+            const sidebarBox = document.querySelector('.sidebar-box');
+            if (sidebarBox) {
+                const visibleLinks = Array.from(sidebarBox.querySelectorAll('a')).filter(a => a.style.display !== 'none');
+                if (visibleLinks.length === 0) document.querySelector('.sidebar').style.display = 'none';
+            }
+        }
+
+        // Initialize Rendering
+        window.addEventListener('load', renderSyllabusDetails);
+
+        // Mobile Sidebar Management
+        const menuToggle = document.getElementById('menuToggle');
+        const mainNav = document.getElementById('mainNav');
+        menuToggle.addEventListener('click', () => {
+            mainNav.classList.toggle('active');
+            const icon = menuToggle.querySelector('i');
+            if (icon) {
+                icon.classList.toggle('ri-menu-line');
+                icon.classList.toggle('ri-close-line');
+            }
+        });
+    </script>
+</body>
+
+</html>

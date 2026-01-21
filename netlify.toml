@@ -1,0 +1,9 @@
+[build]
+  publish = "."
+  command = "echo 'No build command needed'"
+
+# Redirect /admin to the login page (301 Permanent Redirect)
+[[redirects]]
+  from = "/admin"
+  to = "/admin/login.html"
+  status = 301

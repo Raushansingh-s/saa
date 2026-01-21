@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admission Details - DeskJob.Com</title>
+    <!-- Fonts and External Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <!-- Main Application Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Global Header with Navigation -->
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo">
+                <i class="ri-briefcase-4-line"></i> DeskJob.Com
+            </div>
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">
+                <i class="ri-menu-line"></i>
+            </button>
+            <nav class="main-nav" id="mainNav">
+                <a href="index.html"><i class="ri-home-line"></i> Home</a>
+                <a href="latest-job.html"><i class="ri-briefcase-line"></i> Latest Job</a>
+                <a href="admit-item.html"><i class="ri-ticket-line"></i> Admit Card</a>
+                <a href="result-item.html"><i class="ri-file-chart-line"></i> Result</a>
+                <a href="syllabus-item.html"><i class="ri-book-2-line"></i> Syllabus</a>
+                <a href="admission-item.html" class="active"><i class="ri-school-line"></i> Admission</a>
+                <a href="scheme-item.html"><i class="ri-flag-line"></i> Govt Scheme</a>
+                <a href="about.html"><i class="ri-information-line"></i> About</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Dynamic Header Section for Admission Page -->
+        <section class="job-header-section">
+            <div class="job-title-box">
+                <h1>Admission Title Placeholder</h1>
+            </div>
+        </section>
+
+        <main class="job-layout">
+            <!-- Main Content Area: Detailed Information -->
+            <div class="job-details">
+                <div class="details-card">
+                    <div class="details-header">Admission Summary</div>
+
+                    <!-- Enrollment Timeline -->
+                    <div class="detail-section" id="section-admission-dates">
+                        <div class="col-header">Important Dates</div>
+                        <div class="detail-list">
+                            <div class="data-row"><span>Application Start</span><span id="adm-start">N/A</span></div>
+                            <div class="data-row"><span>Last Date for Apply</span><span id="adm-last">N/A</span></div>
+                            <div class="data-row"><span>Exam Date (CUET)</span><span id="adm-exam">N/A</span></div>
+                            <div class="data-row"><span>Result Declaration</span><span id="adm-result">N/A</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Admission Fees and Payment Info -->
+                    <div class="detail-section" id="section-admission-fee">
+                        <div class="col-header">Application Fee</div>
+                        <div id="adm-fee-tabular"></div>
+                        <div id="adm-payment-tabular"></div>
+                        <div class="detail-list" id="adm-fee-legacy">
+                            <div class="data-row"><span>General / OBC</span><span id="adm-fee-gen">N/A</span></div>
+                            <div class="data-row"><span>SC / ST / PH</span><span id="adm-fee-sc">N/A</span></div>
+                            <div class="data-row"><span>Payment Mode</span><span id="adm-pay-mode">N/A</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Programs and Course List -->
+                    <div class="detail-section" id="section-admission-courses">
+                        <div class="col-header">Offered Courses</div>
+                        <div class="single-text" id="admission-courses">
+                            <p>• Courses list will appear here...</p>
+                        </div>
+                    </div>
+
+                    <!-- Academic and Age Requirements -->
+                    <div class="detail-section" id="section-admission-eligibility">
+                        <div class="col-header">Eligibility Criteria</div>
+                        <div class="single-text" id="admission-eligibility">
+                            <p>• Eligibility criteria will appear here...</p>
+                        </div>
+                    </div>
+
+                    <!-- Container for Admin-defined Dynamic Content -->
+                    <div id="dynamic-sections-container"></div>
+
+                    <!-- Registration and Form Download Links -->
+                    <div class="detail-section" id="section-apply-links">
+                        <div class="col-header">Apply Online</div>
+                        <div class="detail-list">
+                            <div class="data-row"><span>Direct Link to Apply</span><span><a href="#"
+                                        id="link-apply-online" class="link-btn">Click Here</a></span></div>
+                            <div class="data-row"><span>Download Prospectus</span><span><a href="#" id="link-prospectus"
+                                        class="link-btn">Download PDF</a></span></div>
+                        </div>
+                    </div>
+
+                    <!-- External Institutional Resource Links -->
+                    <div class="detail-section" id="section-useful-links">
+                        <div class="col-header">Useful Links</div>
+                        <div class="detail-list">
+                            <div class="data-row"><span>Official Website</span><span><a href="#" id="link-official"
+                                        class="link-btn">Click Here</a></span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Side Action Panel for Mobile and Desktop -->
+            <aside class="sidebar">
+                <div class="sidebar-box">
+                    <a href="#" id="sidebar-link-apply" class="sidebar-btn btn-primary">Apply Online <i
+                            class="ri-external-link-line"></i></a>
+                    <a href="#" id="sidebar-link-prospectus" class="sidebar-btn btn-outline">Prospectus PDF <i
+                            class="ri-file-download-line"></i></a>
+                    <a href="#" id="sidebar-link-official" class="sidebar-btn btn-outline">Official Website <i
+                            class="ri-global-line"></i></a>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <!-- Website Standard Footer -->
+    <footer class="main-footer">
+        <div class="footer-grid">
+            <div class="footer-about">
+                <div class="footer-logo">DeskJob.Com</div>
+            </div>
+
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="latest-job.html">Latest Jobs</a></li>
+                    <li><a href="admit-item.html">Admit Card</a></li>
+                    <li><a href="result-item.html">Results</a></li>
+                    <li><a href="syllabus-item.html">Syllabus</a></li>
+                    <li><a href="login.html">Admin Login</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 DeskJob.Com. All rights reserved.</p>
+            <p class="footer-disclaimer"><strong>Disclaimer:</strong> DeskJob.Com is an independent information portal
+                and is NOT affiliated with any Government entity, Commission, or Board. The recruitment notices, exam
+                results, and admit card updates provided here are aggregated from public sources and official
+                notifications for informational purposes only. While we strive to maintain accurate and up-to-date
+                content, we recommend that users verify all details on the official websites of the respective
+                recruiting authorities before making any decisions. We are not responsible for any inaccuracies, errors,
+                or losses arising from the use of the information provided on this platform.</p>
+        </div>
+    </footer>
+
+    <!-- Logic for Data Extraction and UI Updates -->
+    <script>
+        /**
+         * Parses admission details from sessionStorage based on the 'id' URL parameter.
+         */
+        function renderAdmissionDetails() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const admissionId = urlParams.get('id');
+            if (!admissionId) return;
+
+            const data = JSON.parse(localStorage.getItem('deskjob_data')) || { admissions: [] };
+            const admission = data.admissions.find(a => a.id == admissionId);
+            if (!admission) return;
+
+            // Updating page title and document header
+            if (admission.title) {
+                const h1 = document.querySelector('.job-title-box h1');
+                if (h1) h1.innerText = admission.title;
+                document.title = admission.title + ' - DeskJob.Com';
+            }
+
+            const isGroupEmpty = (vals) => Object.values(vals).every(v => !v || v === '0' || v === '' || (Array.isArray(v) && v.length === 0));
+
+            const dates = {
+                'adm-start': admission.application_start,
+                'adm-last': admission.last_date_for_apply,
+                'adm-exam': admission.exam_date__cuet_,
+                'adm-result': admission.result_declaration
+            };
+            if (isGroupEmpty(dates)) {
+                document.getElementById('section-admission-dates').style.display = 'none';
+            } else {
+                document.getElementById('section-admission-dates').style.display = 'block';
+                for (const [id, val] of Object.entries(dates)) {
+                    const el = document.getElementById(id);
+                    if (val && el) {
+                        el.innerText = val;
+                        el.closest('.data-row').style.display = 'grid';
+                    } else if (el) {
+                        el.closest('.data-row').style.display = 'none';
+                    }
+                }
+            }
+
+            const hasTabularFees = admission.application_fees && admission.application_fees.length > 0;
+            const hasTabularPayment = admission.payment_modes && admission.payment_modes.length > 0;
+            const feeTabularDiv = document.getElementById('adm-fee-tabular');
+            const payTabularDiv = document.getElementById('adm-payment-tabular');
+            const feeLegacyDiv = document.getElementById('adm-fee-legacy');
+
+            if (!hasTabularFees && !hasTabularPayment && isGroupEmpty({ gen: admission.general___obc, sc: admission.sc___st___ph, pm: admission.payment_mode })) {
+                document.getElementById('section-admission-fee').style.display = 'none';
+            } else {
+                document.getElementById('section-admission-fee').style.display = 'block';
+
+                // Render Fee Table
+                if (hasTabularFees) {
+                    if (feeLegacyDiv) feeLegacyDiv.style.display = 'none';
+                    let feeHtml = `
+                        <div class="vacancy-details-container" style="border-radius: 8px;">
+                            <table class="vacancy-table-frontend" style="font-size: 0.85rem;">
+                                <thead>
+                                    <tr>
+                                        <th style="padding: 0.5rem; text-align: left;">Category</th>
+                                        <th style="padding: 0.5rem;">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                    `;
+                    admission.application_fees.forEach(fee => {
+                        feeHtml += `<tr><td class="post-name-cell" style="padding: 0.5rem; color: var(--text-main);">${fee.category}</td><td style="padding: 0.5rem; font-weight: 600;">${fee.amount}</td></tr>`;
+                    });
+                    feeHtml += `</tbody></table></div>`;
+                    feeTabularDiv.innerHTML = feeHtml;
+                    feeTabularDiv.style.display = 'block';
+                } else {
+                    feeTabularDiv.style.display = 'none';
+                }
+
+                // Render Payment Table
+                if (hasTabularPayment) {
+                    let payHtml = `
+                        <div class="vacancy-details-container" style="border-radius: 8px; margin-top: 0.75rem;">
+                            <table class="vacancy-table-frontend" style="font-size: 0.85rem;">
+                                <thead>
+                                    <tr>
+                                        <th style="padding: 0.5rem; text-align: left; width: 40%;">Mode</th>
+                                        <th style="padding: 0.5rem;">Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                    `;
+                    admission.payment_modes.forEach(p => {
+                        payHtml += `<tr><td class="post-name-cell" style="padding: 0.5rem; color: var(--text-main);">${p.method}</td><td style="padding: 0.5rem;">${p.description}</td></tr>`;
+                    });
+                    payHtml += `</tbody></table></div>`;
+                    payTabularDiv.innerHTML = payHtml;
+                    payTabularDiv.style.display = 'block';
+                } else {
+                    payTabularDiv.style.display = 'none';
+                }
+
+                // Show legacy only if no tabular data at all
+                if (!hasTabularFees && !hasTabularPayment) {
+                    feeLegacyDiv.style.display = 'block';
+                    const legacyInfo = { 'adm-fee-gen': admission.general___obc, 'adm-fee-sc': admission.sc___st___ph, 'adm-pay-mode': admission.payment_mode };
+                    for (const [id, val] of Object.entries(legacyInfo)) {
+                        const el = document.getElementById(id);
+                        if (val && el) { el.innerText = val; el.closest('.data-row').style.display = 'grid'; }
+                        else if (el) { el.closest('.data-row').style.display = 'none'; }
+                    }
+                } else if (feeLegacyDiv) {
+                    feeLegacyDiv.style.display = 'none';
+                }
+            }
+
+            // Courses rendering
+            const coursesSection = document.getElementById('section-admission-courses');
+            const coursesDiv = document.getElementById('admission-courses');
+            if (admission.offered_courses__bullet_points_) {
+                const lines = admission.offered_courses__bullet_points_.split('\n').filter(l => l.trim());
+                if (lines.length > 0) {
+                    coursesSection.style.display = 'block';
+                    let html = '';
+                    lines.forEach(line => { html += `<p>• ${line.trim()}</p>`; });
+                    coursesDiv.innerHTML = html;
+                } else { coursesSection.style.display = 'none'; }
+            } else { coursesSection.style.display = 'none'; }
+
+            // Eligibility summary rendering
+            const eligSection = document.getElementById('section-admission-eligibility');
+            const eligDiv = document.getElementById('admission-eligibility');
+            if (admission.eligibility_criteria) {
+                const lines = admission.eligibility_criteria.split('\n').filter(l => l.trim());
+                if (lines.length > 0) {
+                    eligSection.style.display = 'block';
+                    let html = '';
+                    lines.forEach(line => { html += `<p>• ${line.trim()}</p>`; });
+                    eligDiv.innerHTML = html;
+                } else { eligSection.style.display = 'none'; }
+            } else { eligSection.style.display = 'none'; }
+
+            // Rendering admin-defined custom sections
+            const dynContainer = document.getElementById('dynamic-sections-container');
+            if (dynContainer) {
+                dynContainer.innerHTML = '';
+                if (admission.custom_sections && admission.custom_sections.length > 0) {
+                    admission.custom_sections.forEach(sec => {
+                        const secDiv = document.createElement('div');
+                        secDiv.className = 'detail-section';
+                        const lines = sec.content.split('\n');
+                        let contentHtml = '';
+                        lines.forEach(line => { if (line.trim()) contentHtml += `<p>• ${line.trim()}</p>`; });
+                        secDiv.innerHTML = `<div class="col-header">${sec.title}</div><div class="single-text">${contentHtml}</div>`;
+                        dynContainer.appendChild(secDiv);
+                    });
+                }
+            }
+
+            // Rendering additional user-defined extra fields
+            if (admission.extra_fields) {
+                document.querySelectorAll('.col-header').forEach(header => {
+                    const sectionName = header.textContent.trim();
+                    const extra = admission.extra_fields[sectionName];
+                    if (extra && extra.length > 0) {
+                        const section = header.closest('.detail-section');
+                        let list = section.querySelector('.detail-list');
+                        if (list) {
+                            extra.forEach(f => {
+                                const row = document.createElement('div');
+                                row.className = 'data-row';
+                                row.innerHTML = `<span>${f.label}</span><span>${f.value}</span>`;
+                                list.appendChild(row);
+                            });
+                        } else {
+                            let stext = section.querySelector('.single-text');
+                            if (stext) {
+                                extra.forEach(f => { stext.innerHTML += `<p>• <strong>${f.label}:</strong> ${f.value}</p>`; });
+                            }
+                        }
+                        section.style.display = 'block';
+                    }
+                });
+            }
+
+            // Map links
+            const linkMap = {
+                'link-apply-online': admission.apply_online,
+                'link-prospectus': admission.download_prospectus
+            };
+            if (isGroupEmpty(linkMap)) {
+                document.getElementById('section-apply-links').style.display = 'none';
+            } else {
+                document.getElementById('section-apply-links').style.display = 'block';
+                for (const [id, url] of Object.entries(linkMap)) {
+                    const el = document.getElementById(id);
+                    if (url && el) {
+                        el.href = url;
+                        el.closest('.data-row').style.display = 'grid';
+                    } else if (el) {
+                        el.closest('.data-row').style.display = 'none';
+                    }
+                }
+            }
+
+            if (admission.official_website) {
+                document.getElementById('section-useful-links').style.display = 'block';
+                document.getElementById('link-official').href = admission.official_website;
+            } else {
+                document.getElementById('section-useful-links').style.display = 'none';
+            }
+
+            // Sidebar Links
+            const sidebarApply = document.getElementById('sidebar-link-apply');
+            if (sidebarApply) {
+                if (admission.apply_online) { sidebarApply.href = admission.apply_online; sidebarApply.style.display = 'flex'; }
+                else sidebarApply.style.display = 'none';
+            }
+            const sidebarProspectus = document.getElementById('sidebar-link-prospectus');
+            if (sidebarProspectus) {
+                if (admission.download_prospectus) { sidebarProspectus.href = admission.download_prospectus; sidebarProspectus.style.display = 'flex'; }
+                else sidebarProspectus.style.display = 'none';
+            }
+            const sidebarOfficial = document.getElementById('sidebar-link-official');
+            if (sidebarOfficial) {
+                if (admission.official_website) { sidebarOfficial.href = admission.official_website; sidebarOfficial.style.display = 'flex'; }
+                else sidebarOfficial.style.display = 'none';
+            }
+
+            // Hide sidebar if empty
+            const sidebarBox = document.querySelector('.sidebar-box');
+            if (sidebarBox) {
+                const visibleLinks = Array.from(sidebarBox.querySelectorAll('a')).filter(a => a.style.display !== 'none');
+                if (visibleLinks.length === 0) document.querySelector('.sidebar').style.display = 'none';
+            }
+        }
+
+        // Initialize execution
+        window.addEventListener('load', renderAdmissionDetails);
+
+        // Mobile responsive logic
+        const menuToggle = document.getElementById('menuToggle');
+        const mainNav = document.getElementById('mainNav');
+
+        menuToggle.addEventListener('click', () => {
+            mainNav.classList.toggle('active');
+            const icon = menuToggle.querySelector('i');
+            icon.classList.toggle('ri-menu-line');
+            icon.classList.toggle('ri-close-line');
+        });
+    </script>
+</body>
+
+</html>

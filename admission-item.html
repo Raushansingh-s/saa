@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admissions 2024-25 - DeskJob.Com</title>
+    <!-- Resource Linking and Standard Header -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <!-- Application Global CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Site-wide Header with Core Navigation -->
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo">
+                <i class="ri-briefcase-4-line"></i> DeskJob.Com
+            </div>
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">
+                <i class="ri-menu-line"></i>
+            </button>
+            <nav class="main-nav" id="mainNav">
+                <a href="index.html"><i class="ri-home-line"></i> Home</a>
+                <a href="latest-job.html"><i class="ri-briefcase-line"></i> Latest Job</a>
+                <a href="admit-item.html"><i class="ri-ticket-line"></i> Admit Card</a>
+                <a href="result-item.html"><i class="ri-file-chart-line"></i> Result</a>
+                <a href="syllabus-item.html"><i class="ri-book-2-line"></i> Syllabus</a>
+                <a href="admission-item.html" class="active"><i class="ri-school-line"></i> Admission</a>
+                <a href="scheme-item.html"><i class="ri-flag-line"></i> Govt Scheme</a>
+                <a href="about.html"><i class="ri-information-line"></i> About</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Hero Section for Admission Recruitment and Entrance Exams -->
+        <section class="search-section jobs-hero"
+            style="background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);">
+            <div class="search-container">
+                <div class="hero-content">
+                    <h1 class="hero-title">School & University Admissions</h1>
+                    <p class="hero-subtitle">Apply for Entrance Exams, Degrees, and Diploma courses across India.</p>
+                </div>
+                <div class="search-box advanced">
+                    <i class="ri-search-line search-icon"></i>
+                    <input id="admissionSearch" type="text"
+                        placeholder="Search by University, Course, or Entrance Exam...">
+                    <button id="searchBtn" class="btn-search">
+                        <i class="ri-search-line"></i> Search
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <main class="jobs-page">
+            <!-- Sidebar for Narrowing Down Admission Listings -->
+            <aside class="jobs-filter-sidebar">
+                <div class="filter-section">
+                    <div class="filter-header">
+                        <h3><i class="ri-filter-line"></i> Filter Admissions</h3>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="filter-label">Course Type</label>
+                        <select class="filter-select">
+                            <option>All Courses</option>
+                            <option>Undergraduate (UG)</option>
+                            <option>Postgraduate (PG)</option>
+                            <option>Diploma/ITI</option>
+                            <option>PhD/Research</option>
+                            <option>School Admission</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="filter-label">University/Org</label>
+                        <select class="filter-select">
+                            <option>All Institutions</option>
+                            <option>IGNOU</option>
+                            <option>BHU/DU/JNU</option>
+                            <option>IIT/NIT</option>
+                            <option>NTA (CUET)</option>
+                            <option>State Universities</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="filter-label">Status</label>
+                        <div class="chip-group">
+                            <label class="chip-label">
+                                <input type="checkbox" class="chip-input">
+                                <span class="chip-badge">Open Now</span>
+                            </label>
+                            <label class="chip-label">
+                                <input type="checkbox" class="chip-input">
+                                <span class="chip-badge">Closing Soon</span>
+                            </label>
+                            <label class="chip-label">
+                                <input type="checkbox" class="chip-input">
+                                <span class="chip-badge">Counseling</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Display Grid for Available Admission Cycles -->
+            <section class="jobs-list-section">
+                <div class="list-toolbar">
+                    <div class="toolbar-left">
+                        <span class="result-count"><strong>0</strong> active admissions</span>
+                    </div>
+                    <div class="toolbar-right">
+                        <label class="sort-label">Sort by:</label>
+                        <select class="sort-select">
+                            <option>Deadline</option>
+                            <option>Most Recent</option>
+                            <option>Course Popularity</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Dynamically Loaded Admission Tile Container -->
+                <div id="admissionsContainer" class="jobs-grid">
+                    <!-- Cards injected via JS logic below -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Generic Site Footer -->
+    <footer class="main-footer">
+        <div class="footer-grid">
+            <div class="footer-about">
+                <div class="footer-logo">DeskJob.Com</div>
+            </div>
+
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="latest-job.html">Latest Jobs</a></li>
+                    <li><a href="admit-item.html">Admit Card</a></li>
+                    <li><a href="result-item.html">Results</a></li>
+                    <li><a href="syllabus-item.html">Syllabus</a></li>
+                    <li><a href="login.html">Admin Login</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 DeskJob.Com. All rights reserved.</p>
+            <p class="footer-disclaimer"><strong>Disclaimer:</strong> DeskJob.Com is an independent information portal
+                and is NOT affiliated with any Government entity, Commission, or Board.</p>
+        </div>
+    </footer>
+
+    <!-- Frontend logic for Data Polling and User Interaction -->
+    <script>
+        /**
+         * Fetches admission entries from LocalStorage and populates the grid.
+         */
+        function renderAdmissions() {
+            const data = JSON.parse(localStorage.getItem('deskjob_data')) || { admissions: [] };
+            const container = document.getElementById('admissionsContainer');
+            if (!container) return;
+
+            if (!data.admissions || data.admissions.length === 0) return;
+
+            container.innerHTML = '';
+            data.admissions.forEach(item => {
+                const card = document.createElement('article');
+                card.className = 'job-card professional';
+
+                const title = item.title || item.admission_page_title || item.full_notification_title;
+                const body = item.conducting_body || item.org || 'N/A';
+                const examName = item.exam_name || 'Examination';
+                const advNo = item.adv_no || item.advertisement_number;
+
+                card.innerHTML = `
+                    <div class="job-card-header">
+                        <div class="job-org-info">
+                            <div class="org-icon admission">
+                                <i class="ri-school-line"></i>
+                            </div>
+                            <div>
+                                <div class="org-name">${body}</div>
+                                <div class="org-shortname">${examName}</div>
+                            </div>
+                        </div>
+                        <span class="job-badge succuss">${item.badge || 'Admission Open'}</span>
+                    </div>
+                    <div class="job-card-content">
+                        <h3 class="job-title">${title}</h3>
+                        ${advNo ? `<div style="font-size: 0.85rem; color: var(--accent); margin-bottom: 0.5rem; font-weight: 500;">Adv. No: ${advNo}</div>` : ''}
+                        <div class="job-meta-grid">
+                            <span class="meta-item"><i class="ri-calendar-line"></i> Last Date: ${item.date || 'N/A'}</span>
+                            <span class="meta-item"><i class="ri-book-open-line"></i> Entrance: ${item.entrance_exam__if_any_ || 'Direct'}</span>
+                            ${item.post_name ? `<span class="meta-item"><i class="ri-briefcase-line"></i> ${item.post_name}</span>` : ''}
+                        </div>
+                    </div>
+                    <div class="job-card-footer">
+                        <a href="admission.html?id=${item.id}" class="btn-card primary">Apply Now</a>
+                        <a href="admission.html?id=${item.id}" class="btn-card secondary">View Details</a>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            // Updating the visual aggregate counter
+            const resultCount = document.querySelector('.result-count strong');
+            if (resultCount) resultCount.innerText = data.admissions.length;
+        }
+
+        // Initialize display logic on content load
+        window.addEventListener('load', renderAdmissions);
+
+        // Responsive Hamburger Nav Logic
+        const menuToggle = document.getElementById('menuToggle');
+        const mainNav = document.getElementById('mainNav');
+        menuToggle.addEventListener('click', () => {
+            mainNav.classList.toggle('active');
+            const icon = menuToggle.querySelector('i');
+            icon.classList.toggle('ri-menu-line');
+            icon.classList.toggle('ri-close-line');
+        });
+
+        // Search bar handler for client-side filtering
+        document.getElementById('searchBtn').addEventListener('click', () => {
+            const q = document.getElementById('admissionSearch').value.toLowerCase();
+            const cards = document.querySelectorAll('.job-card');
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                if (text.includes(q)) card.style.display = '';
+                else card.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+
+</html>

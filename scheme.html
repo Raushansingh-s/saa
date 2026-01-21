@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Government Scheme - DeskJob.Com</title>
+    <!-- Resource Linking and Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <!-- Application Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Main Header with Global Navigation -->
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo">
+                <i class="ri-briefcase-4-line"></i> DeskJob.Com
+            </div>
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">
+                <i class="ri-menu-line"></i>
+            </button>
+            <nav class="main-nav" id="mainNav">
+                <a href="index.html"><i class="ri-home-line"></i> Home</a>
+                <a href="latest-job.html"><i class="ri-briefcase-line"></i> Latest Job</a>
+                <a href="admit-item.html"><i class="ri-ticket-line"></i> Admit Card</a>
+                <a href="result-item.html"><i class="ri-file-chart-line"></i> Result</a>
+                <a href="syllabus-item.html"><i class="ri-book-2-line"></i> Syllabus</a>
+                <a href="admission-item.html"><i class="ri-school-line"></i> Admission</a>
+                <a href="scheme-item.html" class="active"><i class="ri-flag-line"></i> Govt Scheme</a>
+                <a href="about.html"><i class="ri-information-line"></i> About</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Dynamic Header Title for Government Schemes -->
+        <section class="job-header-section">
+            <div class="job-title-box">
+                <h1>Government Scheme Title Placeholder</h1>
+            </div>
+        </section>
+
+        <main class="job-layout">
+            <!-- Scheme Details Content Block -->
+            <div class="job-details">
+                <div class="details-card">
+                    <div class="details-header">Scheme Details</div>
+
+                    <div class="detail-section">
+                        <!-- High-Level Scheme Information -->
+                        <div class="detail-section" id="section-scheme-overview">
+                            <div class="col-header">Scheme Overview</div>
+                            <div class="detail-list">
+                                <div class="data-row"><span>Ministry / Dept</span><span id="scheme-ministry">N/A</span>
+                                </div>
+                                <div class="data-row"><span>Target Group</span><span id="scheme-target">N/A</span></div>
+                                <div class="data-row"><span>Benefit Type</span><span id="scheme-benefit">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Beneficiary & Vacancy Section -->
+                        <div class="detail-section" id="section-vacancies" style="display: none;">
+                            <div class="col-header">Beneficiary / Vacancy Details</div>
+                            <div id="vacancy-tabular"></div>
+                        </div>
+
+                        <!-- Application Fee & Payment Section -->
+                        <div class="detail-section" id="section-fee" style="display: none;">
+                            <div class="col-header">Fees & Process Details</div>
+                            <div id="fee-tabular"></div>
+                            <div id="payment-tabular"></div>
+                        </div>
+
+                        <!-- Core Benefits Provided by the Scheme -->
+                        <div class="detail-section" id="section-scheme-key-benefits">
+                            <div class="col-header">Key Benefits</div>
+                            <div class="single-text" id="scheme-key-benefits">
+                                <p>• Benefits will appear here...</p>
+                            </div>
+                        </div>
+
+                        <!-- Procedural Steps for Application -->
+                        <div class="detail-section" id="section-scheme-how-apply">
+                            <div class="col-header">How to Apply</div>
+                            <div class="single-text" id="scheme-how-apply">
+                                <p>• Steps will appear here...</p>
+                            </div>
+                        </div>
+
+                        <!-- Container for Admin-defined Content Extensions -->
+                        <div id="dynamic-sections-container"></div>
+
+                        <!-- Essential External Web Resources -->
+                        <div class="detail-section" id="section-important-links">
+                            <div class="col-header">Important Links</div>
+                            <div class="detail-list">
+                                <div class="data-row"><span>Official Portal</span><span><a href="#" id="link-official"
+                                            class="link-btn">Click Here</a></span></div>
+                                <div class="data-row"><span>Apply Online</span><span><a href="#" id="link-apply-online"
+                                            class="link-btn">Click Here</a></span></div>
+                                <div class="data-row"><span>Download Guidelines</span><span><a href="#"
+                                            id="link-guidelines" class="link-btn">Download PDF</a></span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sticky Interaction Sidebar -->
+                <aside class="sidebar">
+                    <div class="sidebar-box">
+                        <a href="#" id="sidebar-link-apply" class="sidebar-btn btn-primary">Apply Online <i
+                                class="ri-check-line"></i></a>
+                        <a href="#" id="sidebar-link-guidelines" class="sidebar-btn btn-outline">Scheme Guidelines <i
+                                class="ri-file-info-line"></i></a>
+                        <a href="#" id="sidebar-link-official" class="sidebar-btn btn-outline">Official Website <i
+                                class="ri-global-line"></i></a>
+                    </div>
+                </aside>
+        </main>
+    </div>
+
+    <!-- Website Standard Footer and Disclaimer -->
+    <footer class="main-footer">
+        <div class="footer-grid">
+            <div class="footer-about">
+                <div class="footer-logo">DeskJob.Com</div>
+            </div>
+
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="latest-job.html">Latest Jobs</a></li>
+                    <li><a href="admit-item.html">Admit Card</a></li>
+                    <li><a href="result-item.html">Results</a></li>
+                    <li><a href="syllabus-item.html">Syllabus</a></li>
+                    <li><a href="login.html">Admin Login</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 DeskJob.Com. All rights reserved.</p>
+            <p class="footer-disclaimer"><strong>Disclaimer:</strong> DeskJob.Com is an independent information portal
+                and is NOT affiliated with any Government entity, Commission, or Board. The recruitment notices, exam
+                results, and admit card updates provided here are aggregated from public sources and official
+                notifications for informational purposes only. While we strive to maintain accurate and up-to-date
+                content, we recommend that users verify all details on the official websites of the respective
+                recruiting authorities before making any decisions. We are not responsible for any inaccuracies, errors,
+                or losses arising from the use of the information provided on this platform.</p>
+        </div>
+    </footer>
+
+    <!-- Logic for Parsing and Rendering Scheme Data -->
+    <script>
+        /**
+         * Extracts scheme data from LocalStorage using the 'id' URL parameter.
+         */
+        function renderSchemeDetails() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const schemeId = urlParams.get('id');
+            if (!schemeId) return;
+
+            const data = JSON.parse(localStorage.getItem('deskjob_data')) || { schemes: [] };
+            const scheme = data.schemes.find(s => s.id == schemeId);
+            if (!scheme) return;
+
+            // Updating Page and Tab Titles
+            if (scheme.title) {
+                const h1 = document.querySelector('.job-title-box h1');
+                if (h1) h1.innerText = scheme.title;
+                document.title = scheme.title + ' - DeskJob.Com';
+            }
+
+            const isGroupEmpty = (vals) => Object.values(vals).every(v => !v || v === '0' || v === '' || (Array.isArray(v) && v.length === 0));
+
+            // Populating Metadata Section
+            const overviewSection = document.getElementById('section-scheme-overview');
+            const rowMap = {
+                'scheme-ministry': scheme.ministry___department_,
+                'scheme-target': scheme.target_beneficiaries,
+                'scheme-benefit': scheme.benefit_amount___type_
+            };
+            if (isGroupEmpty(rowMap)) {
+                overviewSection.style.display = 'none';
+            } else {
+                overviewSection.style.display = 'block';
+                for (const [id, val] of Object.entries(rowMap)) {
+                    const el = document.getElementById(id);
+                    if (val && el) {
+                        el.innerText = val;
+                        el.closest('.data-row').style.display = 'grid';
+                    } else if (el) {
+                        el.closest('.data-row').style.display = 'none';
+                    }
+                }
+            }
+
+            // Rendering Scheme Benefits Detail
+            const benefitsSection = document.getElementById('section-scheme-key-benefits');
+            const benefitsDiv = document.getElementById('scheme-key-benefits');
+            if (scheme.key_benefits) {
+                const lines = scheme.key_benefits.split('\n').filter(l => l.trim());
+                if (lines.length > 0) {
+                    benefitsSection.style.display = 'block';
+                    let html = '';
+                    lines.forEach(line => { html += `<p>• ${line.trim()}</p>`; });
+                    benefitsDiv.innerHTML = html;
+                } else { benefitsSection.style.display = 'none'; }
+            } else { benefitsSection.style.display = 'none'; }
+
+            // Rendering Step-by-Step Application Guide
+            const howSection = document.getElementById('section-scheme-how-apply');
+            const howDiv = document.getElementById('scheme-how-apply');
+            if (scheme.how_to_apply) {
+                const lines = scheme.how_to_apply.split('\n').filter(l => l.trim());
+                if (lines.length > 0) {
+                    howSection.style.display = 'block';
+                    let html = '';
+                    lines.forEach((line, idx) => { html += `<p>${idx + 1}. ${line.trim()}</p>`; });
+                    howDiv.innerHTML = html;
+                } else { howSection.style.display = 'none'; }
+            } else { howSection.style.display = 'none'; }
+
+            // Injecting Custom User-defined Sections
+            const dynContainer = document.getElementById('dynamic-sections-container');
+            if (dynContainer) {
+                dynContainer.innerHTML = '';
+                if (scheme.custom_sections && scheme.custom_sections.length > 0) {
+                    scheme.custom_sections.forEach(sec => {
+                        const secDiv = document.createElement('div');
+                        secDiv.className = 'detail-section';
+                        const lines = sec.content.split('\n');
+                        let contentHtml = '';
+                        lines.forEach(line => { if (line.trim()) contentHtml += `<p>• ${line.trim()}</p>`; });
+                        secDiv.innerHTML = `<div class="col-header">${sec.title}</div><div class="single-text">${contentHtml}</div>`;
+                        dynContainer.appendChild(secDiv);
+                    });
+                }
+            }
+
+            // Rendering Extra Form Fields (Dynamic Attributes)
+            if (scheme.extra_fields) {
+                document.querySelectorAll('.col-header').forEach(header => {
+                    const sectionName = header.textContent.trim();
+                    const extra = scheme.extra_fields[sectionName];
+                    if (extra && extra.length > 0) {
+                        const section = header.closest('.detail-section');
+                        let list = section.querySelector('.detail-list');
+                        if (list) {
+                            extra.forEach(f => {
+                                const row = document.createElement('div');
+                                row.className = 'data-row';
+                                row.innerHTML = `<span>${f.label}</span><span>${f.value}</span>`;
+                                list.appendChild(row);
+                            });
+                        } else {
+                            let stext = section.querySelector('.single-text');
+                            if (stext) {
+                                extra.forEach(f => { stext.innerHTML += `<p>• <strong>${f.label}:</strong> ${f.value}</p>`; });
+                            }
+                        }
+                        section.style.display = 'block';
+                    }
+                });
+            }
+
+            // Binding Action Buttons to Dynamic URLs
+            const linkMap = {
+                'link-apply-online': scheme.apply_online,
+                'link-guidelines': scheme.download_guidelines,
+                'link-official': scheme.official_website
+            };
+            if (isGroupEmpty(linkMap)) {
+                document.getElementById('section-important-links').style.display = 'none';
+            } else {
+                document.getElementById('section-important-links').style.display = 'block';
+                for (const [id, url] of Object.entries(linkMap)) {
+                    const el = document.getElementById(id);
+                    if (url && el) {
+                        el.href = url;
+                        el.closest('.data-row').style.display = 'grid';
+                    } else if (el) {
+                        el.closest('.data-row').style.display = 'none';
+                    }
+                }
+            }
+
+            // Render Vacancy Table
+            const hasTabularVac = scheme.vacancy_details && scheme.vacancy_details.length > 0;
+            const vacSec = document.getElementById('section-vacancies');
+            if (hasTabularVac) {
+                if (vacSec) {
+                    vacSec.style.display = 'block';
+                    let vacHtml = `<div class="vacancy-details-container"><table class="vacancy-table-frontend"><thead><tr><th>Post / Item</th><th>Details / Total</th></tr></thead><tbody>`;
+                    scheme.vacancy_details.forEach(v => {
+                        vacHtml += `<tr><td class="post-name-cell">${v.postName}</td><td style="font-weight:700">${v.total || 0}</td></tr>`;
+                    });
+                    vacHtml += `</tbody></table></div>`;
+                    const vacTabDiv = document.getElementById('vacancy-tabular');
+                    if (vacTabDiv) vacTabDiv.innerHTML = vacHtml;
+                }
+            } else if (vacSec) { vacSec.style.display = 'none'; }
+
+            // Render Fee & Payment
+            const hasFee = scheme.application_fees && scheme.application_fees.length > 0;
+            const hasPay = scheme.payment_modes && scheme.payment_modes.length > 0;
+            const feeSec = document.getElementById('section-fee');
+            if (hasFee || hasPay) {
+                if (feeSec) {
+                    feeSec.style.display = 'block';
+                    if (hasFee) {
+                        let feeHtml = `<div class="vacancy-details-container"><table class="vacancy-table-frontend"><thead><tr><th>Category</th><th>Amount</th></tr></thead><tbody>`;
+                        scheme.application_fees.forEach(f => { feeHtml += `<tr><td class="post-name-cell">${f.category}</td><td style="font-weight:700">${f.amount}</td></tr>`; });
+                        feeHtml += `</tbody></table></div>`;
+                        const feeTabDiv = document.getElementById('fee-tabular');
+                        if (feeTabDiv) feeTabDiv.innerHTML = feeHtml;
+                    }
+                    if (hasPay) {
+                        let payHtml = `<div class="vacancy-details-container" style="margin-top:0.75rem;"><table class="vacancy-table-frontend"><thead><tr><th>Method</th><th>Instructions</th></tr></thead><tbody>`;
+                        scheme.payment_modes.forEach(p => { payHtml += `<tr><td class="post-name-cell">${p.method}</td><td>${p.description}</td></tr>`; });
+                        payHtml += `</tbody></table></div>`;
+                        const payTabDiv = document.getElementById('payment-tabular');
+                        if (payTabDiv) payTabDiv.innerHTML = payHtml;
+                    }
+                }
+            } else if (feeSec) { feeSec.style.display = 'none'; }
+
+            // Sidebar Links
+            const sidebarApply = document.getElementById('sidebar-link-apply');
+            if (sidebarApply) {
+                if (scheme.apply_online) { sidebarApply.href = scheme.apply_online; sidebarApply.style.display = 'flex'; }
+                else sidebarApply.style.display = 'none';
+            }
+            const sidebarGuide = document.getElementById('sidebar-link-guidelines');
+            if (sidebarGuide) {
+                if (scheme.download_guidelines) { sidebarGuide.href = scheme.download_guidelines; sidebarGuide.style.display = 'flex'; }
+                else sidebarGuide.style.display = 'none';
+            }
+            const sidebarOfficial = document.getElementById('sidebar-link-official');
+            if (sidebarOfficial) {
+                if (scheme.official_website) { sidebarOfficial.href = scheme.official_website; sidebarOfficial.style.display = 'flex'; }
+                else sidebarOfficial.style.display = 'none';
+            }
+
+            // Hide sidebar if empty
+            const sidebarBox = document.querySelector('.sidebar-box');
+            if (sidebarBox) {
+                const visibleLinks = Array.from(sidebarBox.querySelectorAll('a')).filter(a => a.style.display !== 'none');
+                if (visibleLinks.length === 0) document.querySelector('.sidebar').style.display = 'none';
+            }
+        }
+
+        // Initialize Rendering
+        window.addEventListener('load', renderSchemeDetails);
+
+        // Responsive Mobile Menu Handler
+        const menuToggle = document.getElementById('menuToggle');
+        const mainNav = document.getElementById('mainNav');
+
+        menuToggle.addEventListener('click', () => {
+            mainNav.classList.toggle('active');
+            const icon = menuToggle.querySelector('i');
+            icon.classList.toggle('ri-menu-line');
+            icon.classList.toggle('ri-close-line');
+        });
+    </script>
+</body>
+
+</html>

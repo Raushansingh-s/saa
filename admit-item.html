@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admit Cards - DeskJob.Com</title>
+    <!-- Resource Linking and Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <!-- Application Global Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Site-wide Header and Navigation -->
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo">
+                <i class="ri-briefcase-4-line"></i> DeskJob.Com
+            </div>
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">
+                <i class="ri-menu-line"></i>
+            </button>
+            <nav class="main-nav" id="mainNav">
+                <a href="index.html"><i class="ri-home-line"></i> Home</a>
+                <a href="latest-job.html"><i class="ri-briefcase-line"></i> Latest Job</a>
+                <a href="admit-item.html" class="active"><i class="ri-ticket-line"></i> Admit Card</a>
+                <a href="result-item.html"><i class="ri-file-chart-line"></i> Result</a>
+                <a href="syllabus-item.html"><i class="ri-book-2-line"></i> Syllabus</a>
+                <a href="admission-item.html"><i class="ri-school-line"></i> Admission</a>
+                <a href="scheme-item.html"><i class="ri-flag-line"></i> Govt Scheme</a>
+                <a href="about.html"><i class="ri-information-line"></i> About</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Hero Section featuring Hall Ticket Search -->
+        <section class="search-section jobs-hero">
+            <div class="search-container">
+                <div class="hero-content">
+                    <h1 class="hero-title">Download Your Exam Admit Card</h1>
+                    <p class="hero-subtitle">Get the latest hall tickets and exam date notifications. Updated daily.</p>
+                </div>
+                <div class="search-box advanced">
+                    <i class="ri-search-line search-icon"></i>
+                    <input id="admitSearch" type="text" placeholder="Search by exam name, department, or post...">
+                    <button id="searchBtn" class="btn-search">
+                        <i class="ri-search-line"></i> Search
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <main class="jobs-page">
+            <!-- Sidebar Navigation for Admit Card Filtering -->
+            <aside class="jobs-filter-sidebar">
+                <div class="filter-section">
+                    <div class="filter-header">
+                        <h3><i class="ri-filter-line"></i> Filter Admit Cards</h3>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="filter-label">Recruiting Body</label>
+                        <select class="filter-select">
+                            <option>All Bodies</option>
+                            <option>RRB</option>
+                            <option>SSC</option>
+                            <option>UPSC</option>
+                            <option>IBPS</option>
+                            <option>State PSC</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="filter-label">Exam Month</label>
+                        <select class="filter-select">
+                            <option>Any Month</option>
+                            <option>January 2026</option>
+                            <option>February 2026</option>
+                            <option>March 2026</option>
+                            <option>April 2026</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="filter-label">Status</label>
+                        <div class="chip-group">
+                            <label class="chip-label">
+                                <input type="checkbox" class="chip-input">
+                                <span class="chip-badge">Available Now</span>
+                            </label>
+                            <label class="chip-label">
+                                <input type="checkbox" class="chip-input">
+                                <span class="chip-badge">Coming Soon</span>
+                            </label>
+                            <label class="chip-label">
+                                <input type="checkbox" class="chip-input">
+                                <span class="chip-badge">Exam City Out</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button class="btn-reset-filters">
+                        <i class="ri-refresh-line"></i> Reset Filters
+                    </button>
+                </div>
+
+                <!-- Collaborative Promotion Box -->
+                <div class="sidebar-promo">
+                    <div class="promo-content">
+                        <h4>Stay Updated</h4>
+                        <p>Join our Telegram channel for instant alerts</p>
+                        <a href="#" class="btn-secondary-small">Join Now</a>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Display Grid for Released Hall Tickets -->
+            <section class="jobs-list-section">
+                <div class="list-toolbar">
+                    <div class="toolbar-left">
+                        <span class="result-count"><strong>32</strong> admit cards found</span>
+                    </div>
+                    <div class="toolbar-right">
+                        <label class="sort-label">Sort by:</label>
+                        <select id="sortBy" class="sort-select">
+                            <option>Most Recent</option>
+                            <option>Exam Date</option>
+                            <option>Release Date</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Dynamically Populated Admit Card Grid -->
+                <div id="admitContainer" class="jobs-grid">
+                    <article class="job-card professional">
+                        <div class="job-card-header">
+                            <div class="job-org-info">
+                                <div class="org-icon ssc">
+                                    <i class="ri-book-2-line"></i>
+                                </div>
+                                <div>
+                                    <div class="org-name">Staff Selection Commission</div>
+                                    <div class="org-shortname">SSC</div>
+                                </div>
+                            </div>
+                            <span class="job-badge urgent">Available</span>
+                        </div>
+                        <div class="job-card-content">
+                            <h3 class="job-title">SSC CHSL Tier 1 Admit Card 2026</h3>
+                            <div class="job-meta-grid">
+                                <span class="meta-item">
+                                    <i class="ri-calendar-event-line"></i> Exam: 10-28 Feb
+                                </span>
+                                <span class="meta-item">
+                                    <i class="ri-map-pin-line"></i> All Regions
+                                </span>
+                                <span class="meta-item">
+                                    <i class="ri-ticket-line"></i> Hall Ticket Out
+                                </span>
+                            </div>
+                            <div class="job-dates">
+                                <div class="date-item">
+                                    <span class="date-label">Released</span>
+                                    <span class="date-value">15 Jan 2026</span>
+                                </div>
+                                <div class="date-item">
+                                    <span class="date-label">Exam Mode</span>
+                                    <span class="date-value">Online (CBT)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="job-card-footer">
+                            <a href="admit-card.html" class="btn-card primary">View Details</a>
+                            <a href="#" class="btn-card secondary">Download Now</a>
+                        </div>
+                    </article>
+
+                    <!-- Repeating structure for mock entries... -->
+                    <!-- Other articles omitted for brevity in template -->
+                </div>
+            </section>
+        </main>
+
+        <!-- Dynamic User Interaction Scripting -->
+        <script>
+            document.getElementById('searchBtn').addEventListener('click', () => {
+                const q = document.getElementById('admitSearch').value.toLowerCase();
+                const cards = document.querySelectorAll('.job-card .job-title');
+                cards.forEach(t => {
+                    const el = t.closest('.job-card');
+                    if (!q || t.textContent.toLowerCase().includes(q)) el.style.display = '';
+                    else el.style.display = 'none';
+                });
+            });
+        </script>
+    </div>
+
+    <!-- Generic Page Footer -->
+    <footer class="main-footer">
+        <div class="footer-grid">
+            <div class="footer-about">
+                <div class="footer-logo">DeskJob.Com</div>
+            </div>
+
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="latest-job.html">Latest Jobs</a></li>
+                    <li><a href="admit-item.html">Admit Card</a></li>
+                    <li><a href="result-item.html">Results</a></li>
+                    <li><a href="syllabus-item.html">Syllabus</a></li>
+                    <li><a href="login.html">Admin Login</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 DeskJob.Com. All rights reserved.</p>
+            <p class="footer-disclaimer"><strong>Disclaimer:</strong> DeskJob.Com is an independent information portal
+                and is NOT affiliated with any Government entity, Commission, or Board.</p>
+        </div>
+    </footer>
+
+    <!-- Backend Logic for Fetching and Presenting Hall Tickets -->
+    <script>
+        /**
+         * Orchestrates the rendering of admit cards from storage.
+         */
+        function renderAdmits() {
+            const data = JSON.parse(localStorage.getItem('deskjob_data')) || { admits: [] };
+            const container = document.getElementById('admitContainer');
+            if (!container) return;
+
+
+            if (!data.admits || data.admits.length === 0) return;
+
+            container.innerHTML = '';
+            data.admits.forEach(item => {
+                const card = document.createElement('article');
+                card.className = 'job-card professional';
+
+                const title = item.title || item.admit_card_page_title;
+                const body = item.conducting_body || item.org || 'N/A';
+                const examName = item.exam_name || 'Examination';
+                const advNo = item.adv_no || item.advertisement_number;
+
+                const orgType = item.short_name___icon_type || 'govt';
+                const iconMap = {
+                    'railway': 'ri-train-line',
+                    'ssc': 'ri-bank-line',
+                    'upsc': 'ri-government-line',
+                    'bank': 'ri-hand-coin-line',
+                    'govt': 'ri-briefcase-line',
+                    'school': 'ri-book-open-line',
+                    'university': 'ri-building-4-line',
+                    'state': 'ri-map-pin-line'
+                };
+                const iconClass = iconMap[orgType] || 'ri-briefcase-line';
+
+                card.innerHTML = `
+                    <div class="job-card-header">
+                        <div class="job-org-info">
+                            <div class="org-icon ${orgType}">
+                                <i class="${iconClass}"></i>
+                            </div>
+                            <div>
+                                <div class="org-name">${body}</div>
+                                <div class="org-shortname">${examName}</div>
+                            </div>
+                        </div>
+                        <span class="job-badge urgent">${item.badge_status || item.badge || 'Available'}</span>
+                    </div>
+                    <div class="job-card-content">
+                        <h3 class="job-title">${title}</h3>
+                        ${advNo ? `<div style="font-size: 0.85rem; color: var(--accent); margin-bottom: 0.5rem; font-weight: 500;">Adv. No: ${advNo}</div>` : ''}
+                        <div class="job-meta-grid">
+                            <span class="meta-item"><i class="ri-calendar-line"></i> Exam: ${item.exam_date || 'TBA'}</span>
+                            <span class="meta-item"><i class="ri-time-line"></i> Released: ${item.date || 'N/A'}</span>
+                            ${item.post_name ? `<span class="meta-item"><i class="ri-briefcase-line"></i> ${item.post_name}</span>` : ''}
+                        </div>
+                    </div>
+                    <div class="job-card-footer">
+                        <a href="admit-card.html?id=${item.id}" class="btn-card primary">Download Admit Card</a>
+                        <a href="admit-card.html?id=${item.id}" class="btn-card secondary">Full Details</a>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            // Updating visual count indicator
+            const resultCount = document.querySelector('.result-count strong');
+            if (resultCount) resultCount.innerText = data.admits.length;
+        }
+
+        // Event listener for startup execution
+        window.addEventListener('load', renderAdmits);
+
+        // Responsive Sidebar Toggle Component
+        const menuToggle = document.getElementById('menuToggle');
+        const mainNav = document.getElementById('mainNav');
+        menuToggle.addEventListener('click', () => {
+            mainNav.classList.toggle('active');
+            const icon = menuToggle.querySelector('i');
+            icon.classList.toggle('ri-menu-line');
+            icon.classList.toggle('ri-close-line');
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,69 @@
+{
+  "jobs": [
+    {
+      "id": 16999822,
+      "title": "RRB Group D Recruitment 2026",
+      "advertisement_number": "RRC-01/2026",
+      "notification_date": "12/01/2026",
+      "apply_start_date": "15/01/2026",
+      "last_date_to_apply": "15/02/2026",
+      "exam_date_preview": "March 2026",
+      "gen_obc_ews_fee": "₹500",
+      "sc_st_ph_female_fee": "₹250",
+      "minimum_age": "18",
+      "maximum_age": "33",
+      "age_relaxation_details": "As per Rules",
+      "pay_scale___salary": "₹18,000 - ₹56,900 (Level 1)",
+      "detailed_eligibility_criteria__bullet_points_": "10th Pass from any recognized board OR ITI.\nMust hold National Apprenticeship Certificate (NAC).",
+      "vacancy_details": [
+        { "postName": "Track Maintainer", "ur": "3000", "obc": "2000", "ews": "800", "sc": "1200", "st": "600", "total": "7600" },
+        { "postName": "Helper / Assistant", "ur": "5000", "obc": "3000", "ews": "1200", "sc": "1800", "st": "900", "total": "11900" }
+      ],
+      "physicalStandardsRequired": true,
+      "physical_standards": [
+        { "criteria": "Lift & Carry", "category": "Male", "male": "35kg for 100m in 2 min", "female": "-" },
+        { "criteria": "Lift & Carry", "category": "Female", "male": "-", "female": "20kg for 100m in 2 min" },
+        { "criteria": "Running", "category": "All", "male": "1000m in 4:15 min", "female": "1000m in 5:40 min" }
+      ],
+      "application_fees": [
+        { "category": "Gen/OBC/EWS", "amount": "₹500" },
+        { "category": "SC/ST/Ex-SM", "amount": "₹250" }
+      ],
+      "payment_modes": [
+        { "method": "Online", "description": "Debit Card, Credit Card, Net Banking, UPI" }
+      ]
+    },
+    {
+      "id": 16999823,
+      "title": "SSC CGL 2026 Notification",
+      "advertisement_number": "SSC/CGL/2026",
+      "notification_date": "01/02/2026",
+      "apply_start_date": "05/02/2026",
+      "last_date_to_apply": "05/03/2026",
+      "physicalStandardsRequired": false,
+      "vacancy_details": [],
+      "detailed_eligibility_criteria__bullet_points_": "Bachelor's Degree from a recognized University."
+    }
+  ],
+  "admits": [
+    {
+      "id": 17001001,
+      "title": "SSC CHSL Tier 1 Admit Card 2026",
+      "admit_card_page_title": "SSC CHSL Tier 1 Admit Card 2026",
+      "conducting_body": "Staff Selection Commission",
+      "exam_name": "CHSL 2025",
+      "adv_no": "SSC/CHSL/2025",
+      "short_name___icon_type": "ssc",
+      "exam_date": "10-28 Feb 2026",
+      "release_date": "15/01/2026",
+      "badge_status": "Released",
+      "download_admit_card": "#",
+      "official_website": "#",
+      "steps_to_download__one_per_line_": "Visit the official SSC website.\nClick on Admit Card section.\nEnter Registration ID and DOB.\nDownload and print."
+    }
+  ],
+  "results": [],
+  "syllabus": [],
+  "admissions": [],
+  "schemes": []
+}

@@ -1,0 +1,3362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - DeskJob.Com</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --admin-sidebar-width: 280px;
+        }
+
+        .admin-layout {
+            display: flex;
+            min-height: 100vh;
+            background: #f0f2f5;
+        }
+
+        /* Sidebar */
+        .admin-sidebar {
+            width: var(--admin-sidebar-width);
+            background: #1e293b;
+            color: white;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .admin-logo {
+            padding: 2rem 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary-light);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .admin-nav-list {
+            padding: 1.5rem 0;
+        }
+
+        .admin-nav-item {
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: #cbd5e1;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .admin-nav-item:hover,
+        .admin-nav-item.active {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            border-left: 4px solid var(--primary);
+        }
+
+        .admin-nav-item i {
+            font-size: 1.25rem;
+        }
+
+        /* Main Content */
+        .admin-main {
+            flex-grow: 1;
+            margin-left: var(--admin-sidebar-width);
+            padding: 2rem;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .admin-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        /* Forms */
+        .form-container {
+            background: white;
+            padding: 2.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            max-width: 900px;
+            margin: 0 auto;
+            display: none;
+        }
+
+        .form-container.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-main);
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .form-actions {
+            margin-top: 2rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .btn-submit {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-submit:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .btn-add-section {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #f8fafc;
+            color: var(--primary);
+            border: 1px dashed var(--primary);
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--radius-md);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 2rem;
+            transition: all 0.2s;
+        }
+
+        .btn-add-section:hover {
+            background: #eef2ff;
+        }
+
+        .dynamic-section {
+            position: relative;
+            background: #fafafa;
+            border-radius: var(--radius-md);
+            margin-bottom: 2rem;
+            animation: slideInUp 0.3s ease-out;
+        }
+
+        .btn-remove-section {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #fee2e2;
+            color: #ef4444;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #fecaca;
+            cursor: pointer;
+            font-size: 1rem;
+            z-index: 10;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Section Title */
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 25px 0 15px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #eef2f7;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .btn-add-extra {
+            background: var(--bg-card);
+            color: var(--primary);
+            border: 1.5px solid var(--primary);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s;
+        }
+
+        .btn-add-extra:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .extra-field-row {
+            background: #f8fafc;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            border: 1px dashed #cbd5e1;
+        }
+
+        .btn-remove-extra {
+            background: transparent;
+            color: #ef4444;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0 5px;
+        }
+
+        @media (max-width: 1024px) {
+            .admin-sidebar {
+                width: 0;
+                overflow: hidden;
+            }
+
+            .admin-main {
+                margin-left: 0;
+            }
+        }
+
+        /* Dashboard Table Styles */
+        .dashboard-container {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            display: none;
+        }
+
+        .dashboard-container.active {
+            display: block;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .data-table th {
+            background: #f8fafc;
+            font-weight: 700;
+            color: var(--text-main);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+        }
+
+        .badge-type {
+            padding: 0.25rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-job {
+            background: #eef2ff;
+            color: #4338ca;
+        }
+
+        .badge-admit {
+            background: #ecfdf5;
+            color: #047857;
+        }
+
+        .badge-result {
+            background: #fff7ed;
+            color: #c2410c;
+        }
+
+        .badge-syllabus {
+            background: #fef2f2;
+            color: #b91c1c;
+        }
+
+        .badge-admission {
+            background: #f0fdf4;
+            color: #16a34a;
+        }
+
+        .badge-scheme {
+            background: #fffafa;
+            color: #b91c1c;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-icon {
+            padding: 0.5rem;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-edit:hover {
+            background: #e0e7ff;
+            color: #4338ca;
+            border-color: #4338ca;
+        }
+
+        .btn-delete:hover {
+            background: #fef2f2;
+            color: #dc2626;
+            border-color: #dc2626;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            border-left: 4px solid var(--primary);
+        }
+
+        .stat-card span {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .stat-card h3 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        /* Physical Standards Table Styles */
+        .physical-table-container {
+            margin: 1rem 0;
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            background: white;
+        }
+
+        .physical-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .physical-table th,
+        .physical-table td {
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            text-align: left;
+        }
+
+        .physical-table th {
+            background: #f8fafc;
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .physical-table input {
+            width: 100%;
+            border: 1px solid transparent;
+            padding: 6px;
+            outline: none;
+            background: transparent;
+            border-radius: var(--radius-sm);
+            transition: all 0.2s;
+        }
+
+        .physical-table input:focus {
+            background: #f0f9ff;
+            border-color: var(--primary);
+        }
+
+        .physical-table .btn-remove-row {
+            color: #dc2626;
+            cursor: pointer;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Vacancy Table Styles */
+        .vacancy-table-container {
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            background: #f8fafc;
+            padding: 4px;
+        }
+
+        .vacancy-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 0.85rem;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .vacancy-table th,
+        .vacancy-table td {
+            padding: 0.75rem 0.5rem;
+            border-bottom: 1px solid #f1f5f9;
+            border-right: 1px solid #f1f5f9;
+            text-align: center;
+        }
+
+        .vacancy-table th {
+            background: #f8fafc;
+            color: #1e293b;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            font-size: 0.75rem;
+        }
+
+        .vacancy-table th:last-child,
+        .vacancy-table td:last-child {
+            border-right: none;
+        }
+
+        .vacancy-table input {
+            width: 100%;
+            border: 1px solid #cbd5e1;
+            padding: 8px 6px;
+            outline: none;
+            background: #fff;
+            text-align: center;
+            border-radius: 6px;
+            transition: all 0.2s;
+            color: #475569;
+            font-weight: 500;
+        }
+
+        .vacancy-table input:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .vacancy-table input[readonly] {
+            background: #f1f5f9;
+            border-color: #e2e8f0;
+            color: #1e293b;
+            font-weight: 700;
+            cursor: not-allowed;
+        }
+
+        .vacancy-table .post-name-input {
+            text-align: left;
+            font-weight: 600;
+        }
+
+        /* Toggle Checkbox Styles */
+        .toggle-section {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: var(--radius-md);
+            border: 1px solid #e2e8f0;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #cbd5e1;
+            transition: 0.3s;
+            border-radius: 24px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+
+        .toggle-switch input:checked+.toggle-slider {
+            background-color: var(--primary);
+        }
+
+        .toggle-switch input:checked+.toggle-slider:before {
+            transform: translateX(24px);
+        }
+
+        .toggle-label {
+            font-weight: 600;
+            color: var(--text-main);
+            font-size: 0.95rem;
+        }
+
+        .hidden-section {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        // Simple security check
+        if (sessionStorage.getItem('isAdminLoggedIn') !== 'true') {
+            window.location.href = 'login.html';
+        }
+
+        function logout() {
+            sessionStorage.removeItem('isAdminLoggedIn');
+            window.location.href = 'login.html';
+        }
+    </script>
+    <div class="admin-layout">
+        <!-- Main Sidebar Navigation -->
+        <aside class="admin-sidebar">
+            <div class="admin-logo">
+                <i class="ri-dashboard-3-line"></i> Admin Panel
+            </div>
+            <nav class="admin-nav-list">
+                <div class="admin-nav-item active" onclick="showForm('dashboard-view')">
+                    <i class="ri-dashboard-line"></i> Overview Dashboard
+                </div>
+                <div class="admin-nav-item" onclick="showForm('job-form')">
+                    <i class="ri-briefcase-line"></i> Post New Job
+                </div>
+                <div class="admin-nav-item" onclick="showForm('admit-form')">
+                    <i class="ri-ticket-line"></i> Update Admit Card
+                </div>
+                <div class="admin-nav-item" onclick="showForm('result-form')">
+                    <i class="ri-file-chart-line"></i> Post Result
+                </div>
+                <div class="admin-nav-item" onclick="showForm('syllabus-form')">
+                    <i class="ri-book-2-line"></i> Upload Syllabus
+                </div>
+                <div class="admin-nav-item" onclick="showForm('admission-form')">
+                    <i class="ri-school-line"></i> Add Admission
+                </div>
+                <div class="admin-nav-item" onclick="showForm('scheme-form')">
+                    <i class="ri-flag-line"></i> Add Govt Scheme
+                </div>
+                <div class="admin-nav-item" onclick="window.location.href='index.html'">
+                    <i class="ri-external-link-line"></i> Back to Site
+                </div>
+                <div class="admin-nav-item" onclick="logout()" style="margin-top: 2rem; color: #f87171;">
+                    <i class="ri-logout-box-line"></i> Logout
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Workspace Area -->
+        <main class="admin-main">
+            <header class="admin-header">
+                <h2 id="current-form-title">Overview Dashboard</h2>
+                <div class="admin-user">
+                    <button class="btn-secondary-small" onclick="openAIModal()"
+                        style="margin-right: 1rem; border: 1px solid var(--primary); background: #e0e7ff; color: var(--primary);">
+                        <i class="ri-magic-line"></i> AI Auto-Fill
+                    </button>
+                    <span>Admin User</span>
+                    <i class="ri-user-settings-line" style="margin-left: 0.5rem;"></i>
+                </div>
+            </header>
+
+            <!-- AI Auto-Fill Modal -->
+            <div id="ai-modal"
+                style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center;">
+                <div
+                    style="background: white; padding: 2rem; border-radius: 12px; width: 90%; max-width: 500px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                        <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--text-main);"><i
+                                class="ri-magic-line"></i> AI Auto-Fill</h3>
+                        <i class="ri-close-line" onclick="closeAIModal()"
+                            style="font-size: 1.5rem; cursor: pointer;"></i>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Gemini API Key <a href="https://aistudio.google.com/app/apikey" target="_blank"
+                                style="font-size: 0.8rem; color: var(--primary);">(Get Key)</a></label>
+                        <input type="password" id="ai-api-key" placeholder="Paste your API Key here..."
+                            style="font-family: monospace;">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Paste Text OR Upload PDF</label>
+                        <input type="file" id="ai-pdf-upload" accept="application/pdf"
+                            style="margin-bottom: 0.5rem; font-size: 0.9rem;">
+                        <textarea id="ai-prompt-text" rows="6"
+                            placeholder="Paste text here... (Optional if PDF is uploaded)"></textarea>
+                    </div>
+
+                    <p id="ai-status"
+                        style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem; min-height: 1.5rem;">
+                    </p>
+
+                    <button onclick="runAIAutoFill()"
+                        style="width: 100%; background: var(--primary); color: white; border: none; padding: 0.8rem; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                        <i class="ri-sparkling-fill"></i> Generate & Fill Form
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dashboard View: Post Statistics and Recent Content -->
+            <div id="dashboard-view" class="dashboard-container active">
+                <div class="stats-grid">
+                    <div class="stat-card" style="border-left-color: #4338ca;">
+                        <span>Total Jobs</span>
+                        <h3 id="stat-jobs">0</h3>
+                    </div>
+                    <div class="stat-card" style="border-left-color: #047857;">
+                        <span>Admit Cards</span>
+                        <h3 id="stat-admits">0</h3>
+                    </div>
+                    <div class="stat-card" style="border-left-color: #c2410c;">
+                        <span>Results</span>
+                        <h3 id="stat-results">0</h3>
+                    </div>
+                    <div class="stat-card" style="border-left-color: #b91c1c;">
+                        <span>Syllabus</span>
+                        <h3 id="stat-syllabus">0</h3>
+                    </div>
+                    <div class="stat-card" style="border-left-color: #16a34a;">
+                        <span>Admissions</span>
+                        <h3 id="stat-admissions">0</h3>
+                    </div>
+                    <div class="stat-card" style="border-left-color: #ef4444;">
+                        <span>Govt Schemes</span>
+                        <h3 id="stat-schemes">0</h3>
+                    </div>
+                </div>
+
+                <div class="section-title">Recently Posted Content</div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Title</th>
+                            <th>Organization</th>
+                            <th>Date Posted</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dashboard-table-body">
+                        <!-- Content will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Form: Job Postings -->
+            <div id="job-form" class="form-container">
+                <form onsubmit="handleSubmit(event)">
+                    <div class="section-title">General Job Information</div>
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label>Full Notification Title</label>
+                            <input type="text" placeholder="e.g., RRB Group D Recruitment 2026..." required>
+                        </div>
+                        <div class="form-group">
+                            <label>Recruiting Body (Org Name)</label>
+                            <input type="text" placeholder="e.g., Railway Recruitment Board" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Advertisement Number</label>
+                            <input type="text" placeholder="e.g., CEN 01/2026">
+                        </div>
+                        <div class="form-group">
+                            <label>Short Name / Icon Type</label>
+                            <select>
+                                <option value="railway">Railway (RRB)</option>
+                                <option value="ssc">SSC</option>
+                                <option value="upsc">UPSC</option>
+                                <option value="bank">Banking</option>
+                                <option value="govt">Other Govt</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Total Vacancy Count</label>
+                            <input type="text" placeholder="e.g., 22,000 Posts">
+                        </div>
+                        <div class="form-group">
+                            <label>Qualification Required</label>
+                            <input type="text" placeholder="e.g., 10th Pass / ITI">
+                        </div>
+                        <div class="form-group">
+                            <label>Job Location</label>
+                            <input type="text" placeholder="e.g., All India">
+                        </div>
+                        <div class="form-group">
+                            <label>Important Tag (Badge)</label>
+                            <input type="text" placeholder="e.g., Urgent, New Out">
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width" style="margin-bottom: 0;">
+                        <label>Job Notification Description (Short Details)</label>
+                        <textarea name="notification_description" rows="5"
+                            placeholder="Enter a brief description of the job notification..."></textarea>
+                    </div>
+
+                    <div class="section-title">Age Limit (As on date)</div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Minimum Age</label>
+                            <input type="number" placeholder="e.g., 18">
+                        </div>
+                        <div class="form-group">
+                            <label>Maximum Age</label>
+                            <input type="number" placeholder="e.g., 40">
+                        </div>
+                        <div class="section-title">Age Relaxation (Category-wise)</div>
+                        <div class="vacancy-table-container"> <!-- Reuse container style -->
+                            <table class="vacancy-table" id="age-relaxation-table">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: left;">Category</th>
+                                        <th>Age Relaxation</th>
+                                        <th style="width: 40px;"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><input type="text" class="relax-category post-name-input" value="OBC"
+                                                placeholder="Category"></td>
+                                        <td><input type="text" class="relax-value" placeholder="e.g. 3 Years"></td>
+                                        <td style="text-align: center;"><i class="ri-delete-bin-line btn-remove-row"
+                                                onclick="this.closest('tr').remove()" title="Delete"></i></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="text" class="relax-category post-name-input" value="SC / ST"
+                                                placeholder="Category"></td>
+                                        <td><input type="text" class="relax-value" placeholder="e.g. 5 Years"></td>
+                                        <td style="text-align: center;"><i class="ri-delete-bin-line btn-remove-row"
+                                                onclick="this.closest('tr').remove()" title="Delete"></i></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="text" class="relax-category post-name-input"
+                                                value="PH (Divyang)" placeholder="Category"></td>
+                                        <td><input type="text" class="relax-value" placeholder="e.g. 10 Years"></td>
+                                        <td style="text-align: center;"><i class="ri-delete-bin-line btn-remove-row"
+                                                onclick="this.closest('tr').remove()" title="Delete"></i></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <button type="button" class="btn-secondary-small" onclick="addRelaxationRow(this)"
+                            style="margin-bottom: 2rem; background: #f8fafc; border: 1px dashed var(--border); width: 100%; padding: 0.75rem; border-radius: 8px; cursor: pointer; color: var(--text-main); font-weight: 600;">
+                            <i class="ri-add-line"></i> Add Other Category Relaxation
+                        </button>
+                    </div>
+
+                    <div class="section-title">Important Dates</div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Notification Date</label>
+                            <input type="date">
+                        </div>
+                        <div class="form-group">
+                            <label>Apply Start Date</label>
+                            <input type="date">
+                        </div>
+                        <div class="form-group">
+                            <label>Last Date to Apply</label>
+                            <input type="date">
+                        </div>
+                        <div class="form-group">
+                            <label>Exam Date Preview</label>
+                            <input type="text" placeholder="e.g., March 2026">
+                        </div>
+                    </div>
+
+                    <div class="section-title">Eligibility & Selection</div>
+                    <div class="form-group full-width">
+                        <label>Detailed Eligibility Criteria (Bullet points)</label>
+                        <textarea rows="4" placeholder="Enter one requirement per line..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Pay Scale / Salary</label>
+                        <input type="text" placeholder="e.g., ₹18,000 - ₹56,900 (Level 1)">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Selection Process Steps (Select multiple)</label>
+                        <div class="selection-steps-grid"
+                            style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; background: #f9fafb; padding: 15px; border-radius: 8px; border: 1px solid #e5e7eb;">
+                            <label
+                                style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 400;"><input
+                                    type="checkbox" name="selection_process" value="Written Exam (CBT)"> Written Exam
+                                (CBT)</label>
+                            <label
+                                style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 400;"><input
+                                    type="checkbox" name="selection_process" value="Physical Test (PET)"> Physical Test
+                                (PET)</label>
+                            <label
+                                style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 400;"><input
+                                    type="checkbox" name="selection_process" value="PST (Standard Test)"> PST (Standard
+                                Test)</label>
+                            <label
+                                style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 400;"><input
+                                    type="checkbox" name="selection_process" value="Typing Test"> Typing Test</label>
+                            <label
+                                style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 400;"><input
+                                    type="checkbox" name="selection_process" value="Skill Test"> Skill Test</label>
+                            <label
+                                style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 400;"><input
+                                    type="checkbox" name="selection_process" value="Stenography Test"> Stenography
+                                Test</label>
+                            <label
+                                style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 400;"><input
+                                    type="checkbox" name="selection_process" value="Interview"> Interview</label>
+                            <label
+                                style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 400;"><input
+                                    type="checkbox" name="selection_process" value="Document Verification"> Doc.
+                                Verification</label>
+                            <label
+                                style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 400;"><input
+                                    type="checkbox" name="selection_process" value="Medical Examination"> Medical
+                                Exam</label>
+                        </div>
+                    </div>
+
+                    <div class="section-title">Vacancy Details (Category-wise)</div>
+                    <div class="vacancy-table-container">
+                        <table class="vacancy-table" id="vacancy-details-table">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: left; min-width: 150px;">Post Name</th>
+                                    <th>UR</th>
+                                    <th>OBC</th>
+                                    <th>EWS</th>
+                                    <th>SC</th>
+                                    <th>ST</th>
+                                    <th>Total</th>
+                                    <th style="width: 40px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Rows added dynamically or via initial setup -->
+                                <tr>
+                                    <td><input type="text" class="vac-post-name post-name-input"
+                                            placeholder="e.g. MTS / Clerk"></td>
+                                    <td><input type="number" class="vac-ur" min="0" step="1"></td>
+                                    <td><input type="number" class="vac-obc" min="0" step="1"></td>
+                                    <td><input type="number" class="vac-ews" min="0" step="1"></td>
+                                    <td><input type="number" class="vac-sc" min="0" step="1"></td>
+                                    <td><input type="number" class="vac-st" min="0" step="1"></td>
+                                    <td><input type="number" class="vac-total" min="0" step="1"></td>
+                                    <td style="text-align: center;"><i class="ri-delete-bin-line btn-remove-row"
+                                            onclick="this.closest('tr').remove()" title="Delete"></i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button type="button" class="btn-secondary-small" onclick="addVacancyRow(this)"
+                        style="margin-bottom: 2rem; background: #f8fafc; border: 1px dashed var(--border); width: 100%; padding: 0.75rem; border-radius: 8px; cursor: pointer; color: var(--text-main); font-weight: 600;">
+                        <i class="ri-add-line"></i> Add Another Post Row
+                    </button>
+
+                    <div class="section-title">Physical Standards (PET/PST Required)</div>
+                    <div class="toggle-section">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="toggle-physical-job" checked
+                                onchange="togglePhysicalSection('job', this.checked)">
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <span class="toggle-label">Physical Standards Required</span>
+                        <span style="color: var(--text-muted); font-size: 0.85rem;">(Toggle off if not
+                            applicable)</span>
+                    </div>
+                    <div class="physical-table-container" id="physical-section-job">
+                        <table class="physical-table" id="physical-standards-table">
+                            <thead>
+                                <tr>
+                                    <th>Criteria</th>
+                                    <th>Category</th>
+                                    <th>Male Requirements</th>
+                                    <th>Female Requirements</th>
+                                    <th style="width: 40px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" class="phys-criteria" value="Height"
+                                            placeholder="Criteria Name"></td>
+                                    <td><input type="text" class="phys-category" value="General / OBC / SC"
+                                            placeholder="Category"></td>
+                                    <td><input type="text" class="phys-male" placeholder="e.g. 165 cm"></td>
+                                    <td><input type="text" class="phys-female" placeholder="e.g. 155 cm"></td>
+                                    <td style="text-align: center;"><i class="ri-delete-bin-line btn-remove-row"
+                                            onclick="this.closest('tr').remove()" title="Delete"></i></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" class="phys-criteria" value="Height"
+                                            placeholder="Criteria Name"></td>
+                                    <td><input type="text" class="phys-category" value="ST" placeholder="Category"></td>
+                                    <td><input type="text" class="phys-male" placeholder="e.g. 160 cm"></td>
+                                    <td><input type="text" class="phys-female" placeholder="e.g. 150 cm"></td>
+                                    <td style="text-align: center;"><i class="ri-delete-bin-line btn-remove-row">
+                                            onclick="this.closest('tr').remove()" title="Delete"></i></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" class="phys-criteria" value="Chest"
+                                            placeholder="Criteria Name"></td>
+                                    <td><input type="text" class="phys-category" value="All Categories"
+                                            placeholder="Category"></td>
+                                    <td><input type="text" class="phys-male" placeholder="e.g. 77-82 cm"></td>
+                                    <td><input type="text" class="phys-female" placeholder="e.g. N/A"></td>
+                                    <td style="text-align: center;"><i class="ri-delete-bin-line btn-remove-row"
+                                            onclick="this.closest('tr').remove()" title="Delete"></i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button type="button" class="btn-secondary-small" id="add-physical-btn-job"
+                        onclick="addPhysicalRow(this)"
+                        style="margin-bottom: 1.5rem; background: #f1f5f9; border: 1px dashed var(--border); width: 100%; display: flex; align-items: center; justify-content: center; padding: 0.75rem; border-radius: var(--radius-md); cursor: pointer; color: var(--text-main); font-weight: 500;">
+                        <i class="ri-add-line" style="margin-right: 0.5rem;"></i> Add New Physical Criteria Row
+                    </button>
+
+                    <div class="section-title">Application Fee (Category-wise)</div>
+                    <div class="vacancy-table-container">
+                        <table class="vacancy-table" id="application-fee-table">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: left;">Category</th>
+                                    <th>Fee Amount</th>
+                                    <th style="width: 40px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" class="fee-category post-name-input" value="Gen / OBC / EWS">
+                                    </td>
+                                    <td><input type="text" class="fee-amount" placeholder="e.g. ₹500"></td>
+                                    <td style="text-align: center;"><i class="ri-delete-bin-line btn-remove-row"
+                                            onclick="this.closest('tr').remove()" title="Delete"></i></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" class="fee-category post-name-input"
+                                            value="SC / ST / PH / Female"></td>
+                                    <td><input type="text" class="fee-amount" placeholder="e.g. ₹250"></td>
+                                    <td style="text-align: center;"><i class="ri-delete-bin-line btn-remove-row"
+                                            onclick="this.closest('tr').remove()" title="Delete"></i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button type="button" class="btn-secondary-small" onclick="addFeeRow(this)"
+                        style="margin-bottom: 1.5rem; background: #f8fafc; border: 1px dashed var(--border); width: 100%; padding: 0.75rem; border-radius: 8px; cursor: pointer; color: var(--text-main); font-weight: 600;">
+                        <i class="ri-add-line"></i> Add Other Fee Category
+                    </button>
+                    <div class="section-title">Payment Mode (Methods Available)</div>
+                    <div class="vacancy-table-container">
+                        <table class="vacancy-table" id="payment-mode-table">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: left; width: 30%;">Payment Method</th>
+                                    <th>Method Description / Instructions</th>
+                                    <th style="width: 40px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" class="pay-method post-name-input" value="Online Mode"
+                                            placeholder="e.g. Online"></td>
+                                    <td><input type="text" class="pay-description"
+                                            placeholder="Credit Card, Debit Card, Net Banking, UPI"></td>
+                                    <td style="text-align: center;"><i class="ri-delete-bin-line btn-remove-row"
+                                            onclick="this.closest('tr').remove()" title="Delete"></i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button type="button" class="btn-secondary-small" onclick="addPaymentModeRow(this)"
+                        style="margin-bottom: 2rem; background: #f8fafc; border: 1px dashed var(--border); width: 100%; padding: 0.75rem; border-radius: 8px; cursor: pointer; color: var(--text-main); font-weight: 600;">
+                        <i class="ri-add-line"></i> Add Another Payment Method
+                    </button>
+
+                    <div id="job-dynamic-sections"></div>
+                    <button type="button" class="btn-add-section" onclick="addNewSection('job')">
+                        <i class="ri-add-circle-line"></i> Add New Custom Section
+                    </button>
+
+                    <div class="section-title">Important Links</div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Apply Online</label>
+                            <input type="url" placeholder="https://...">
+                        </div>
+                        <div class="form-group">
+                            <label>Registration</label>
+                            <input type="url" placeholder="https://...">
+                        </div>
+                        <div class="form-group">
+                            <label>Login</label>
+                            <input type="url" placeholder="https://...">
+                        </div>
+                        <div class="form-group">
+                            <label>Forgot Reg. No.</label>
+                            <input type="url" placeholder="https://...">
+                        </div>
+                        <div class="form-group">
+                            <label>Download Notification</label>
+                            <input type="url" placeholder="https://...">
+                        </div>
+                        <div class="form-group">
+                            <label>Official Website</label>
+                            <input type="url" placeholder="https://...">
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel">Reset</button>
+                        <button type="submit" class="btn-submit">Publish Job Post</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Form: Admit Card Updates -->
+            <div id="admit-form" class="form-container">
+                <form onsubmit="handleSubmit(event)">
+                    <div class="section-title">Admit Card Details</div>
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label>Admit Card Page Title</label>
+                            <input type="text" placeholder="e.g., SSC CHSL Admit Card 2026..." required>
+                        </div>
+                        <div class="form-group">
+                            <label>Advertisement No.</label>
+                            <input type="text" name="adv_no" placeholder="e.g., 01/2026">
+                        </div>
+                        <div class="form-group">
+                            <label>Exam Name</label>
+                            <input type="text" placeholder="e.g., SSC CHSL Tier 1" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Post Name</label>
+                            <input type="text" name="post_name" placeholder="e.g., LDC, DEO, PA">
+                        </div>
+                        <div class="form-group">
+                            <label>Conducting Body</label>
+                            <input type="text" placeholder="e.g., SSC" required class="org-name-input">
+                        </div>
+                        <div class="form-group">
+                            <label>Short Name / Icon Type</label>
+                            <select class="icon-type-select">
+                                <option value="govt">Other Govt</option>
+                                <option value="railway">Railway (RRB)</option>
+                                <option value="ssc">SSC</option>
+                                <option value="upsc">UPSC</option>
+                                <option value="bank">Banking</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Total Vacancies</label>
+                            <input type="text" name="total_vacancies" placeholder="e.g., 3769 Posts">
+                        </div>
+                        <div class="form-group">
+                            <label>Release Date</label>
+                            <input type="date">
+                        </div>
+                        <div class="form-group">
+                            <label>Exam Date</label>
+                            <input type="text" placeholder="e.g., 10-28 Feb 2026">
+                        </div>
+                        <div class="form-group">
+                            <label>Badge Status</label>
+                            <select>
+                                <option>Available Now</option>
+                                <option>Coming Soon</option>
+                                <option>Exam City Out</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Download Link</label>
+                            <input type="url" placeholder="https://...">
+                        </div>
+                    </div>
+
+                    <div id="admit-dynamic-sections"></div>
+                    <button type="button" class="btn-add-section" onclick="addNewSection('admit')">
+                        <i class="ri-add-circle-line"></i> Add New Custom Section
+                    </button>
+
+                    <div class="section-title">Age Limit (As on date)</div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Minimum Age</label>
+                            <input type="number" placeholder="e.g., 18">
+                        </div>
+                        <div class="form-group">
+                            <label>Maximum Age</label>
+                            <input type="number" placeholder="e.g., 40">
+                        </div>
+                        <div class="section-title">Age Relaxation (Category-wise)</div>
+                        <div class="vacancy-table-container">
+                            <table class="vacancy-table" id="age-relaxation-table">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: left;">Category</th>
+                                        <th>Age Relaxation</th>
+                                        <th style="width: 40px;"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><input type="text" class="relax-category post-name-input" value="OBC"></td>
+                                        <td><input type="text" class="relax-value" placeholder="e.g. 3 Years"></td>
+                                        <td style="text-align: center;"><i class="ri-delete-bin-line btn-remove-row"
+                                                onclick="this.closest('tr').remove()"></i></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="text" class="relax-category post-name-input" value="SC / ST">
+                                        </td>
+                                        <td><input type="text" class="relax-value" placeholder="e.g. 5 Years"></td>
+                                        <td style="text-align: center;"><i class="ri-delete-bin-line btn-remove-row"
+                                                onclick="this.closest('tr').remove()"></i></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <button type="button" class="btn-secondary-small" onclick="addRelaxationRow(this)">Add
+                            Relaxation
+                            Row</button>
+                    </div>
+
+                    <div class="section-title">Vacancy Details (Category-wise)</div>
+                    <div class="vacancy-table-container">
+                        <table class="vacancy-table" id="vacancy-details-table">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: left;">Post Name</th>
+                                    <th>UR</th>
+                                    <th>OBC</th>
+                                    <th>EWS</th>
+                                    <th>SC</th>
+                                    <th>ST</th>
+                                    <th>Total</th>
+                                    <th style="width: 40px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" class="vac-post-name post-name-input" placeholder="e.g. LDC">
+                                    </td>
+                                    <td><input type="number" class="vac-ur"></td>
+                                    <td><input type="number" class="vac-obc"></td>
+                                    <td><input type="number" class="vac-ews"></td>
+                                    <td><input type="number" class="vac-sc"></td>
+                                    <td><input type="number" class="vac-st"></td>
+                                    <td><input type="number" class="vac-total"></td>
+                                    <td style="text-align: center;"><i class="ri-delete-bin-line btn-remove-row"
+                                            onclick="this.closest('tr').remove()"></i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button type="button" class="btn-secondary-small" onclick="addVacancyRow(this)">Add Post
+                        Row</button>
+
+                    <div class="section-title">Physical Standards</div>
+                    <div class="toggle-section">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="toggle-physical-admit" checked
+                                onchange="togglePhysicalSection('admit', this.checked)">
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <span class="toggle-label">Physical Standards Required</span>
+                        <span style="color: var(--text-muted); font-size: 0.85rem;">(Toggle off if not
+                            applicable)</span>
+                    </div>
+                    <div class="physical-table-container" id="physical-section-admit">
+                        <table class="physical-table" id="physical-standards-table">
+                            <thead>
+                                <tr>
+                                    <th>Criteria</th>
+                                    <th>Category</th>
+                                    <th>Male</th>
+                                    <th>Female</th>
+                                    <th style="width: 40px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" class="phys-criteria" value="Height"></td>
+                                    <td><input type="text" class="phys-category" value="General"></td>
+                                    <td><input type="text" class="phys-male"></td>
+                                    <td><input type="text" class="phys-female"></td>
+                                    <td style="text-align: center;"><i class="ri-delete-bin-line btn-remove-row"
+                                            onclick="this.closest('tr').remove()"></i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button type="button" class="btn-secondary-small" id="add-physical-btn-admit"
+                        onclick="addPhysicalRow(this)">Add Physical
+                        Row</button>
+
+                    <div class="section-title">Application Fee & Payment</div>
+                    <div class="vacancy-table-container">
+                        <table class="vacancy-table" id="application-fee-table">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: left;">Category</th>
+                                    <th>Fee Amount</th>
+                                    <th style="width: 40px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" class="fee-category post-name-input" value="UR / OBC"></td>
+                                    <td><input type="text" class="fee-amount"></td>
+                                    <td style="text-align: center;"><i class="ri-delete-bin-line btn-remove-row"
+                                            onclick="this.closest('tr').remove()"></i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button type="button" class="btn-secondary-small" onclick="addFeeRow(this)">Add Fee Row</button>
+
+                    <div class="vacancy-table-container">
+                        <table class="vacancy-table" id="payment-mode-table">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: left;">Payment Method</th>
+                                    <th>Description</th>
+                                    <th style="width: 40px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" class="pay-method post-name-input" value="Online"></td>
+                                    <td><input type="text" class="pay-description"></td>
+                                    <td style="text-align: center;"><i class="ri-delete-bin-line btn-remove-row"
+                                            onclick="this.closest('tr').remove()"></i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button type="button" class="btn-secondary-small" onclick="addPaymentModeRow(this)">Add Payment
+                        Mode</button>
+
+                    <div class="section-title">Download Instructions</div>
+                    <div class="form-group full-width">
+                        <label>Steps to Download (One per line)</label>
+                        <textarea rows="6" placeholder="1. Visit official website..."></textarea>
+                    </div>
+
+                    <div class="section-title">Required at Center</div>
+                    <div class="form-group full-width">
+                        <label>Mandatory Documents</label>
+                        <textarea rows="3" placeholder="Admit Card, ID Proof, 2 Photos..."></textarea>
+                    </div>
+
+                    <div class="section-title">Important Links</div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Download Admit Card</label>
+                            <input type="url" placeholder="https://...">
+                        </div>
+                        <div class="form-group">
+                            <label>Download Notice</label>
+                            <input type="url" placeholder="https://...">
+                        </div>
+                        <div class="form-group">
+                            <label>Official Website</label>
+                            <input type="url" placeholder="https://...">
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel">Reset</button>
+                        <button type="submit" class="btn-submit">Update Admit Card</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Form: Examination Results -->
+            <div id="result-form" class="form-container">
+                <form onsubmit="handleSubmit(event)">
+                    <div class="section-title">Result Summary</div>
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label>Result Post Title</label>
+                            <input type="text" placeholder="e.g., SSC GD Constable Result 2026..." required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" required class="org-name-input">
+                        </div>
+                        <div class="form-group">
+                            <label>Short Name / Icon Type</label>
+                            <select class="icon-type-select">
+                                <option value="govt">Other Govt</option>
+                                <option value="railway">Railway (RRB)</option>
+                                <option value="ssc">SSC</option>
+                                <option value="upsc">UPSC</option>
+                                <option value="bank">Banking</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Declaration Date</label>
+                            <input type="date" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Total Candidates</label>
+                            <input type="text" placeholder="e.g., 5.8 Lakhs">
+                        </div>
+                        <div class="form-group">
+                            <label>Qualified for Next Stage</label>
+                            <input type="text" placeholder="e.g., 15,000+">
+                        </div>
+                        <div class="form-group">
+                            <label>Result Type</label>
+                            <select>
+                                <option>Final Result</option>
+                                <option>Written Exam Result</option>
+                                <option>Scorecard/Marks</option>
+                                <option>Cut-off Only</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="section-title">Cut-off Details (Category-wise)</div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>General (UR)</label>
+                            <input type="text" placeholder="e.g., 141.5">
+                        </div>
+                        <div class="form-group">
+                            <label>OBC</label>
+                            <input type="text" placeholder="e.g., 138.2">
+                        </div>
+                        <div class="form-group">
+                            <label>SC/ST</label>
+                            <input type="text" placeholder="e.g., 125.0">
+                        </div>
+                        <div class="form-group">
+                            <label>EWS</label>
+                            <input type="text" placeholder="e.g., 135.5">
+                        </div>
+                    </div>
+
+                    <div class="section-title">Next Steps Schedule</div>
+                    <div class="form-group full-width">
+                        <label>Upcoming events (PET/DV etc.)</label>
+                        <textarea rows="4" placeholder="PET: April 2026, DV: June 2026..."></textarea>
+                    </div>
+
+                    <div class="section-title">Age & Vacancy Details</div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Minimum Age</label>
+                            <input type="number">
+                        </div>
+                        <div class="form-group">
+                            <label>Maximum Age</label>
+                            <input type="number">
+                        </div>
+                    </div>
+                    <div class="vacancy-table-container">
+                        <table class="vacancy-table" id="vacancy-details-table">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: left;">Post Name</th>
+                                    <th>UR</th>
+                                    <th>OBC</th>
+                                    <th>EWS</th>
+                                    <th>SC</th>
+                                    <th>ST</th>
+                                    <th>Total</th>
+                                    <th style="width: 40px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <button type="button" class="btn-secondary-small" onclick="addVacancyRow(this)">Add Post
+                        Row</button>
+
+                    <div class="section-title">Physical Standards</div>
+                    <div class="physical-table-container">
+                        <table class="physical-table" id="physical-standards-table">
+                            <thead>
+                                <tr>
+                                    <th>Criteria</th>
+                                    <th>Category</th>
+                                    <th>Male</th>
+                                    <th>Female</th>
+                                    <th style="width: 40px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <button type="button" class="btn-secondary-small" onclick="addPhysicalRow(this)">Add Physical
+                        Row</button>
+
+                    <div id="result-dynamic-sections"></div>
+                    <button type="button" class="btn-add-section" onclick="addNewSection('result')">
+                        <i class="ri-add-circle-line"></i> Add New Custom Section
+                    </button>
+
+                    <div class="section-title">Important Links</div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Check Result (Link 1)</label>
+                            <input type="url" placeholder="https://...">
+                        </div>
+                        <div class="form-group">
+                            <label>Check Result (Link 2)</label>
+                            <input type="url" placeholder="https://...">
+                        </div>
+                        <div class="form-group">
+                            <label>Download Cut-off PDF</label>
+                            <input type="url" placeholder="https://...">
+                        </div>
+                        <div class="form-group">
+                            <label>Official Website</label>
+                            <input type="url" placeholder="https://...">
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel">Reset</button>
+                        <button type="submit" class="btn-submit">Post Result</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Form: Syllabus Uploads -->
+            <div id="syllabus-form" class="form-container">
+                <form onsubmit="handleSubmit(event)">
+                    <div class="section-title">Syllabus Overview</div>
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label>Syllabus Title</label>
+                            <input type="text" placeholder="e.g., SSC CGL Detailed Syllabus 2026" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" required class="org-name-input">
+                        </div>
+                        <div class="form-group">
+                            <label>Short Name / Icon Type</label>
+                            <select class="icon-type-select">
+                                <option value="govt">Other Govt</option>
+                                <option value="railway">Railway (RRB)</option>
+                                <option value="ssc">SSC</option>
+                                <option value="upsc">UPSC</option>
+                                <option value="bank">Banking</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Levels/Tiers</label>
+                            <input type="text" placeholder="e.g., Tier 1, 2, 3">
+                        </div>
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select>
+                                <option>Central Govt</option>
+                                <option>State Govt</option>
+                                <option>Banking</option>
+                                <option>Defence</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>PDF File Link</label>
+                            <input type="url" placeholder="Link to official PDF">
+                        </div>
+                    </div>
+
+                    <div class="section-title">Vacancy & Age Details</div>
+                    <div class="vacancy-table-container">
+                        <table class="vacancy-table" id="vacancy-details-table">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: left;">Post Name</th>
+                                    <th>UR</th>
+                                    <th>OBC</th>
+                                    <th>EWS</th>
+                                    <th>SC</th>
+                                    <th>ST</th>
+                                    <th>Total</th>
+                                    <th style="width: 40px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <button type="button" class="btn-secondary-small" onclick="addVacancyRow(this)">Add Post
+                        Row</button>
+
+                    <div class="section-title">Physical Standards</div>
+                    <div class="physical-table-container">
+                        <table class="physical-table" id="physical-standards-table">
+                            <thead>
+                                <tr>
+                                    <th>Criteria</th>
+                                    <th>Category</th>
+                                    <th>Male</th>
+                                    <th>Female</th>
+                                    <th style="width: 40px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <button type="button" class="btn-secondary-small" onclick="addPhysicalRow(this)">Add Physical
+                        Row</button>
+
+                    <div class="section-title">Application Fee & Payment</div>
+                    <div class="vacancy-table-container">
+                        <table class="vacancy-table" id="application-fee-table">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: left;">Category</th>
+                                    <th>Fee Amount</th>
+                                    <th style="width: 40px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <button type="button" class="btn-secondary-small" onclick="addFeeRow(this)">Add Fee Row</button>
+
+                    <div class="vacancy-table-container">
+                        <table class="vacancy-table" id="payment-mode-table">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: left;">Payment Method</th>
+                                    <th>Description</th>
+                                    <th style="width: 40px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <button type="button" class="btn-secondary-small" onclick="addPaymentModeRow(this)">Add Payment
+                        Mode</button>
+
+                    <div id="syllabus-dynamic-sections"></div>
+                    <button type="button" class="btn-add-section" onclick="addNewSection('syllabus')">
+                        <i class="ri-add-circle-line"></i> Add New Custom Section
+                    </button>
+
+                    <div class="section-title">Vacancy & Age Details</div>
+                    <div class="vacancy-table-container">
+                        <table class="vacancy-table" id="vacancy-details-table">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: left;">Post Name</th>
+                                    <th>UR</th>
+                                    <th>OBC</th>
+                                    <th>EWS</th>
+                                    <th>SC</th>
+                                    <th>ST</th>
+                                    <th>Total</th>
+                                    <th style="width: 40px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <button type="button" class="btn-secondary-small" onclick="addVacancyRow(this)">Add Post
+                        Row</button>
+
+                    <div class="section-title">Application Fee & Payment</div>
+                    <div class="vacancy-table-container">
+                        <table class="vacancy-table" id="application-fee-table">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: left;">Category</th>
+                                    <th>Fee Amount</th>
+                                    <th style="width: 40px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <button type="button" class="btn-secondary-small" onclick="addFeeRow(this)">Add Fee Row</button>
+
+                    <div class="vacancy-table-container">
+                        <table class="vacancy-table" id="payment-mode-table">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: left;">Payment Method</th>
+                                    <th>Description</th>
+                                    <th style="width: 40px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <button type="button" class="btn-secondary-small" onclick="addPaymentModeRow(this)">Add Payment
+                        Mode</button>
+
+                    <div class="section-title">Subject-wise Topics</div>
+                    <div class="form-group full-width">
+                        <label>Reasoning Topics</label>
+                        <textarea rows="3" placeholder="Topic 1, Topic 2..."></textarea>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Maths/Quant Topics</label>
+                        <textarea rows="3" placeholder="Topic 1, Topic 2..."></textarea>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>English/Language Topics</label>
+                        <textarea rows="3" placeholder="Topic 1, Topic 2..."></textarea>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>GK/General Awareness Topics</label>
+                        <textarea rows="3" placeholder="Topic 1, Topic 2..."></textarea>
+                    </div>
+
+                    <div class="section-title">Exam Pattern</div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Total Questions</label>
+                            <input type="number">
+                        </div>
+                        <div class="form-group">
+                            <label>Total Marks</label>
+                            <input type="number">
+                        </div>
+                        <div class="form-group">
+                            <label>Time Duration (Mins)</label>
+                            <input type="number">
+                        </div>
+                        <div class="form-group">
+                            <label>Negative Marking</label>
+                            <input type="text" placeholder="e.g., 0.25">
+                        </div>
+                    </div>
+
+                    <div id="syllabus-dynamic-sections"></div>
+                    <button type="button" class="btn-add-section" onclick="addNewSection('syllabus')">
+                        <i class="ri-add-circle-line"></i> Add New Custom Section
+                    </button>
+
+                    <div class="section-title">Important Links</div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Download Syllabus PDF</label>
+                            <input type="url" placeholder="https://...">
+                        </div>
+                        <div class="form-group">
+                            <label>Download Notification</label>
+                            <input type="url" placeholder="https://...">
+                        </div>
+                        <div class="form-group">
+                            <label>Official Website</label>
+                            <input type="url" placeholder="https://...">
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel">Reset</button>
+                        <button type="submit" class="btn-submit">Save Syllabus</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Form: Admission Notifications -->
+            <div id="admission-form" class="form-container">
+                <form onsubmit="handleSubmit(event)">
+                    <div class="section-title">Admission Details</div>
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label>Admission Title</label>
+                            <input type="text" placeholder="e.g., BHU UG Admission 2024" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" required class="org-name-input">
+                        </div>
+                        <div class="form-group">
+                            <label>Short Name / Icon Type</label>
+                            <select class="icon-type-select">
+                                <option value="govt">Other Govt</option>
+                                <option value="school">School / Board</option>
+                                <option value="university">University</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Course Type</label>
+                            <select>
+                                <option>Undergraduate (UG)</option>
+                                <option>Postgraduate (PG)</option>
+                                <option>Diploma / ITI</option>
+                                <option>School Admission</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Apply Last Date</label>
+                            <input type="date">
+                        </div>
+                        <div class="form-group">
+                            <label>Entrance Exam (If any)</label>
+                            <input type="text" placeholder="e.g., CUET, BHU-UET">
+                        </div>
+                    </div>
+
+                    <div class="section-title">Eligibility & Courses</div>
+                    <div class="form-group full-width">
+                        <label>Offered Courses (Bullet points)</label>
+                        <textarea rows="3" placeholder="e.g., B.A. Hons, B.Sc. Hons..."></textarea>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Eligibility Criteria</label>
+                        <textarea rows="3" placeholder="e.g., 10+2 with 50% marks..."></textarea>
+                    </div>
+
+                    <div id="admission-dynamic-sections"></div>
+                    <button type="button" class="btn-add-section" onclick="addNewSection('admission')">
+                        <i class="ri-add-circle-line"></i> Add New Custom Section
+                    </button>
+
+                    <div class="section-title">Application Fee & Payment</div>
+                    <div class="vacancy-table-container">
+                        <table class="vacancy-table" id="application-fee-table">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: left;">Category</th>
+                                    <th>Fee Amount</th>
+                                    <th style="width: 40px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" class="fee-category post-name-input" value="Gen / OBC"></td>
+                                    <td><input type="text" class="fee-amount" placeholder="e.g. ₹600"></td>
+                                    <td style="text-align: center;"><i class="ri-delete-bin-line btn-remove-row"
+                                            onclick="this.closest('tr').remove()" title="Delete"></i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button type="button" class="btn-secondary-small" onclick="addFeeRow(this)">
+                        <i class="ri-add-line"></i> Add Fee Row
+                    </button>
+
+                    <div class="vacancy-table-container">
+                        <table class="vacancy-table" id="payment-mode-table">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: left; width: 30%;">Payment Method</th>
+                                    <th>Mode Details</th>
+                                    <th style="width: 40px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" class="pay-method post-name-input" value="Online"></td>
+                                    <td><input type="text" class="pay-description" placeholder="Online Payment Gateway">
+                                    </td>
+                                    <td style="text-align: center;"><i class="ri-delete-bin-line btn-remove-row"
+                                            onclick="this.closest('tr').remove()" title="Delete"></i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button type="button" class="btn-secondary-small" onclick="addPaymentModeRow(this)">
+                        <i class="ri-add-line"></i> Add Payment Method
+                    </button>
+
+                    <div class="section-title">Important Links</div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Apply Online</label>
+                            <input type="url" placeholder="https://...">
+                        </div>
+                        <div class="form-group">
+                            <label>Download Prospectus</label>
+                            <input type="url" placeholder="https://...">
+                        </div>
+                        <div class="form-group">
+                            <label>Official Website</label>
+                            <input type="url" placeholder="https://...">
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel">Reset</button>
+                        <button type="submit" class="btn-submit">Post Admission</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Form: Government Schemes -->
+            <div id="scheme-form" class="form-container">
+                <form onsubmit="handleSubmit(event)">
+                    <div class="section-title">Scheme Information</div>
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label>Scheme Name</label>
+                            <input type="text" placeholder="e.g., PM Kisan Samman Nidhi" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" required class="org-name-input">
+                        </div>
+                        <div class="form-group">
+                            <label>Short Name / Icon Type</label>
+                            <select class="icon-type-select">
+                                <option value="govt">Central Govt</option>
+                                <option value="state">State Govt</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Target Beneficiaries</label>
+                            <input type="text" placeholder="e.g., Farmers, Students">
+                        </div>
+                        <div class="form-group">
+                            <label>Benefit Amount / Type</label>
+                            <input type="text" placeholder="e.g., ₹6,000 per year">
+                        </div>
+                    </div>
+
+                    <div class="vacancy-table-container">
+                        <table class="vacancy-table" id="vacancy-details-table">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: left;">Post / Item</th>
+                                    <th>Details / Total</th>
+                                    <th style="width: 40px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <button type="button" class="btn-secondary-small" onclick="addVacancyRow(this)">Add Row</button>
+
+                    <div class="section-title">Fees & Payment (If applicable)</div>
+                    <div class="vacancy-table-container">
+                        <table class="vacancy-table" id="application-fee-table">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: left;">Category</th>
+                                    <th>Amount</th>
+                                    <th style="width: 40px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <button type="button" class="btn-secondary-small" onclick="addFeeRow(this)">Add Fee Row</button>
+
+                    <div class="vacancy-table-container">
+                        <table class="vacancy-table" id="payment-mode-table">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: left;">Method</th>
+                                    <th>Details</th>
+                                    <th style="width: 40px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <button type="button" class="btn-secondary-small" onclick="addPaymentModeRow(this)">Add Payment
+                        Row</button>
+
+                    <div class="section-title">Detailed Benefits & Process</div>
+                    <div class="form-group full-width">
+                        <label>Key Benefits</label>
+                        <textarea rows="3" placeholder="Describe the benefits here..."></textarea>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>How to Apply</label>
+                        <textarea rows="4" placeholder="Steps to apply for the scheme..."></textarea>
+                    </div>
+
+                    <div id="scheme-dynamic-sections"></div>
+                    <button type="button" class="btn-add-section" onclick="addNewSection('scheme')">
+                        <i class="ri-add-circle-line"></i> Add New Custom Section
+                    </button>
+
+                    <div class="section-title">Important Links</div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Apply Online</label>
+                            <input type="url" placeholder="https://...">
+                        </div>
+                        <div class="form-group">
+                            <label>Download Guidelines</label>
+                            <input type="url" placeholder="https://...">
+                        </div>
+                        <div class="form-group">
+                            <label>Official Website</label>
+                            <input type="url" placeholder="https://...">
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel">Reset</button>
+                        <button type="submit" class="btn-submit">Post Scheme</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <!-- Core Administrative JavaScript Logic -->
+    <script>
+        // Data Management
+        let appData = JSON.parse(localStorage.getItem('deskjob_data')) || {
+            jobs: [],
+            admits: [],
+            results: [],
+            syllabus: [],
+            admissions: [],
+            schemes: []
+        };
+
+        // State for Editing
+        let editingId = null;
+        let editingType = null;
+
+        // Initialize with dummy data if empty
+        if (Object.values(appData).every(arr => arr.length === 0)) {
+            appData.jobs.push({ id: Date.now(), title: 'RRB Group D Recruitment 2026', org: 'Railway Recruitment Board', date: '2026-01-12' });
+            appData.admits.push({ id: Date.now() + 1, title: 'SSC CHSL Tier 1 Admit Card', org: 'SSC', date: '2026-01-15' });
+            saveData();
+        }
+
+        function saveData() {
+            localStorage.setItem('deskjob_data', JSON.stringify(appData));
+            updateDashboard();
+        }
+
+        function updateDashboard() {
+            const tableBody = document.getElementById('dashboard-table-body');
+            tableBody.innerHTML = '';
+
+            const totals = {
+                jobs: 0, admits: 0, results: 0, syllabus: 0, admissions: 0, schemes: 0
+            };
+
+            // Render All Items and calculate totals
+            appData.jobs.forEach(item => { renderRow(item, 'job', 'badge-job'); totals.jobs++; });
+            appData.admits.forEach(item => { renderRow(item, 'admit', 'badge-admit'); totals.admits++; });
+            appData.results.forEach(item => { renderRow(item, 'result', 'badge-result'); totals.results++; });
+            appData.syllabus.forEach(item => { renderRow(item, 'syllabus', 'badge-syllabus'); totals.syllabus++; });
+            appData.admissions.forEach(item => { renderRow(item, 'admission', 'badge-admission'); totals.admissions++; });
+            appData.schemes.forEach(item => { renderRow(item, 'scheme', 'badge-scheme'); totals.schemes++; });
+
+            // Update Stats (Static update as requested: "do not update no" possibly referring to animation)
+            document.getElementById('stat-jobs').innerText = totals.jobs;
+            document.getElementById('stat-admits').innerText = totals.admits;
+            document.getElementById('stat-results').innerText = totals.results;
+            document.getElementById('stat-syllabus').innerText = totals.syllabus;
+            document.getElementById('stat-admissions').innerText = totals.admissions;
+            document.getElementById('stat-schemes').innerText = totals.schemes;
+        }
+
+        function animateValue(id, end) {
+            const obj = document.getElementById(id);
+            if (!obj) return;
+            const start = parseInt(obj.innerText) || 0;
+            if (start === end) return;
+
+            const duration = 1000;
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                obj.innerText = Math.floor(progress * (end - start) + start);
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+
+            // Add a small scale animation to the card
+            const card = obj.closest('.stat-card');
+            if (card) {
+                card.style.transform = 'scale(1.05)';
+                setTimeout(() => card.style.transform = 'scale(1)', 200);
+            }
+        }
+
+        function renderRow(item, type, badgeClass) {
+            const tableBody = document.getElementById('dashboard-table-body');
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td><span class="badge-type ${badgeClass}">${type.toUpperCase()}</span></td>
+                <td><div style="font-weight:600; color:var(--text-main)">${item.title}</div></td>
+                <td>${item.org}</td>
+                <td>${item.date}</td>
+                <td>
+                    <div class="action-btns">
+                        <button class="btn-icon btn-edit" onclick="editItem('${type}', ${item.id})" title="Edit"><i class="ri-edit-line"></i></button>
+                        <button class="btn-icon btn-delete" onclick="deleteItem('${type}', ${item.id})" title="Delete"><i class="ri-delete-bin-line"></i></button>
+                    </div>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        }
+
+        function deleteItem(type, id) {
+            if (confirm('Are you sure you want to delete this item?')) {
+                const key = type === 'job' ? 'jobs' :
+                    type === 'admit' ? 'admits' :
+                        type === 'result' ? 'results' :
+                            type === 'syllabus' ? 'syllabus' :
+                                type === 'admission' ? 'admissions' : 'schemes';
+                appData[key] = appData[key].filter(i => i.id !== id);
+                saveData();
+            }
+        }
+
+        function editItem(type, id) {
+            const key = type === 'job' ? 'jobs' :
+                type === 'admit' ? 'admits' :
+                    type === 'result' ? 'results' :
+                        type === 'syllabus' ? 'syllabus' :
+                            type === 'admission' ? 'admissions' : 'schemes';
+
+            const item = appData[key].find(i => i.id === id);
+            if (item) {
+                editingId = id;
+                editingType = type;
+
+                const formId = type === 'job' ? 'job-form' :
+                    type === 'admit' ? 'admit-form' :
+                        type === 'result' ? 'result-form' :
+                            type === 'syllabus' ? 'syllabus-form' :
+                                type === 'admission' ? 'admission-form' : 'scheme-form';
+
+                showForm(formId);
+
+                // Populate Form
+                const form = document.querySelector(`#${formId} form`);
+                const inputs = form.querySelectorAll('input, select, textarea');
+
+                inputs.forEach(input => {
+                    const label = input.closest('.form-group')?.querySelector('label')?.innerText || 'field';
+                    // Attempt to derive a key name from the label or input name
+                    let keyName = input.name || label.toLowerCase().replace(/[^a-z0-9]/g, '_');
+                    // Handle specific cases where label might not directly map to item key
+                    if (keyName === 'university___school_name') keyName = 'university_school_name';
+                    if (keyName === 'recruiting_body__org_name') keyName = 'recruiting_body_org_name';
+                    if (keyName === 'ministry___department') keyName = 'ministry_department';
+                    if (keyName === 'full_notification_title') keyName = 'title'; // Map to generic title
+                    if (keyName === 'admit_card_page_title') keyName = 'title';
+                    if (keyName === 'result_post_title') keyName = 'title';
+                    if (keyName === 'syllabus_title') keyName = 'title';
+                    if (keyName === 'admission_title') keyName = 'title';
+                    if (keyName === 'scheme_name') keyName = 'title';
+                    if (keyName === 'notification_date') keyName = 'date';
+                    if (keyName === 'release_date') keyName = 'date';
+                    if (keyName === 'declaration_date') keyName = 'date';
+                    if (keyName === 'apply_last_date') keyName = 'date';
+                    if (keyName === 'important_tag__badge') keyName = 'badge';
+                    if (keyName === 'badge_status') keyName = 'badge';
+
+
+                    if (item[keyName] !== undefined) {
+                        if (input.type === 'checkbox') {
+                            input.checked = item[keyName].includes(input.value);
+                        } else if (input.tagName === 'SELECT' && input.multiple) {
+                            Array.from(input.options).forEach(option => {
+                                option.selected = item[keyName].includes(option.value);
+                            });
+                        }
+                        else {
+                            input.value = item[keyName];
+                        }
+                    }
+                });
+
+                // Update Submit Button Text
+                const submitBtn = form.querySelector('.btn-submit');
+                if (submitBtn) submitBtn.innerText = 'Update Post Information';
+
+                // Populate Vacancy Table
+                // Populate Vacancy Table (for ANY form that has it)
+                const vacBody = document.querySelector(`#${formId} #vacancy-details-table tbody`);
+                if (vacBody) {
+                    vacBody.innerHTML = '';
+                    if (item.vacancy_details && item.vacancy_details.length > 0) {
+                        item.vacancy_details.forEach(vac => {
+                            const row = document.createElement('tr');
+                            // Determine if this is a simple or full vacancy table
+                            const isSimple = !form.querySelector('.vac-ur');
+                            if (isSimple) {
+                                row.innerHTML = `
+                                    <td><input type="text" class="vac-post-name post-name-input" value="${vac.postName}"></td>
+                                    <td><input type="number" class="vac-total" value="${vac.total}"></td>
+                                    <td style="text-align: center;"><i class="ri-delete-bin-line btn-remove-row" onclick="this.closest('tr').remove()" title="Delete"></i></td>
+                                `;
+                            } else {
+                                row.innerHTML = `
+                                    <td><input type="text" class="vac-post-name post-name-input" value="${vac.postName}"></td>
+                                    <td><input type="number" class="vac-ur" value="${vac.ur || ''}" oninput="calculateRowTotal(this)"></td>
+                                    <td><input type="number" class="vac-obc" value="${vac.obc || ''}" oninput="calculateRowTotal(this)"></td>
+                                    <td><input type="number" class="vac-ews" value="${vac.ews || ''}" oninput="calculateRowTotal(this)"></td>
+                                    <td><input type="number" class="vac-sc" value="${vac.sc || ''}" oninput="calculateRowTotal(this)"></td>
+                                    <td><input type="number" class="vac-st" value="${vac.st || ''}" oninput="calculateRowTotal(this)"></td>
+                                    <td><input type="number" class="vac-total" value="${vac.total || ''}" readonly style="font-weight: 700;"></td>
+                                    <td style="text-align: center;"><i class="ri-delete-bin-line btn-remove-row" onclick="this.closest('tr').remove()" title="Delete"></i></td>
+                                `;
+                            }
+                            vacBody.appendChild(row);
+                        });
+                    } else if (type === 'job') {
+                        resetVacancyTable();
+                    }
+                }
+
+                const relaxBody = document.querySelector(`#${formId} #age-relaxation-table tbody`);
+                if (relaxBody) {
+                    relaxBody.innerHTML = '';
+                    if (item.age_relaxation && item.age_relaxation.length > 0) {
+                        item.age_relaxation.forEach(rel => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td><input type="text" class="relax-category post-name-input" value="${rel.category}"></td>
+                                <td><input type="text" class="relax-value" value="${rel.value}"></td>
+                                <td style="text-align: center;"><i class="ri-delete-bin-line btn-remove-row" onclick="this.closest('tr').remove()" title="Delete"></i></td>
+                            `;
+                            relaxBody.appendChild(row);
+                        });
+                    } else if (type === 'job') {
+                        resetRelaxationTable();
+                    }
+                }
+
+                const feeBody = document.querySelector(`#${formId} #application-fee-table tbody`) || document.querySelector(`#${formId} #admission-fee-table tbody`);
+                if (feeBody) {
+                    feeBody.innerHTML = '';
+                    if (item.application_fees && item.application_fees.length > 0) {
+                        item.application_fees.forEach(fee => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td><input type="text" class="fee-category post-name-input" value="${fee.category}"></td>
+                                <td><input type="text" class="fee-amount" value="${fee.amount}"></td>
+                                <td style="text-align: center;"><i class="ri-delete-bin-line btn-remove-row" onclick="this.closest('tr').remove()" title="Delete"></i></td>
+                            `;
+                            feeBody.appendChild(row);
+                        });
+                    } else {
+                        if (type === 'job') resetFeeTable();
+                        if (type === 'admission') resetAdmissionFeeTable();
+                    }
+                }
+
+                const payBody = document.querySelector(`#${formId} #payment-mode-table tbody`) || document.querySelector(`#${formId} #admission-payment-table tbody`);
+                if (payBody) {
+                    payBody.innerHTML = '';
+                    if (item.payment_modes && item.payment_modes.length > 0) {
+                        item.payment_modes.forEach(p => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td><input type="text" class="pay-method post-name-input" value="${p.method}"></td>
+                                <td><input type="text" class="pay-description" value="${p.description}"></td>
+                                <td style="text-align: center;"><i class="ri-delete-bin-line btn-remove-row" onclick="this.closest('tr').remove()" title="Delete"></i></td>
+                            `;
+                            payBody.appendChild(row);
+                        });
+                    } else {
+                        if (type === 'job') resetPaymentModeTable();
+                        if (type === 'admission') resetAdmissionPaymentModeTable();
+                    }
+                }
+
+                const physBody = document.querySelector(`#${formId} #physical-standards-table tbody`);
+                if (physBody) {
+                    physBody.innerHTML = '';
+                    if (item.physical_standards && item.physical_standards.length > 0) {
+                        item.physical_standards.forEach(std => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td><input type="text" class="phys-criteria" value="${std.criteria}" placeholder="Criteria"></td>
+                                <td><input type="text" class="phys-category" value="${std.category || ''}" placeholder="Category"></td>
+                                <td><input type="text" class="phys-male" value="${std.male || ''}" placeholder="Male"></td>
+                                <td><input type="text" class="phys-female" value="${std.female || ''}" placeholder="Female"></td>
+                                <td style="text-align:center;"><i class="ri-delete-bin-line btn-remove-row" onclick="this.closest('tr').remove()" title="Delete Row"></i></td>
+                            `;
+                            physBody.appendChild(row);
+                        });
+                    } else if (type === 'job') {
+                        resetPhysicalTable();
+                    }
+                }
+
+                // Populate Dynamic Sections
+                const dynamicContainer = document.getElementById(`${type}-dynamic-sections`);
+                if (dynamicContainer) {
+                    dynamicContainer.innerHTML = ''; // Clear existing
+                    if (item.custom_sections && item.custom_sections.length > 0) {
+                        item.custom_sections.forEach(sec => {
+                            const sectionId = 'sec_' + Date.now() + Math.random().toString(36).substr(2, 9);
+                            const section = document.createElement('div');
+                            section.className = 'dynamic-section';
+                            section.id = sectionId;
+                            section.innerHTML = `
+                                <button type="button" class="btn-remove-section" onclick="document.getElementById('${sectionId}').remove()">
+                                    <i class="ri-close-line"></i>
+                                </button>
+                                <div class="section-title">
+                                    <input type="text" placeholder="Section Title (e.g., New Updates)" style="border:none; background:transparent; font-weight:700; color:var(--primary); width:100%;" class="dyn-title" value="${sec.title}">
+                                </div>
+                                <div class="form-group full-width">
+                                    <label>Section Content (Bullet points or text)</label>
+                                    <textarea rows="4" placeholder="Detail content here..." class="dyn-content">${sec.content}</textarea>
+                                </div>
+                            `;
+                            dynamicContainer.appendChild(section);
+                        });
+                    }
+                }
+
+                // Add an "Exit Edit Mode" indicator or change title
+                document.getElementById('current-form-title').innerText = `Editing: ${item.title}`;
+
+                // Populate Extra Fields
+                if (item.extra_fields) {
+                    form.querySelectorAll('.section-title').forEach(titleEl => {
+                        if (titleEl.closest('.dynamic-section')) return;
+                        const sectionName = Array.from(titleEl.childNodes)
+                            .filter(node => node.nodeType === Node.TEXT_NODE || (node.nodeType === Node.ELEMENT_NODE && node.tagName !== 'BUTTON'))
+                            .map(node => node.textContent)
+                            .join(' ')
+                            .trim();
+
+                        const fields = item.extra_fields[sectionName];
+                        if (fields && fields.length > 0) {
+                            const addBtn = titleEl.querySelector('.btn-add-extra');
+                            if (addBtn) {
+                                fields.forEach(f => {
+                                    addExtraField(addBtn);
+                                    // The container is the sibling we just found/created
+                                    const rowsContainer = addBtn.closest('.section-title').nextElementSibling.classList.contains('extra-fields-container')
+                                        ? addBtn.closest('.section-title').nextElementSibling
+                                        : addBtn.closest('.section-title').nextElementSibling.nextElementSibling;
+
+                                    const rows = rowsContainer.querySelectorAll('.extra-field-row');
+                                    const lastRow = rows[rows.length - 1];
+                                    if (lastRow) {
+                                        lastRow.querySelector('.ext-label').value = f.label;
+                                        lastRow.querySelector('.ext-value').value = f.value;
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+            }
+        }
+
+        function showForm(formId) {
+            // Reset Edit State if switching forms manually
+            if (!id_matches_edit(formId)) {
+                resetEditState();
+            }
+
+            document.querySelectorAll('.admin-nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('onclick')?.includes(`'${formId}'`)) {
+                    item.classList.add('active');
+                }
+            });
+
+            document.querySelectorAll('.form-container, .dashboard-container').forEach(el => {
+                el.classList.remove('active');
+            });
+            document.getElementById(formId).classList.add('active');
+
+            const titles = {
+                'dashboard-view': 'Overview Dashboard',
+                'job-form': 'Post New Job Notification',
+                'admit-form': 'Update Admit Card Details',
+                'result-form': 'Publish Exam Results',
+                'syllabus-form': 'Upload Detailed Syllabus',
+                'admission-form': 'Post Admission Notification',
+                'scheme-form': 'Add Government Scheme'
+            };
+            document.getElementById('current-form-title').innerText = titles[formId];
+
+            if (formId === 'dashboard-view') {
+                updateDashboard();
+            }
+        }
+
+        function handleSubmit(e) {
+            e.preventDefault();
+            const form = e.target;
+            const container = form.closest('.form-container');
+            const typeId = container.id;
+
+            // Collect all input/select/textarea values into an object
+            const formData = {};
+            const inputs = form.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                const label = input.closest('.form-group')?.querySelector('label')?.innerText || 'field';
+                const key = input.name || label.toLowerCase().replace(/[^a-z0-9]/g, '_');
+
+                if (input.type === 'checkbox') {
+                    if (!formData[key]) formData[key] = [];
+                    if (input.checked) formData[key].push(input.value);
+                } else if (input.tagName === 'SELECT' && input.multiple) {
+                    formData[key] = Array.from(input.selectedOptions).map(opt => opt.value);
+                } else {
+                    formData[key] = input.value;
+                }
+            });
+
+            // Collect Extra Fields from Sections
+            const extraFields = {};
+            container.querySelectorAll('.section-title').forEach(titleEl => {
+                if (titleEl.closest('.dynamic-section')) return;
+
+                // Extract text avoiding the button text
+                const sectionName = Array.from(titleEl.childNodes)
+                    .filter(node => node.nodeType === Node.TEXT_NODE || (node.nodeType === Node.ELEMENT_NODE && node.tagName !== 'BUTTON'))
+                    .map(node => node.textContent)
+                    .join(' ')
+                    .trim();
+
+                let next = titleEl.nextElementSibling;
+                let rowsContainer = null;
+                while (next && !next.classList.contains('section-title')) {
+                    if (next.classList.contains('extra-fields-container')) {
+                        rowsContainer = next;
+                        break;
+                    }
+                    next = next.nextElementSibling;
+                }
+
+                if (rowsContainer) {
+                    const rows = rowsContainer.querySelectorAll('.extra-field-row');
+                    if (rows.length > 0) {
+                        extraFields[sectionName] = [];
+                        rows.forEach(row => {
+                            const label = row.querySelector('.ext-label').value;
+                            const value = row.querySelector('.ext-value').value;
+                            if (label.trim()) {
+                                extraFields[sectionName].push({ label, value });
+                            }
+                        });
+                    }
+                }
+            });
+            formData.extra_fields = extraFields;
+
+            // Collect Dynamic Sections
+            const dynamicSections = [];
+            const dynDivs = container.querySelectorAll('.dynamic-section');
+            dynDivs.forEach(div => {
+                const title = div.querySelector('.dyn-title').value;
+                const content = div.querySelector('.dyn-content').value;
+                if (title.trim()) {
+                    dynamicSections.push({ title, content });
+                }
+            });
+
+            // Collect Physical Standards Table Data (Only for Jobs)
+            const physicalStandards = [];
+            const physTable = container.querySelector('#physical-standards-table');
+            if (physTable) {
+                const physRows = physTable.querySelectorAll('tbody tr');
+                physRows.forEach(row => {
+                    const criteria = row.querySelector('.phys-criteria').value.trim();
+                    const category = row.querySelector('.phys-category').value.trim();
+                    const male = row.querySelector('.phys-male').value.trim();
+                    const female = row.querySelector('.phys-female').value.trim();
+                    if (criteria || male || female) {
+                        physicalStandards.push({ criteria, category, male, female });
+                    }
+                });
+            }
+
+            // Collect Vacancy Table Data
+            const vacancyDetails = [];
+            const vacTable = container.querySelector('#vacancy-details-table');
+            if (vacTable) {
+                const vacRows = vacTable.querySelectorAll('tbody tr');
+                vacRows.forEach(row => {
+                    const postName = row.querySelector('.vac-post-name').value.trim();
+                    const ur = row.querySelector('.vac-ur').value;
+                    const obc = row.querySelector('.vac-obc').value;
+                    const ews = row.querySelector('.vac-ews').value;
+                    const sc = row.querySelector('.vac-sc').value;
+                    const st = row.querySelector('.vac-st').value;
+                    const total = row.querySelector('.vac-total').value;
+                    if (postName || total) {
+                        vacancyDetails.push({ postName, ur, obc, ews, sc, st, total });
+                    }
+                });
+            }
+
+            // Collect Age Relaxation Data
+            const ageRelaxation = [];
+            const relaxTable = container.querySelector('#age-relaxation-table');
+            if (relaxTable) {
+                const relaxRows = relaxTable.querySelectorAll('tbody tr');
+                relaxRows.forEach(row => {
+                    const category = row.querySelector('.relax-category').value.trim();
+                    const value = row.querySelector('.relax-value').value.trim();
+                    if (category || value) {
+                        ageRelaxation.push({ category, value });
+                    }
+                });
+            }
+
+            // Collect Fee Data
+            const applicationFees = [];
+            let feeTable = container.querySelector('#application-fee-table');
+            if (!feeTable) feeTable = container.querySelector('#admission-fee-table');
+
+            if (feeTable) {
+                const feeRows = feeTable.querySelectorAll('tbody tr');
+                feeRows.forEach(row => {
+                    const category = row.querySelector('.fee-category').value.trim();
+                    const amount = row.querySelector('.fee-amount').value.trim();
+                    if (category || amount) {
+                        applicationFees.push({ category, amount });
+                    }
+                });
+            }
+
+            // Collect Payment Mode Data
+            const paymentModes = [];
+            let payTable = container.querySelector('#payment-mode-table');
+            if (!payTable) payTable = container.querySelector('#admission-payment-table');
+            if (payTable) {
+                const payRows = payTable.querySelectorAll('tbody tr');
+                payRows.forEach(row => {
+                    const method = row.querySelector('.pay-method').value.trim();
+                    const description = row.querySelector('.pay-description').value.trim();
+                    if (method || description) {
+                        paymentModes.push({ method, description });
+                    }
+                });
+            }
+
+            const newItem = {
+                id: editingId || Date.now(),
+                type: typeId.replace('-form', ''),
+                title: formData.full_notification_title || formData.admit_card_page_title || formData.result_post_title || formData.syllabus_title || formData.admission_title || formData.scheme_name,
+                org: formData.recruiting_body__org_name_ || formData.conducting_body || formData.exam_name || formData.university___school_name_ || formData.ministry___department_ || 'N/A',
+                date: formData.notification_date || formData.release_date || formData.declaration_date || formData.apply_last_date || new Date().toISOString().split('T')[0],
+                badge: formData.important_tag__badge_ || formData.badge_status || 'New',
+                ...formData,
+                physical_standards: physicalStandards,
+                vacancy_details: vacancyDetails,
+                age_relaxation: ageRelaxation,
+                application_fees: applicationFees,
+                payment_modes: paymentModes,
+                custom_sections: dynamicSections,
+                physicalStandardsRequired: (typeId === 'job-form' && document.getElementById('toggle-physical-job')) ? document.getElementById('toggle-physical-job').checked :
+                    (typeId === 'admit-form' && document.getElementById('toggle-physical-admit')) ? document.getElementById('toggle-physical-admit').checked : true
+            };
+
+            const keyMap = {
+                'job-form': 'jobs',
+                'admit-form': 'admits',
+                'result-form': 'results',
+                'syllabus-form': 'syllabus',
+                'admission-form': 'admissions',
+                'scheme-form': 'schemes'
+            };
+
+            const storeKey = keyMap[typeId];
+            if (storeKey) {
+                if (editingId) {
+                    const idx = appData[storeKey].findIndex(i => i.id === editingId);
+                    if (idx !== -1) appData[storeKey][idx] = newItem;
+                } else {
+                    appData[storeKey].unshift(newItem);
+                }
+
+                saveData();
+                showSuccessDialog(editingId ? 'Changes Saved' : 'Post Published');
+                form.reset();
+                resetEditState();
+                showForm('dashboard-view');
+            }
+        }
+
+        function id_matches_edit(formId) {
+            if (!editingType) return false;
+            const expected = editingType === 'job' ? 'job-form' :
+                editingType === 'admit' ? 'admit-form' :
+                    editingType === 'result' ? 'result-form' :
+                        editingType === 'syllabus' ? 'syllabus-form' :
+                            editingType === 'admission' ? 'admission-form' : 'scheme-form';
+            return formId === expected;
+        }
+
+        function resetEditState() {
+            editingId = null;
+            editingType = null;
+            document.querySelectorAll('.btn-submit').forEach(btn => {
+                const form = btn.closest('form');
+                if (!form) return;
+                const formId = form.closest('.form-container').id;
+                let defaultText = 'Submit'; // Fallback
+
+                if (formId === 'job-form') defaultText = 'Post Job';
+                else if (formId === 'admit-form') defaultText = 'Publish Admit Card';
+                else if (formId === 'result-form') defaultText = 'Publish Result';
+                else if (formId === 'syllabus-form') defaultText = 'Save Syllabus';
+                else if (formId === 'admission-form') defaultText = 'Post Admission';
+                else if (formId === 'scheme-form') defaultText = 'Post Scheme';
+
+                btn.innerText = defaultText;
+            });
+
+            // Clear all dynamic sections
+            ['job', 'admit', 'result', 'syllabus', 'admission', 'scheme'].forEach(prefix => {
+                const container = document.getElementById(`${prefix}-dynamic-sections`);
+                if (container) container.innerHTML = '';
+            });
+
+            // Clear all extra fields
+            document.querySelectorAll('.extra-fields-container').forEach(c => c.innerHTML = '');
+
+            // Reset Physical Table
+            resetPhysicalTable();
+            // Reset Vacancy Table
+            resetVacancyTable();
+            // Reset Relaxation Table
+            resetRelaxationTable();
+            // Reset Fee Table
+            resetFeeTable();
+            // Reset Payment Table
+            resetPaymentModeTable();
+            // Admission resets
+            resetAdmissionFeeTable();
+            resetAdmissionPaymentModeTable();
+
+            document.getElementById('current-form-title').innerText = 'Overview Dashboard'; // Reset title
+        }
+
+        function addNewSection(formPrefix) {
+            const container = document.getElementById(`${formPrefix}-dynamic-sections`);
+            const sectionId = 'sec_' + Date.now();
+
+            const section = document.createElement('div');
+            section.className = 'dynamic-section';
+            section.id = sectionId;
+            section.innerHTML = `
+                <button type="button" class="btn-remove-section" onclick="document.getElementById('${sectionId}').remove()">
+                    <i class="ri-close-line"></i>
+                </button>
+                <div class="section-title">
+                    <input type="text" placeholder="Section Title (e.g., New Updates)" style="border:none; background:transparent; font-weight:700; color:var(--primary); width:100%;" class="dyn-title">
+                </div>
+                <div class="form-group full-width">
+                    <label>Section Content (Bullet points or text)</label>
+                    <textarea rows="4" placeholder="Detail content here..." class="dyn-content"></textarea>
+                </div>
+            `;
+            container.appendChild(section);
+        }
+
+        function addExtraField(btn) {
+            const titleBox = btn.closest('.section-title');
+            let container = titleBox.nextElementSibling;
+            while (container && !container.classList.contains('extra-fields-container')) {
+                if (container.classList.contains('section-title')) {
+                    // We hit the next section before finding a container, insert one
+                    const newContainer = document.createElement('div');
+                    newContainer.className = 'extra-fields-container';
+                    titleBox.parentNode.insertBefore(newContainer, container);
+                    container = newContainer;
+                    break;
+                }
+                if (!container.nextElementSibling) {
+                    const newContainer = document.createElement('div');
+                    newContainer.className = 'extra-fields-container';
+                    titleBox.parentNode.appendChild(newContainer);
+                    container = newContainer;
+                    break;
+                }
+                container = container.nextElementSibling;
+            }
+
+            const fieldId = 'ext_' + Date.now() + Math.random().toString(36).substr(2, 5);
+            const div = document.createElement('div');
+            div.className = 'extra-field-row';
+            div.id = fieldId;
+            div.innerHTML = `
+                <div class="form-grid" style="grid-template-columns: 1fr 1fr auto; gap: 10px; align-items: center;">
+                    <div class="form-group" style="margin:0">
+                        <input type="text" placeholder="Label (e.g., Result Date)" class="ext-label">
+                    </div>
+                    <div class="form-group" style="margin:0">
+                        <input type="text" placeholder="Value (e.g., 20/05/2026)" class="ext-value">
+                    </div>
+                    <button type="button" class="btn-remove-extra" onclick="document.getElementById('${fieldId}').remove()">
+                        <i class="ri-delete-bin-line"></i>
+                    </button>
+                </div>
+            `;
+            container.appendChild(div);
+        }
+
+        function injectSectionButtons() {
+            document.querySelectorAll('.form-container .section-title').forEach(title => {
+                if (title.closest('.dynamic-section')) return;
+                if (title.querySelector('.btn-add-extra')) return;
+
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'btn-add-extra';
+                btn.innerHTML = '<i class="ri-add-line"></i> Add Item';
+                btn.onclick = (e) => { e.preventDefault(); addExtraField(btn); };
+                title.appendChild(btn);
+
+                // Ensure an extra-fields-container exists after the immediate next sibling (grid/group)
+                const next = title.nextElementSibling;
+                if (next && !next.classList.contains('extra-fields-container')) {
+                    if (!next.nextElementSibling || !next.nextElementSibling.classList.contains('extra-fields-container')) {
+                        const container = document.createElement('div');
+                        container.className = 'extra-fields-container';
+                        next.insertAdjacentElement('afterend', container);
+                    }
+                }
+            });
+        }
+        window.addEventListener('load', injectSectionButtons);
+        // Also run when switching forms to be safe
+        const originalShowForm = showForm;
+        showForm = function (id) {
+            originalShowForm(id);
+            setTimeout(injectSectionButtons, 50);
+        };
+
+        function showSuccessDialog(message) {
+            const overlay = document.createElement('div');
+            overlay.style.cssText = `
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                background: rgba(0,0,0,0.5); display: flex; align-items: center;
+                justify-content: center; z-index: 10000; backdrop-filter: blur(4px);
+            `;
+            const dialog = document.createElement('div');
+            dialog.style.cssText = `
+                background: white; padding: 2.5rem; border-radius: 16px;
+                text-align: center; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+                max-width: 400px; width: 90%; animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            `;
+            dialog.innerHTML = `
+                <div style="font-size: 4rem; color: #10b981; margin-bottom: 1rem;"><i class="ri-checkbox-circle-fill"></i></div>
+                <h3 style="font-size: 1.5rem; color: #1e293b; margin-bottom: 0.5rem;">Done!</h3>
+                <p style="color: #64748b; margin-bottom: 2rem;">${message} successfully.</p>
+                <button onclick="this.parentElement.parentElement.remove()" style="
+                    background: #4338ca; color: white; padding: 0.75rem 2rem;
+                    border: none; border-radius: 8px; font-weight: 600; cursor: pointer;
+                    width: 100%; transition: opacity 0.2s;
+                ">Continue</button>
+            `;
+            overlay.appendChild(dialog);
+            document.body.appendChild(overlay);
+        }
+
+        function resetVacancyTable() {
+            document.querySelectorAll('#vacancy-details-table tbody').forEach(tbody => {
+                const container = tbody.closest('form');
+                const isFull = !!container.querySelector('#vacancy-details-table thead th:nth-child(2)').innerText.match(/UR/);
+                if (isFull) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td><input type="text" class="vac-post-name post-name-input" placeholder="e.g. MTS / Clerk"></td>
+                            <td><input type="number" class="vac-ur" min="0" step="1" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="number" class="vac-obc" min="0" step="1" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="number" class="vac-ews" min="0" step="1" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="number" class="vac-sc" min="0" step="1" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="number" class="vac-st" min="0" step="1" oninput="calculateRowTotal(this)"></td>
+                            <td><input type="number" class="vac-total" min="0" step="1"></td>
+                            <td style="text-align: center;"><i class="ri-delete-bin-line btn-remove-row" onclick="this.closest('tr').remove()" title="Delete"></i></td>
+                        </tr>
+                    `;
+                } else {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td><input type="text" class="vac-post-name post-name-input" placeholder="e.g. Item / Benefit"></td>
+                            <td><input type="number" class="vac-total" min="0" step="1"></td>
+                            <td style="text-align: center;"><i class="ri-delete-bin-line btn-remove-row" onclick="this.closest('tr').remove()" title="Delete"></i></td>
+                        </tr>
+                    `;
+                }
+            });
+        }
+
+
+
+
+
+        function calculateRowTotal(input) {
+            const row = input.closest('tr');
+            const ur = parseInt(row.querySelector('.vac-ur').value) || 0;
+            const obc = parseInt(row.querySelector('.vac-obc').value) || 0;
+            const ews = parseInt(row.querySelector('.vac-ews').value) || 0;
+            const sc = parseInt(row.querySelector('.vac-sc').value) || 0;
+            const st = parseInt(row.querySelector('.vac-st').value) || 0;
+            row.querySelector('.vac-total').value = ur + obc + ews + sc + st;
+        }
+
+        function addFeeRow(btn) {
+            const container = btn ? btn.closest('form') : document;
+            const tbody = container.querySelector('#application-fee-table tbody');
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td><input type="text" class="fee-category post-name-input" placeholder="Category"></td>
+                <td><input type="text" class="fee-amount" placeholder="e.g. ₹100"></td>
+                <td style="text-align: center;"><i class="ri-delete-bin-line btn-remove-row" onclick="this.closest('tr').remove()" title="Delete"></i></td>
+            `;
+            tbody.appendChild(row);
+        }
+
+        function resetFeeTable() {
+            document.querySelectorAll('#application-fee-table tbody').forEach(tbody => {
+                tbody.innerHTML = `
+                    <tr>
+                        <td><input type="text" class="fee-category post-name-input" value="Gen / OBC / EWS"></td>
+                        <td><input type="text" class="fee-amount" placeholder="e.g. ₹500"></td>
+                        <td style="text-align: center;"><i class="ri-delete-bin-line btn-remove-row" onclick="this.closest('tr').remove()" title="Delete"></i></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" class="fee-category post-name-input" value="SC / ST / PH / Female"></td>
+                        <td><input type="text" class="fee-amount" placeholder="e.g. ₹250"></td>
+                        <td style="text-align: center;"><i class="ri-delete-bin-line btn-remove-row" onclick="this.closest('tr').remove()" title="Delete"></i></td>
+                    </tr>
+                `;
+            });
+        }
+
+        function addVacancyRow(btn) {
+            const container = btn ? btn.closest('form') : document;
+            const tbody = container.querySelector('#vacancy-details-table tbody');
+            const row = document.createElement('tr');
+            // Check if this is a simple or full table
+            const isFull = !!container.querySelector('#vacancy-details-table thead th:nth-child(2)').innerText.match(/UR/);
+            if (isFull) {
+                row.innerHTML = `
+                    <td><input type="text" class="vac-post-name post-name-input" placeholder="e.g. MTS / Clerk"></td>
+                    <td><input type="number" class="vac-ur" min="0" step="1" oninput="calculateRowTotal(this)"></td>
+                    <td><input type="number" class="vac-obc" min="0" step="1" oninput="calculateRowTotal(this)"></td>
+                    <td><input type="number" class="vac-ews" min="0" step="1" oninput="calculateRowTotal(this)"></td>
+                    <td><input type="number" class="vac-sc" min="0" step="1" oninput="calculateRowTotal(this)"></td>
+                    <td><input type="number" class="vac-st" min="0" step="1" oninput="calculateRowTotal(this)"></td>
+                    <td><input type="number" class="vac-total" min="0" step="1"></td>
+                    <td style="text-align: center;"><i class="ri-delete-bin-line btn-remove-row" onclick="this.closest('tr').remove()" title="Delete"></i></td>
+                `;
+            } else {
+                row.innerHTML = `
+                    <td><input type="text" class="vac-post-name post-name-input" placeholder="e.g. MTS / Clerk"></td>
+                    <td><input type="number" class="vac-total" min="0" step="1"></td>
+                    <td style="text-align: center;"><i class="ri-delete-bin-line btn-remove-row" onclick="this.closest('tr').remove()" title="Delete"></i></td>
+                `;
+            }
+            tbody.appendChild(row);
+        }
+
+        function addRelaxationRow(btn) {
+            const container = btn ? btn.closest('form') : document;
+            const tbody = container.querySelector('#age-relaxation-table tbody');
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td><input type="text" class="relax-category post-name-input" placeholder="Category"></td>
+                <td><input type="text" class="relax-value" placeholder="e.g. 3 Years"></td>
+                <td style="text-align: center;"><i class="ri-delete-bin-line btn-remove-row" onclick="this.closest('tr').remove()" title="Delete"></i></td>
+            `;
+            tbody.appendChild(row);
+        }
+
+        function resetRelaxationTable() {
+            document.querySelectorAll('#age-relaxation-table tbody').forEach(tbody => {
+                tbody.innerHTML = `
+                    <tr>
+                        <td><input type="text" class="relax-category post-name-input" value="OBC"></td>
+                        <td><input type="text" class="relax-value" placeholder="e.g. 3 Years"></td>
+                        <td style="text-align: center;"><i class="ri-delete-bin-line btn-remove-row" onclick="this.closest('tr').remove()" title="Delete"></i></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" class="relax-category post-name-input" value="SC / ST"></td>
+                        <td><input type="text" class="relax-value" placeholder="e.g. SC/ST: 5 years"></td>
+                        <td style="text-align: center;"><i class="ri-delete-bin-line btn-remove-row" onclick="this.closest('tr').remove()" title="Delete"></i></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" class="relax-category post-name-input" value="PH (Divyang)"></td>
+                        <td><input type="text" class="relax-value" placeholder="e.g. 10 Years"></td>
+                        <td style="text-align: center;"><i class="ri-delete-bin-line btn-remove-row" onclick="this.closest('tr').remove()" title="Delete"></i></td>
+                    </tr>
+                `;
+            });
+        }
+
+        function resetPhysicalTable() {
+            document.querySelectorAll('#physical-standards-table tbody').forEach(tbody => {
+                tbody.innerHTML = `
+                    <tr>
+                        <td><input type="text" class="phys-criteria" value="Height" readonly></td>
+                        <td><input type="text" class="phys-category" value="General / OBC / SC"></td>
+                        <td><input type="text" class="phys-male" placeholder="e.g. 170 cm"></td>
+                        <td><input type="text" class="phys-female" placeholder="e.g. 157 cm"></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" class="phys-criteria" value="Height" readonly></td>
+                        <td><input type="text" class="phys-category" value="ST"></td>
+                        <td><input type="text" class="phys-male" placeholder="e.g. 162.5 cm"></td>
+                        <td><input type="text" class="phys-female" placeholder="e.g. 150 cm"></td>
+                        <td style="text-align: center;"><i class="ri-delete-bin-line btn-remove-row" onclick="this.closest('tr').remove()" title="Delete Row"></i></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" class="phys-criteria" value="Chest" readonly></td>
+                        <td><input type="text" class="phys-category" value="All Categories"></td>
+                        <td><input type="text" class="phys-male" placeholder="e.g. 80-85 cm"></td>
+                        <td><input type="text" class="phys-female" placeholder="e.g. N/A"></td>
+                        <td></td>
+                    </tr>
+                `;
+            });
+        }
+
+        function addPhysicalRow(btn) {
+            const container = btn ? btn.closest('form') : document;
+            const tbody = container.querySelector('#physical-standards-table tbody');
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td><input type="text" class="phys-criteria" placeholder="Criteria Name"></td>
+                <td><input type="text" class="phys-category" placeholder="Category"></td>
+                <td><input type="text" class="phys-male" placeholder="Male requirements"></td>
+                <td><input type="text" class="phys-female" placeholder="Female requirements"></td>
+                <td style="text-align: center;"><i class="ri-delete-bin-line btn-remove-row" onclick="this.closest('tr').remove()" title="Delete Row"></i></td>
+            `;
+            tbody.appendChild(row);
+        }
+
+        function addPaymentModeRow(btn) {
+            const container = btn ? btn.closest('form') : document;
+            const tbody = container.querySelector('#payment-mode-table tbody');
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td><input type="text" class="pay-method post-name-input" placeholder="e.g. Online"></td>
+                <td><input type="text" class="pay-description" placeholder="Mode of Payment"></td>
+                <td style="text-align: center;"><i class="ri-delete-bin-line btn-remove-row" onclick="this.closest('tr').remove()" title="Delete"></i></td>
+            `;
+            tbody.appendChild(row);
+        }
+
+        function resetPaymentModeTable() {
+            document.querySelectorAll('#payment-mode-table tbody').forEach(tbody => {
+                tbody.innerHTML = `
+                    <tr>
+                        <td><input type="text" class="pay-method post-name-input" value="Online Mode"></td>
+                        <td><input type="text" class="pay-description" placeholder="Credit Card, Debit Card, UPI"></td>
+                        <td style="text-align: center;"><i class="ri-delete-bin-line btn-remove-row" onclick="this.closest('tr').remove()" title="Delete"></i></td>
+                    </tr>
+                `;
+            });
+        }
+
+        function resetAdmissionFeeTable() {
+            // Placeholder if needed, but standard resetFeeTable should be used
+            resetFeeTable();
+        }
+
+        function resetAdmissionPaymentModeTable() {
+            // Placeholder if needed, but standard resetPaymentModeTable should be used
+            resetPaymentModeTable();
+        }
+
+        // Add Animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+            @keyframes popIn {
+                from { opacity: 0; transform: scale(0.9); }
+                to { opacity: 1; transform: scale(1); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        updateDashboard();
+
+        // Auto-Icon Logic
+        function detectIconType(text) {
+            if (!text) return null;
+            text = text.toLowerCase();
+            if (text.includes('railway') || text.includes('rrb') || text.includes('rrc')) return 'railway';
+            if (text.includes('ssc') || text.includes('staff selection')) return 'ssc';
+            if (text.includes('upsc') || text.includes('union public')) return 'upsc';
+            if (text.includes('bank') || text.includes('ibps') || text.includes('sbi') || text.includes('rbi')) return 'bank';
+            if (text.includes('school') || text.includes('board') || text.includes('cbse') || text.includes('icse')) return 'school';
+            if (text.includes('university') || text.includes('college') || text.includes('bhu') || text.includes('du') || text.includes('jnu')) return 'university';
+            return 'govt';
+        }
+
+        document.addEventListener('input', function (e) {
+            if (e.target.classList.contains('org-name-input') ||
+                (e.target.tagName === 'INPUT' && e.target.closest('.form-group') && e.target.closest('.form-group').querySelector('label') && e.target.closest('.form-group').querySelector('label').innerText.includes('Recruiting Body'))) {
+
+                const val = e.target.value;
+                const type = detectIconType(val);
+                const formGrid = e.target.closest('.form-grid');
+                if (formGrid) {
+                    const select = formGrid.querySelector('.icon-type-select') || formGrid.querySelector('select');
+                    // Note: Job form has a generic select without class, others have .icon-type-select
+                    // In Job form, the select is the 4th child in form-grid sequence usually. 
+
+                    if (select && type) {
+                        // Only auto-switch if it's currently 'govt' or we are confident? 
+                        // Let's just switch it. User can change back.
+                        // But we must check if the option exists.
+                        const option = select.querySelector(`option[value="${type}"]`);
+                        if (option) select.value = type;
+                    }
+                }
+            }
+        });
+
+        // Also add class to Job Form Inputs for consistency if possible, or handle via the listener above.
+        // The listener above tries to handle generic inputs too.
+
+        // Toggle Physical Standards Section Visibility
+        function togglePhysicalSection(formType, isChecked) {
+            const sectionId = 'physical-section-' + formType;
+            const btnId = 'add-physical-btn-' + formType;
+            const section = document.getElementById(sectionId);
+            const btn = document.getElementById(btnId);
+
+            if (section && btn) {
+                if (isChecked) {
+                    section.classList.remove('hidden-section');
+                    btn.classList.remove('hidden-section');
+                } else {
+                    section.classList.add('hidden-section');
+                    btn.classList.add('hidden-section');
+                }
+            }
+        }
+
+        // AI Auto-Fill Logic
+        function openAIModal() {
+            // Check if we are in a form
+            const activeForm = document.querySelector('.form-container.active');
+            if (!activeForm) {
+                alert("Please open a 'Post New...' form (Job, Admit, Result) first before using AI.");
+                return;
+            }
+            document.getElementById('ai-modal').style.display = 'flex';
+            // Load saved key
+            const savedKey = localStorage.getItem('gemini_api_key');
+            if (savedKey) document.getElementById('ai-api-key').value = savedKey;
+        }
+
+        function closeAIModal() {
+            document.getElementById('ai-modal').style.display = 'none';
+        }
+
+        async function runAIAutoFill() {
+            const apiKey = document.getElementById('ai-api-key').value.trim();
+            const text = document.getElementById('ai-prompt-text').value.trim();
+            const fileInput = document.getElementById('ai-pdf-upload');
+            const file = fileInput.files[0];
+            const status = document.getElementById('ai-status');
+
+            if (!apiKey) {
+                status.style.color = 'red';
+                status.innerText = 'Please enter a Gemini API Key.';
+                return;
+            }
+            if (!text && !file) {
+                status.style.color = 'red';
+                status.innerText = 'Please paste text OR upload a PDF.';
+                return;
+            }
+
+            localStorage.setItem('gemini_api_key', apiKey); // Save for later
+            status.style.color = 'blue';
+            status.innerHTML = '<i class="ri-loader-4-line ri-spin"></i> Processing... this may take 10-30 seconds.';
+
+            // Identity the current form type
+            const activeForm = document.querySelector('.form-container.active');
+            const formId = activeForm.id;
+            let type = 'job';
+            if (formId === 'admit-form') type = 'admit';
+            if (formId === 'result-form') type = 'result';
+            if (formId === 'syllabus-form') type = 'syllabus';
+            if (formId === 'admission-form') type = 'admission';
+            if (formId === 'scheme-form') type = 'scheme';
+
+            // Helper: Convert File to Base64
+            const fileToGenPart = async (file) => {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                        const base64Data = reader.result.split(',')[1];
+                        resolve({
+                            inline_data: {
+                                mime_type: file.type,
+                                data: base64Data
+                            }
+                        });
+                    };
+                    reader.onerror = reject;
+                    reader.readAsDataURL(file);
+                });
+            };
+
+            // Construct the Prompt - EXPLICIT & DETAILED
+            const promptText = `
+                You are a data entry expert. Read the government job notification (text or PDF provided) and extract structured data.
+                
+                CRITICAL: Return ONLY a valid JSON object. No markdown, no "json" word.
+                
+                Structure to Fill:
+                {
+                    "full_notification_title": "Full Official Title",
+                    "recruiting_body_org_name": "Organization Name",
+                    "advertisement_number": "Advt No",
+                    "total_vacancy_count": "Total Posts (e.g. 500)",
+                    "qualification_required": "Short Config (e.g. 10th Pass)",
+                    "job_location": "Location",
+                    "important_tag_badge": "Badge (New/Urgent)",
+                    "min_age": "Number",
+                    "max_age": "Number",
+                    "pay_scale_salary": "Text",
+                    "notification_date": "YYYY-MM-DD",
+                    "apply_start_date": "YYYY-MM-DD",
+                    "apply_last_date": "YYYY-MM-DD",
+                    "exam_date_preview": "Text (e.g. March 2026)",
+                    "notification_description": "3-5 line summary",
+                    "eligibility_criteria": ["Point 1", "Point 2"],
+                    "selection_process": ["Written", "Interview"],
+                    "physical_standards_required": true/false (Set true if height/chest mentioned),
+                    "important_links": {
+                        "apply_online": "URL or null",
+                        "download_notification": "URL or null",
+                        "official_website": "URL or null"
+                    },
+                    "application_fees": [ {"category": "Gen/OBC", "amount": "₹500"} ],
+                    "vacancy_details": [ {"postName": "Clerk", "total": "50", "ur": "20", "obc": "10", "sc": "5", "st": "5", "ews": "10"} ],
+                    "age_relaxation": [ {"category": "OBC", "value": "3 Years"} ],
+                    "physical_standards": [ {"criteria": "Height", "category": "M", "male": "170cm", "female": "157cm"} ]
+                }
+
+                Input Context:
+                ${text ? text.substring(0, 30000) : "See attached PDF."}
+            `;
+
+            try {
+                // Prepare Content Parts - Multimodal Support
+                const parts = [{ text: promptText }];
+                if (file) {
+                    if (file.size > 4 * 1024 * 1024) throw new Error("File too large. Max 4MB for generic API.");
+                    const filePart = await fileToGenPart(file);
+                    parts.push(filePart);
+                }
+
+                status.innerHTML = '<i class="ri-search-line ri-spin"></i> Finding best AI model...';
+
+                // DATA-DRIVEN APPROACH: List available models first
+                const modelsResp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
+                if (!modelsResp.ok) throw new Error("Invalid API Key or Network Error");
+
+                const modelsData = await modelsResp.json();
+                const validModels = modelsData.models.filter(m =>
+                    m.supportedGenerationMethods &&
+                    m.supportedGenerationMethods.includes('generateContent') &&
+                    m.name.includes('gemini')
+                );
+
+                if (validModels.length === 0) throw new Error("No Gemini models found for this key.");
+
+                // Smart Selection: Prefer Flash > Pro > Any
+                let selectedModel = validModels.find(m => m.name.includes('flash'));
+                if (!selectedModel) selectedModel = validModels.find(m => m.name.includes('pro'));
+                if (!selectedModel) selectedModel = validModels[0];
+
+                const modelName = selectedModel.name.replace('models/', '');
+
+                console.log("Selected Model:", modelName);
+                status.innerHTML = `<i class="ri-cpu-line"></i> Reading Document with ${modelName}...`;
+
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/${selectedModel.name}:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: [{ parts: parts }] })
+                });
+
+                const data = await response.json();
+                if (data.error) throw new Error(data.error.message);
+
+                const rawJson = data.candidates[0].content.parts[0].text;
+                // Clean markdown from response
+                const cleanJson = rawJson.replace(/```json/g, '').replace(/```/g, '').trim();
+                const extracted = JSON.parse(cleanJson);
+
+                console.log("AI Extracted:", extracted);
+
+                // Populate Form
+                const form = activeForm.querySelector('form');
+
+                // --- AGGRESSIVE DOM MAPPING ENGINE ---
+                const setVal = (matches, value) => {
+                    if (!value) return;
+                    // Find input where label OR placeholder matches one of the keywords
+                    const inputs = Array.from(form.querySelectorAll('input, textarea, select'));
+                    const target = inputs.find(inp => {
+                        const placeholder = (inp.placeholder || '').toLowerCase();
+                        const label = inp.closest('.form-group')?.querySelector('label')?.innerText.toLowerCase() || '';
+                        return matches.some(m => placeholder.includes(m.toLowerCase()) || label.includes(m.toLowerCase()));
+                    });
+
+                    if (target) {
+                        target.value = value;
+                        target.dispatchEvent(new Event('input', { bubbles: true }));
+                        target.dispatchEvent(new Event('change', { bubbles: true }));
+                    }
+                };
+
+                // 1. Core Details
+                setVal(['Title', 'Scheme Name'], extracted.full_notification_title);
+                setVal(['Recruiting Body', 'Organization', 'Org Name'], extracted.recruiting_body_org_name);
+                setVal(['Advertisement Number', 'Advt No'], extracted.advertisement_number);
+                setVal(['Vacancy Count', 'Total Vacancy'], extracted.total_vacancy_count);
+                setVal(['Qualification'], extracted.qualification_required);
+                setVal(['Location'], extracted.job_location);
+                setVal(['Tag', 'Badge'], extracted.important_tag_badge);
+                setVal(['Pay Scale', 'Salary'], extracted.pay_scale_salary);
+
+                // 2. Dates (Try Exact Label Matches first for accuracy)
+                setVal(['Notification Date'], extracted.notification_date);
+                setVal(['Apply Start'], extracted.apply_start_date);
+                setVal(['Last Date', 'End Date'], extracted.apply_last_date);
+                setVal(['Exam Date'], extracted.exam_date_preview);
+
+                // 3. Age
+                setVal(['Minimum Age'], extracted.min_age);
+                setVal(['Maximum Age'], extracted.max_age);
+
+                // 4. Description & Logic
+                setVal(['Notification Description'], extracted.notification_description);
+                // Selection Process (Checkboxes)
+                if (extracted.selection_process) {
+                    extracted.selection_process.forEach(proc => {
+                        const cb = Array.from(form.querySelectorAll('input[type="checkbox"]')).find(c => c.value.toLowerCase().includes(proc.toLowerCase()) || c.nextElementSibling?.innerText.toLowerCase().includes(proc.toLowerCase()));
+                        if (cb) cb.checked = true;
+                    });
+                }
+
+                // 5. Links
+                if (extracted.important_links) {
+                    setVal(['Apply Online', 'Online Link'], extracted.important_links.apply_online);
+                    setVal(['Download Notification', 'Notification Link'], extracted.important_links.download_notification);
+                    setVal(['Official Website', 'Website Link'], extracted.important_links.official_website);
+                }
+
+                // 6. Physical Standards Logic
+                if (extracted.physical_standards_required !== undefined) {
+                    const toggle = form.querySelector('#toggle-physical-job') || form.querySelector('#toggle-physical-admit');
+                    if (toggle) {
+                        toggle.checked = extracted.physical_standards_required;
+                        toggle.dispatchEvent(new Event('change')); // Trigger visibility logic
+                    }
+                }
+
+                // 7. COMPLEX TABLES (Vacancy, Fee, Relaxation, Physical)
+                const populateTable = (tableId, dataArray, mapper) => {
+                    const tbody = form.querySelector(`#${tableId} tbody`);
+                    if (tbody && dataArray && dataArray.length > 0) {
+                        tbody.innerHTML = '';
+                        // Determine row template based on headers (Simple vs Full)
+                        const isFull = form.querySelector(`#${tableId} thead`) ? form.querySelector(`#${tableId} thead`).innerText.includes('UR') : false;
+
+                        dataArray.forEach(item => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = mapper(item, isFull);
+                            tbody.appendChild(row);
+                            // Trigger calcs
+                            row.querySelectorAll('input').forEach(i => i.dispatchEvent(new Event('input')));
+                        });
+                    }
+                };
+
+                // Vacancy Table
+                if (extracted.vacancy_details) {
+                    populateTable('vacancy-details-table', extracted.vacancy_details, (d, isFull) => {
+                        if (isFull) return `<td><input class="vac-post-name" value="${d.postName || ''}"></td><td><input class="vac-ur" value="${d.ur || ''}" type="number"></td><td><input class="vac-obc" value="${d.obc || ''}" type="number"></td><td><input class="vac-ews" value="${d.ews || ''}" type="number"></td><td><input class="vac-sc" value="${d.sc || ''}" type="number"></td><td><input class="vac-st" value="${d.st || ''}" type="number"></td><td><input class="vac-total" value="${d.total || ''}" type="number"></td><td style="text-align:center;"><i class="ri-delete-bin-line" onclick="this.closest('tr').remove()"></i></td>`;
+                        return `<td><input class="vac-post-name" value="${d.postName || ''}"></td><td><input class="vac-total" value="${d.total || ''}" type="number"></td><td style="text-align:center;"><i class="ri-delete-bin-line" onclick="this.closest('tr').remove()"></i></td>`;
+                    });
+                }
+
+                // Fee Table
+                populateTable('application-fee-table', extracted.application_fees, (d) =>
+                    `<td><input class="fee-category" value="${d.category || ''}"></td><td><input class="fee-amount" value="${d.amount || ''}"></td><td style="text-align:center;"><i class="ri-delete-bin-line" onclick="this.closest('tr').remove()"></i></td>`
+                );
+
+                // Physical Table
+                if (extracted.physical_standards_required && extracted.physical_standards) {
+                    populateTable('physical-standards-table', extracted.physical_standards, (d) =>
+                        `<td><input class="phys-criteria" value="${d.criteria || ''}"></td><td><input class="phys-category" value="${d.category || ''}"></td><td><input class="phys-male" value="${d.male || ''}"></td><td><input class="phys-female" value="${d.female || ''}"></td><td style="text-align:center;"><i class="ri-delete-bin-line" onclick="this.closest('tr').remove()"></i></td>`
+                    );
+                }
+
+                // Age Relaxation
+                populateTable('age-relaxation-table', extracted.age_relaxation, (d) =>
+                    `<td><input class="relax-category" value="${d.category || ''}"></td><td><input class="relax-value" value="${d.value || ''}"></td><td style="text-align:center;"><i class="ri-delete-bin-line" onclick="this.closest('tr').remove()"></i></td>`
+                );
+
+                status.style.color = 'green';
+                status.innerHTML = '<i class="ri-check-double-line"></i> Success! Form filled.';
+                setTimeout(() => closeAIModal(), 1500);
+
+            } catch (err) {
+                console.error(err);
+                status.style.color = 'red';
+                status.innerText = 'Error: ' + err.message;
+            }
+        }
+
+        // Handle Form Submissions
+
+
+    </script>
+</body>
+
+</html>
